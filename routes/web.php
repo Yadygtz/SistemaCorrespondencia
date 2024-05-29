@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CorrespondenciaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +14,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('auth.login');
+// });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/', function(){ return redirect('/correspondencia'); });
+
+    Route::get('/correspondencia', [CorrespondenciaController::class, 'index'])->name('correspondencia');
+
+    Route::get('dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});
