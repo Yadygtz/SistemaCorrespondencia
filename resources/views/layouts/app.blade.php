@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="{{asset('assets/img/c3ico.png')}}">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -20,11 +21,35 @@
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
     <!-- Styles -->
-    <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
+    <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.7" rel="stylesheet" />
+    <link id="pagestyle" href="{{ asset('assets/css/datatables.css') }}" rel="stylesheet" />
+
+    <style>
+        .dataTables_length select {
+            width: 60px !important;
+
+        }
+
+        .dataTables_filter {
+            padding-right: 1.5em;
+        }
+
+        .dataTables_filter input {
+            width: 200px !important;
+        }
+
+        label {
+            margin-left: 0 !important;
+        }
+
+        /* tr {
+          cursor: pointer;
+        } */
+    </style>
 </head>
 
 <body
-    class="g-sidenav-show  bg-gray-100 {{ \Request::is('rtl') ? 'rtl' : (Request::is('virtual-reality') ? 'virtual-reality' : '') }} ">
+    class="g-sidenav-show  bg-gray-100" style="overflow-y: hidden;">
     @auth
         @yield('auth')
     @endauth
@@ -54,10 +79,12 @@
         }
     </script>
 
-    <!-- Github buttons -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="../assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script>
+    <script src="{{ asset('assets/js/jquery.js') }}"></script>
+    <script src="{{ asset('assets/js/plugins/datatables.js') }}"></script>
+    <script src="{{ asset('assets/js/dataTables.bootstrap.min.js') }}"></script>
+    @stack('scripts')
 </body>
 
 </html>
