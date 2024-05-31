@@ -24,8 +24,9 @@ Auth::routes();
 Route::middleware('auth')->group(function () {
     Route::get('/', function(){ return redirect('/correspondencia'); });
 
-    // Route::get('/correspondencia', [CorrespondenciaController::class, 'index'])->name('correspondencia');
-    Route::resource('correspondencia', CorrespondenciaController::class);
+    Route::get('/correspondencia', [CorrespondenciaController::class, 'index'])->name('correspondencia');
+    // Route::resource('correspondencia', CorrespondenciaController::class);
+    Route::get('/correspondencia/{id}', [CorrespondenciaController::class, 'show']);
 
     Route::get('dashboard', function () {
         return view('dashboard');
