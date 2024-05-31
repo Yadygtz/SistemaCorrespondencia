@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
@@ -17,14 +17,16 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
     <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
-    <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
+    {{-- <link href="../assets/css/nucleo-svg.css" rel="stylesheet" /> --}}
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-    <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
     <!-- Styles -->
     <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.7" rel="stylesheet" />
     <link id="pagestyle" href="{{ asset('assets/css/datatables.css') }}" rel="stylesheet" />
 
     <style>
+        body{
+            overflow-y: hidden !important;
+        }
         .dataTables_length select {
             width: 60px !important;
 
@@ -42,6 +44,25 @@
             margin-left: 0 !important;
         }
 
+        .btn-icon {
+            min-width: calc(1.4285714286 * 0.875rem + 0.5625rem* 2 + 1px* 2);
+            min-height: calc(1.4285714286 * 0.875rem + 0.5625rem* 2 + 1px* 2);
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .btn-icon .icon {
+            margin: calc(-1* 1rem);
+        }
+
+        /* .icon {
+            --tblr-icon-size: 1.25rem;
+            width: var(--tblr-icon-size);
+            height: var(--tblr-icon-size);
+            font-size: var(--tblr-icon-size);
+            stroke-width: 1.5;
+        } */
+
         /* tr {
           cursor: pointer;
         } */
@@ -49,7 +70,7 @@
 </head>
 
 <body
-    class="g-sidenav-show  bg-gray-100" style="overflow-y: hidden;">
+    class="g-sidenav-show  bg-gray-100">
     @auth
         @yield('auth')
     @endauth
