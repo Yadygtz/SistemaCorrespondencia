@@ -27,6 +27,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/correspondencia', [CorrespondenciaController::class, 'index'])->name('correspondencia');
     // Route::resource('correspondencia', CorrespondenciaController::class);
     Route::get('/correspondencia/{id}', [CorrespondenciaController::class, 'show']);
+    Route::put('/correspondencia/upd/{id}', [CorrespondenciaController::class, 'editar']);
+
 
     Route::get('dashboard', function () {
         return view('dashboard');
