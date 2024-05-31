@@ -33,8 +33,8 @@
                                             <tr>
                                                 <td class="align-middle">
                                                     <div class="d-flex flex-column justify-content-center">
-                                                        <h6 class="mb-0 text-sm">{{$row->no_oficio}}</h6>
-                                                        <p class="text-xs text-secondary mb-0">Asunto: {{$row->asunto}}</p>
+                                                        <h6 class="mb-0 text-sm">{{ $row->no_oficio }}</h6>
+                                                        <p class="text-xs text-secondary mb-0">Asunto: {{ $row->asunto }}</p>
                                                     </div>
                                                 </td>
                                                 {{-- <td class="align-middle">
@@ -54,8 +54,19 @@
                                                     <span class="text-xs font-weight-bold">{{ $row->recibido_por }}</span>
                                                 </td>
                                                 <td>
-                                                    <a class="btn btn-secondary mb-0" type="button" title="Detalle" href="{{ route('correspondencia.show', $row->id_correspondencia) }}">
-                                                        <span class="h6 text-white"><i class="fa fa-eye"></i></span>
+                                                    <a href="#" class="btn btn-secondary w-100 btn-icon mb-0"
+                                                        data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                                                        data-bs-toggle="modal" data-bs-target="#detalleModal"
+                                                        data-id="{{ $row->id_correspondencia }}">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-eye">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                                            <path
+                                                                d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                                                        </svg>
                                                     </a>
                                                 </td>
                                             </tr>
@@ -280,6 +291,31 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Detalle Oficio -->
+    <div class="modal fade" id="detalleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="detalleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detalleModalLabel">Detalles del Oficio</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>No. Oficio:</strong> <span id="modal_no_oficio"></span></p>
+                    <p><strong>Asunto:</strong> <span id="modal_asunto"></span></p>
+                    <p><strong>Fecha Oficio:</strong> <span id="modal_fecha_oficio"></span></p>
+                    <p><strong>Enviado Por:</strong> <span id="modal_enviado_por"></span></p>
+                    <p><strong>Recibido Por:</strong> <span id="modal_recibido_por"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @push('scripts')
     <script>
@@ -310,6 +346,22 @@
             // $("#tabla").DataTable({});
             let table = new DataTable('#tabla', {
                 "language": confidioma
+            });
+
+            $('#detalleModal').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget);
+                var id = button.data('id');
+                $.ajax({
+                    url: '/correspondencia/' + id,
+                    method: 'GET',
+                    success: function(data) {
+                        $('#modal_no_oficio').text(data.no_oficio);
+                        $('#modal_asunto').text(data.asunto);
+                        $('#modal_fecha_oficio').text(data.fecha_oficio);
+                        $('#modal_enviado_por').text(data.enviado_por);
+                        $('#modal_recibido_por').text(data.recibido_por);
+                    }
+                });
             });
         }
     </script>
