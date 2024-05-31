@@ -11,6 +11,11 @@ class ModelCorrepondencia extends Model
 
     protected $primaryKey = 'id_correspondencia';
 
+    protected $table = 'correspondencia';
+
+    const CREATED_AT = 'fecha_creado';
+    const UPDATED_AT = 'fecha_modificado';
+
     protected $fillable = [
         'no_oficio',
         'fecha_oficio',
