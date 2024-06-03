@@ -1,7 +1,7 @@
 @extends('layouts.user_type.auth')
 
 @section('content')
-    <div class="py-4">
+    <div class="">
         <div class="row">
             <div class="col-12">
                 <div class="card mb-4">
@@ -20,7 +20,8 @@
                                 <h6 class="mb-0">Correspondencia</h6>
                             </div>
                             <div class="col-6 text-end">
-                                <a class="btn bg-gradient-danger btn-sm mb-0">Agregar</a>
+                                <a class="btn bg-gradient-danger btn-sm mb-0" data-bs-toggle="modal"
+                                    data-bs-target="#addupdOfiModal" data-tipo="agregar">Agregar</a>
                             </div>
                         </div>
                     </div>
@@ -43,7 +44,6 @@
 
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Recibido por</th>
-                                        <th class="text-center"></th>
                                         <th class="text-center"></th>
                                     </tr>
                                 </thead>
@@ -74,251 +74,42 @@
                                                     <span class="text-xs font-weight-bold">{{ $row->recibido_por }}</span>
                                                 </td>
                                                 <td>
-                                                    <a href="#" class="btn btn-secondary w-100 btn-icon mb-0"
-                                                        data-bs-toggle="modal" data-bs-target="#detalleModal"
-                                                        data-id="{{ $row->id_correspondencia }}">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-eye">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                                                            <path
-                                                                d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
-                                                        </svg>
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <a href="#" class="btn btn-primary w-100 btn-icon mb-0"
-                                                        data-bs-toggle="modal" data-bs-target="#actualizarOfiModal"
-                                                        data-id="{{ $row->id_correspondencia }}">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                            <path
-                                                                d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                            <path
-                                                                d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                            <path d="M16 5l3 3" />
-                                                        </svg>
-                                                    </a>
+                                                    <div class="d-flex">
+                                                        <a href="#" class="btn btn-primary w-100 btn-icon mb-0 me-1"
+                                                            data-bs-toggle="modal" data-bs-target="#detalleModal"
+                                                            data-id="{{ $row->id_correspondencia }}">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-eye">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                                                <path
+                                                                    d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                                                            </svg>
+                                                        </a>
+                                                        <a href="#" class="btn btn-outline-secondary w-100 btn-icon mb-0"
+                                                            data-bs-toggle="modal" data-bs-target="#addupdOfiModal"
+                                                            data-id="{{ $row->id_correspondencia }}">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                                <path
+                                                                    d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                                <path
+                                                                    d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                                <path d="M16 5l3 3" />
+                                                            </svg>
+                                                        </a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
                                     @endisset
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="card mb-4">
-                    <div class="card-header pb-0">
-                        <h6>Authors table</h6>
-                    </div>
-                    <div class="card-body px-0 pt-0 pb-2">
-                        <div class="table-responsive p-0">
-                            <table class="table align-items-center mb-0">
-                                <thead>
-                                    <tr>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Author</th>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                            Function</th>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Status</th>
-                                        <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Employed</th>
-                                        <th class="text-secondary opacity-7"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div>
-                                                    <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3"
-                                                        alt="user1">
-                                                </div>
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">John Michael</h6>
-                                                    <p class="text-xs text-secondary mb-0">john@creative-tim.com</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs font-weight-bold mb-0">Manager</p>
-                                            <p class="text-xs text-secondary mb-0">Organization</p>
-                                        </td>
-                                        <td class="align-middle text-center text-sm">
-                                            <span class="badge badge-sm bg-gradient-success">Online</span>
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
-                                        </td>
-                                        <td class="align-middle">
-                                            <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
-                                                data-toggle="tooltip" data-original-title="Edit user">
-                                                Edit
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div>
-                                                    <img src="../assets/img/team-3.jpg" class="avatar avatar-sm me-3"
-                                                        alt="user2">
-                                                </div>
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">Alexa Liras</h6>
-                                                    <p class="text-xs text-secondary mb-0">alexa@creative-tim.com</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs font-weight-bold mb-0">Programator</p>
-                                            <p class="text-xs text-secondary mb-0">Developer</p>
-                                        </td>
-                                        <td class="align-middle text-center text-sm">
-                                            <span class="badge badge-sm bg-gradient-secondary">Offline</span>
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            <span class="text-secondary text-xs font-weight-bold">11/01/19</span>
-                                        </td>
-                                        <td class="align-middle">
-                                            <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
-                                                data-toggle="tooltip" data-original-title="Edit user">
-                                                Edit
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div>
-                                                    <img src="../assets/img/team-4.jpg" class="avatar avatar-sm me-3"
-                                                        alt="user3">
-                                                </div>
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">Laurent Perrier</h6>
-                                                    <p class="text-xs text-secondary mb-0">laurent@creative-tim.com</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs font-weight-bold mb-0">Executive</p>
-                                            <p class="text-xs text-secondary mb-0">Projects</p>
-                                        </td>
-                                        <td class="align-middle text-center text-sm">
-                                            <span class="badge badge-sm bg-gradient-success">Online</span>
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            <span class="text-secondary text-xs font-weight-bold">19/09/17</span>
-                                        </td>
-                                        <td class="align-middle">
-                                            <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
-                                                data-toggle="tooltip" data-original-title="Edit user">
-                                                Edit
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div>
-                                                    <img src="../assets/img/team-3.jpg" class="avatar avatar-sm me-3"
-                                                        alt="user4">
-                                                </div>
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">Michael Levi</h6>
-                                                    <p class="text-xs text-secondary mb-0">michael@creative-tim.com</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs font-weight-bold mb-0">Programator</p>
-                                            <p class="text-xs text-secondary mb-0">Developer</p>
-                                        </td>
-                                        <td class="align-middle text-center text-sm">
-                                            <span class="badge badge-sm bg-gradient-success">Online</span>
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            <span class="text-secondary text-xs font-weight-bold">24/12/08</span>
-                                        </td>
-                                        <td class="align-middle">
-                                            <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
-                                                data-toggle="tooltip" data-original-title="Edit user">
-                                                Edit
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div>
-                                                    <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3"
-                                                        alt="user5">
-                                                </div>
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">Richard Gran</h6>
-                                                    <p class="text-xs text-secondary mb-0">richard@creative-tim.com</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs font-weight-bold mb-0">Manager</p>
-                                            <p class="text-xs text-secondary mb-0">Executive</p>
-                                        </td>
-                                        <td class="align-middle text-center text-sm">
-                                            <span class="badge badge-sm bg-gradient-secondary">Offline</span>
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            <span class="text-secondary text-xs font-weight-bold">04/10/21</span>
-                                        </td>
-                                        <td class="align-middle">
-                                            <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
-                                                data-toggle="tooltip" data-original-title="Edit user">
-                                                Edit
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div>
-                                                    <img src="../assets/img/team-4.jpg" class="avatar avatar-sm me-3"
-                                                        alt="user6">
-                                                </div>
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">Miriam Eric</h6>
-                                                    <p class="text-xs text-secondary mb-0">miriam@creative-tim.com</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <p class="text-xs font-weight-bold mb-0">Programtor</p>
-                                            <p class="text-xs text-secondary mb-0">Developer</p>
-                                        </td>
-                                        <td class="align-middle text-center text-sm">
-                                            <span class="badge badge-sm bg-gradient-secondary">Offline</span>
-                                        </td>
-                                        <td class="align-middle text-center">
-                                            <span class="text-secondary text-xs font-weight-bold">14/09/20</span>
-                                        </td>
-                                        <td class="align-middle">
-                                            <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
-                                                data-toggle="tooltip" data-original-title="Edit user">
-                                                Edit
-                                            </a>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -354,33 +145,13 @@
     </div>
 
     {{-- Modal Add/Upd Oficio --}}
-    <div class="modal fade" id="detalleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="detalleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="detalleModalLabel">Agregar Oficio</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Guardar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="actualizarOfiModal" data-bs-keyboard=false data-bs-backdrop="static" tabindex="-1">
+    <div class="modal fade" id="addupdOfiModal" data-bs-keyboard=false data-bs-backdrop="static" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Oficio</h5>
-                    <button type="button" wire:click.prevent="cancel" class="btn-close"
-                        data-bs-dismiss="modal"></button>
+                    {{-- <button type="button" wire:click.prevent="cancel" class="btn-close"
+                        data-bs-dismiss="modal"></button> --}}
                     <div class="modal-status bg-primary border-wide"></div>
                 </div>
                 <form action="correspondencia/upd/id_correspondencia" method="POST" id="formUpdOfi">
@@ -467,7 +238,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" wire:click.prevent="cancel" class="btn bg-gradient-secondary me-auto"
+                        <button type="button" class="btn bg-gradient-secondary me-auto" onclick="limpiarForm();"
                             data-bs-dismiss="modal">
                             Cerrar
                         </button>
@@ -485,10 +256,10 @@
 @push('scripts')
     <script>
         window.onload = function() {
-
             $('#areaCB').val(@json($area));
 
-            // alert(@json(date('Y-m-d')));
+
+
 
             var confidioma = {
                 "info": "<span class='text-sm text-secondary opacity-9'>Mostrando _START_ a _END_ de _TOTAL_ registros</span>",
@@ -534,25 +305,35 @@
                 });
             });
 
-            $('#actualizarOfiModal').on('show.bs.modal', function(event) {
+            $('#addupdOfiModal').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget);
                 var id = button.data('id');
+                var tipo = button.data('tipo');
+                if (tipo == "agregar") {
+                    // Limpiar el formulario
+                    limpiarForm();
+                    // Asignar la URL para agregar
+                    $("#formUpdOfi").attr('action', 'correspondencia/add');
+                } else {
+                    // Asignar la URL para actualizar
+                    $("#formUpdOfi").attr('action', 'correspondencia/upd/' + id);
 
-                $("#formUpdOfi").attr('action', 'correspondencia/upd/' + id);
-                $.ajax({
-                    url: '/correspondencia/' + id,
-                    method: 'GET',
-                    success: function(data) {
-                        $("#no_oficio").val(data.no_oficio);
-                        $("#fecha_oficio").val(data.fecha_oficio);
-                        $("#enviado_por").val(data.enviado_por);
-                        $("#asunto").val(data.asunto);
-                        $("#recibido_por").val(data.recibido_por);
-                        $("#fecha_recibido").val(data.fecha_recibido);
-                        $("#areaCB").val(data.area);
-                        $("#folder").val(data.folder);
-                    }
-                });
+                    // Traer los datos del oficio
+                    $.ajax({
+                        url: '/correspondencia/' + id,
+                        method: 'GET',
+                        success: function(data) {
+                            $("#no_oficio").val(data.no_oficio);
+                            $("#fecha_oficio").val(data.fecha_oficio);
+                            $("#enviado_por").val(data.enviado_por);
+                            $("#asunto").val(data.asunto);
+                            $("#recibido_por").val(data.recibido_por);
+                            $("#fecha_recibido").val(data.fecha_recibido);
+                            $("#areaCB").val(data.area);
+                            $("#folder").val(data.folder);
+                        }
+                    });
+                }
             });
 
 
@@ -563,6 +344,13 @@
                 $('#modal_enviado_por').text('');
                 $('#modal_recibido_por').text('');
             });
+
+            function limpiarForm() {
+                $('#formUpdOfi')[0].reset();
+                $('#areaCB').val(@json($area));
+                $('#fecha_oficio').val(@json(date('Y-m-d')));
+                $('#fecha_recibido').val(@json(date('Y-m-d')));
+            }
         }
     </script>
 @endpush
