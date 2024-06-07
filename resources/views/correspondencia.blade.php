@@ -20,7 +20,7 @@
                                 <h6 class="mb-0">Correspondencia</h6>
                             </div>
                             <div class="col-6 text-end">
-                                <a class="btn bg-gradient-danger btn-sm mb-0" data-bs-toggle="modal"
+                                <a class="btn btn-primary btn-sm mb-0" data-bs-toggle="modal"
                                     data-bs-target="#addupdOfiModal" data-tipo="agregar">Agregar</a>
                             </div>
                         </div>
@@ -30,7 +30,7 @@
                     </div> --}}
                     <div class="card-body px-0">
                         <div class="table-responsive p-0">
-                            <table class="table align items-center pb-0" id="tabla">
+                            <table class="table align items-center pb-0 mt-1" id="tabla">
                                 <thead>
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -125,10 +125,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="detalleModalLabel">Detalles del Oficio</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title fw-bolder" id="detalleModalLabel">Detalles del Oficio</h5>
                 </div>
                 <div class="modal-body">
                     <p><strong>No. Oficio:</strong> <span id="modal_no_oficio"></span></p>
@@ -136,9 +133,26 @@
                     <p><strong>Fecha Oficio:</strong> <span id="modal_fecha_oficio"></span></p>
                     <p><strong>Enviado Por:</strong> <span id="modal_enviado_por"></span></p>
                     <p><strong>Recibido Por:</strong> <span id="modal_recibido_por"></span></p>
+                    <p><strong>Recibido Fecha:</strong> <span id="modal_recibido_fecha"></span></p>
+                    <p><strong>Area:</strong> <span id="modal_area"></span></p>
+                    <p><strong>Folder:</strong> <span id="modal_folder"></span></p>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="ms-auto  btn bg-gradient-primary" data-bs-dismiss="modal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                            <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" />
+                            <path d="M5 18h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6" />
+                            <path d="M17 18h2" />
+                            <path d="M20 15h-3v6" />
+                            <path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z" />
+                        </svg>
+                        Ver Oficio</button>
                 </div>
             </div>
         </div>
@@ -149,10 +163,9 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Oficio</h5>
+                    <h5 class="modal-title fw-bolder" id="titlemodal">Agregar Oficio</h5>
                     {{-- <button type="button" wire:click.prevent="cancel" class="btn-close"
                         data-bs-dismiss="modal"></button> --}}
-                    <div class="modal-status bg-primary border-wide"></div>
                 </div>
                 <form action="correspondencia/upd/id_correspondencia" method="POST" id="formUpdOfi">
                     @csrf
@@ -256,10 +269,11 @@
 @push('scripts')
     <script>
         window.onload = function() {
+            $(".alert").fadeTo(400, 0).slideUp(400, function(){
+                $(this).remove();
+            });
+
             $('#areaCB').val(@json($area));
-
-
-
 
             var confidioma = {
                 "info": "<span class='text-sm text-secondary opacity-9'>Mostrando _START_ a _END_ de _TOTAL_ registros</span>",
@@ -286,7 +300,11 @@
 
             // $("#tabla").DataTable({});
             let table = new DataTable('#tabla', {
-                "language": confidioma
+                "language": confidioma,
+                "columnDefs": [ {
+                    "targets": 4,
+                    "orderable": false
+                } ]
             });
 
             $('#detalleModal').on('show.bs.modal', function(event) {
@@ -301,6 +319,9 @@
                         $('#modal_fecha_oficio').text(data.fecha_oficio);
                         $('#modal_enviado_por').text(data.enviado_por);
                         $('#modal_recibido_por').text(data.recibido_por);
+                        $('#modal_recibido_fecha').text(data.fecha_recibido);
+                        $('#modal_area').text(data.area);
+                        $('#modal_folder').text(data.folder);
                     }
                 });
             });
@@ -314,9 +335,11 @@
                     limpiarForm();
                     // Asignar la URL para agregar
                     $("#formUpdOfi").attr('action', 'correspondencia/add');
+                    $("#titlemodal").text("Agregar Oficio");
                 } else {
                     // Asignar la URL para actualizar
                     $("#formUpdOfi").attr('action', 'correspondencia/upd/' + id);
+                    $("#titlemodal").text("Editar Oficio");
 
                     // Traer los datos del oficio
                     $.ajax({
@@ -324,11 +347,11 @@
                         method: 'GET',
                         success: function(data) {
                             $("#no_oficio").val(data.no_oficio);
-                            $("#fecha_oficio").val(data.fecha_oficio);
+                            $("#fecha_oficio").val(convertirFecha(data.fecha_oficio));
                             $("#enviado_por").val(data.enviado_por);
                             $("#asunto").val(data.asunto);
                             $("#recibido_por").val(data.recibido_por);
-                            $("#fecha_recibido").val(data.fecha_recibido);
+                            $("#fecha_recibido").val(convertirFecha(data.fecha_recibido));
                             $("#areaCB").val(data.area);
                             $("#folder").val(data.folder);
                         }
@@ -343,6 +366,9 @@
                 $('#modal_fecha_oficio').text('');
                 $('#modal_enviado_por').text('');
                 $('#modal_recibido_por').text('');
+                $('#modal_recibido_fecha').text('');
+                $('#modal_area').text('');
+                $('#modal_folder').text('');
             });
 
             function limpiarForm() {
@@ -350,6 +376,14 @@
                 $('#areaCB').val(@json($area));
                 $('#fecha_oficio').val(@json(date('Y-m-d')));
                 $('#fecha_recibido').val(@json(date('Y-m-d')));
+            }
+
+            function convertirFecha(fecha) {
+                var partes = fecha.split('/');
+                var dia = partes[0];
+                var mes = partes[1];
+                var anio = partes[2];
+                return `${anio}-${mes}-${dia}`;
             }
         }
     </script>
