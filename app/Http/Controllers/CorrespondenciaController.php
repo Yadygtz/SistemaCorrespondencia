@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ModelCorrepondencia;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -21,7 +22,7 @@ class CorrespondenciaController extends Controller
         }
 
         $areaCB_activo = true;
-        $area = "INFORMATICA"; // Area del usuario autenticado.
+        $area = auth()->user()->area; // Area del usuario autenticado.
         return view('correspondencia', compact('correspondencia', 'areasCB', 'areaCB_activo', 'area'));
     }
 
@@ -41,13 +42,13 @@ class CorrespondenciaController extends Controller
         // Crear el Oficio
         ModelCorrepondencia::create([
             'no_oficio' => $request->no_oficio,
-            'fecha_oficio' => $request->fecha_oficio,
+            'fecha_oficio' => Carbon::createFromFormat('Y-m-d', $request->fecha_oficio)->format('d/m/Y') ,
             'enviado_por' => $request->enviado_por,
             'asunto' => $request->asunto,
             'area' => $request->areaCB,
             'folder' => $request->folder,
             'recibido_por' => $request->recibido_por,
-            'fecha_recibido' => $request->fecha_recibido,
+            'fecha_recibido' =>  Carbon::createFromFormat('Y-m-d', $request->fecha_recibido)->format('d/m/Y'),
             'creado_por' => auth()->user()->id,
         ]);
 
@@ -64,6 +65,15 @@ class CorrespondenciaController extends Controller
         ]);
 
         $validatedData["modificado_por"]  = auth()->user()->id;
+
+        // Convertir las fechas de Y-m-d a d/m/Y
+        if (isset($validatedData['fecha_oficio'])) {
+            $validatedData['fecha_oficio'] = Carbon::createFromFormat('Y-m-d', $validatedData['fecha_oficio'])->format('d/m/Y');
+        }
+
+        if (isset($validatedData['fecha_recibido'])) {
+            $validatedData['fecha_recibido'] = Carbon::createFromFormat('Y-m-d', $validatedData['fecha_recibido'])->format('d/m/Y');
+        }
 
         // Encontrar el registro por ID y actualizarlo
         $correspondencia = ModelCorrepondencia::findOrFail($id);
