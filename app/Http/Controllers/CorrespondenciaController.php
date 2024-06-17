@@ -14,7 +14,7 @@ class CorrespondenciaController extends Controller
 
     public function index()
     {
-        $correspondencia = ModelCorrepondencia::where('area', 'like', '%INFORMATICA%')->get();
+        $correspondencia = ModelCorrepondencia::where('area', 'like', '%PROGRAMACION%')->get();
         $areas = DB::table('correspondencia')->select('area')->distinct()->orderByRaw('area ASC')->get();
         $areasCB = "";
         foreach ($areas as $area) {
@@ -73,6 +73,15 @@ class CorrespondenciaController extends Controller
         // Validación de los datos
         $validatedData = $request->validate([
             'no_oficio' => 'required|string|max:255',
+            'fecha_oficio' => 'string|max:255',
+            'enviado_por' =>  'string|max:255',
+            'asunto' => 'string|max:255',
+            'recibido_por' => 'string|max:255',
+            'fecha_recibido' => 'string|max:255',
+            'area'  => 'string|max:255',
+            'folder'  => 'string|max:255'
+
+
             // Añade las reglas de validación para el resto de los campos
             // 'oficioPDF' => 'file|mimes:pdf',
         ]);
@@ -92,6 +101,7 @@ class CorrespondenciaController extends Controller
         $correspondencia = ModelCorrepondencia::findOrFail($id);
         $correspondencia->update($validatedData);
 
+        if ($request->hasFile('oficioPDF')) {
         try {
             // Verificar si hay un archivo en la solicitud
             if ($request->hasFile('oficioPDF')) {
@@ -112,7 +122,7 @@ class CorrespondenciaController extends Controller
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', $th->getMessage());
         }
-
+        }
         // Redireccionar o devolver una respuesta adecuada
         return redirect()->back()->with('success', 'Oficio actualizado correctamente.');
     }

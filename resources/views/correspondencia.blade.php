@@ -325,6 +325,7 @@
                 }
             };
 
+            let nombrepdf = "";
             // $("#tabla").DataTable({});
             let table = new DataTable('#tabla', {
                 "language": confidioma,
@@ -335,12 +336,26 @@
             });
 
             $("#no_oficio").on('change', function() {
+
                 if (this.value  !== ""){
                     $("#oficioPDF").attr("disabled", false);
+                    nombrepdf = this.value + ".pdf";
                 }else{
                     $("#oficioPDF").attr("disabled", true);
                 }
             });
+            
+            //
+            $("#oficioPDF").on('change', function() {
+                                var file = this.files[0];
+                                if (file) {
+                                    if (file.name !== nombrepdf) {
+
+                                        alert("El nombre del archivo debe ser " + nombrepdf);
+                                        this.value = ""; // Resetea el input
+                                    }
+                                }
+                            });
 
             $('#detalleModal').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget);
@@ -378,7 +393,7 @@
                 });
             });
 
-            let nombrepdf = "";
+            
             $('#addupdOfiModal').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget);
                 var id = button.data('id');
@@ -418,16 +433,7 @@
 
                             nombrepdf = data.no_oficio + ".pdf";
                             // console.log(nombrepdf);
-                            $("#oficioPDF").on('change', function() {
-                                var file = this.files[0];
-                                if (file) {
-                                    if (file.name !== nombrepdf) {
-
-                                        alert("El nombre del archivo debe ser " + nombrepdf);
-                                        this.value = ""; // Resetea el input
-                                    }
-                                }
-                            });
+                            
 
                             $("#oficioPDF").attr("disabled", false);
                             $("#oficioPDF").show();
