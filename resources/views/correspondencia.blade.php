@@ -15,6 +15,15 @@
                                 </button>
                             </div>
                         @endif
+                        @if (session('error'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <span class="alert-icon text-white"><i class="ni ni-like-2"></i></span>
+                                <span class="alert-text text-white"><strong>{{ session('error') }}</strong></span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
                         <div class="row">
                             <div class="col-6 d-flex align-items-center">
                                 <h6 class="mb-0">Correspondencia</h6>
@@ -139,8 +148,9 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="ms-auto  btn bg-gradient-primary" data-bs-dismiss="modal">
+                    <button type="button" class="btn bg-gradient-secondary mb-0" data-bs-dismiss="modal">Cerrar</button>
+                    <a type="button" class="ms-auto btn bg-gradient-primary mb-0" id="urloficio"
+                        href="veroficio/SSP-00189-2022.pdf" target="_blank">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round">
@@ -152,7 +162,7 @@
                             <path d="M20 15h-3v6" />
                             <path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z" />
                         </svg>
-                        Ver Oficio</button>
+                        Ver Oficio</a>
                 </div>
             </div>
         </div>
@@ -167,7 +177,7 @@
                     {{-- <button type="button" wire:click.prevent="cancel" class="btn-close"
                         data-bs-dismiss="modal"></button> --}}
                 </div>
-                <form action="correspondencia/upd/id_correspondencia" method="POST" id="formUpdOfi">
+                <form action="correspondencia/upd/id_correspondencia" method="POST" id="formUpdOfi" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="modal-body">
@@ -250,12 +260,29 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn bg-gradient-secondary me-auto" onclick="limpiarForm();"
-                            data-bs-dismiss="modal">
+                    <div class="modal-footer align-items-center flex-nowrap">
+                        <button type="button" class="btn bg-gradient-secondary me-auto mb-0" data-bs-dismiss="modal">
                             Cerrar
                         </button>
-                        <button type="submit" class="btn bg-gradient-primary">
+
+                        <input class="form-control mb-0 w-50" type="file" id="oficioPDF" name="oficioPDF" accept=".pdf">
+
+                        <a type="button" class="btn btn-icon bg-gradient-secondary mb-0" id="urloficio2"
+                        href="veroficio/SSP-00189-2022.pdf" target="_blank">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="icon icon-tabler">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                            <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" />
+                            <path d="M5 18h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6" />
+                            <path d="M17 18h2" />
+                            <path d="M20 15h-3v6" />
+                            <path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z" />
+                        </svg></a>
+
+                        <button type="submit" class="btn bg-gradient-primary mb-0">
                             GUARDAR
                         </button>
                     </div>
@@ -269,9 +296,9 @@
 @push('scripts')
     <script>
         window.onload = function() {
-            $(".alert").fadeTo(400, 0).slideUp(400, function(){
-                $(this).remove();
-            });
+            // $(".alert").fadeTo(1000, 0).slideUp(1000, function() {
+            //     $(this).remove();
+            // });
 
             $('#areaCB').val(@json($area));
 
@@ -301,15 +328,28 @@
             // $("#tabla").DataTable({});
             let table = new DataTable('#tabla', {
                 "language": confidioma,
-                "columnDefs": [ {
+                "columnDefs": [{
                     "targets": 4,
                     "orderable": false
-                } ]
+                }]
+            });
+
+            $("#no_oficio").on('change', function() {
+                if (this.value  !== ""){
+                    $("#oficioPDF").attr("disabled", false);
+                }else{
+                    $("#oficioPDF").attr("disabled", true);
+                }
             });
 
             $('#detalleModal').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget);
                 var id = button.data('id');
+
+                // Deshabilitar el botón al inicio
+                $("#urloficio").attr("href", "#");
+                $("#urloficio").addClass("disabled");
+
                 $.ajax({
                     url: '/correspondencia/' + id,
                     method: 'GET',
@@ -322,10 +362,23 @@
                         $('#modal_recibido_fecha').text(data.fecha_recibido);
                         $('#modal_area').text(data.area);
                         $('#modal_folder').text(data.folder);
+
+                        // Asigan URL del oficio en el FTP
+                        if (data.tieneOficio == "SI") {
+                            // Habiliar el boton de ver oficio
+                            $("#urloficio").attr("href", "veroficio/" + data.no_oficio);
+                            $("#urloficio").removeClass("disabled");
+                            $("#urloficio").show();
+                        } else {
+                            // Deshabilitar el boton de ver oficio
+                            $("#urloficio").attr("href", "#");
+                            $("#urloficio").addClass("disabled");
+                        }
                     }
                 });
             });
 
+            let nombrepdf = "";
             $('#addupdOfiModal').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget);
                 var id = button.data('id');
@@ -336,6 +389,14 @@
                     // Asignar la URL para agregar
                     $("#formUpdOfi").attr('action', 'correspondencia/add');
                     $("#titlemodal").text("Agregar Oficio");
+
+                    // Deshabilitar el boton de ver oficio
+                    $("#urloficio2").hide();
+                    $("#oficioPDF").hide();
+                    $("#urloficio2").attr("href", "#");
+                    $("#urloficio2").addClass("disabled");
+                    $("#oficioPDF").attr("disabled", true);
+
                 } else {
                     // Asignar la URL para actualizar
                     $("#formUpdOfi").attr('action', 'correspondencia/upd/' + id);
@@ -354,6 +415,34 @@
                             $("#fecha_recibido").val(convertirFecha(data.fecha_recibido));
                             $("#areaCB").val(data.area);
                             $("#folder").val(data.folder);
+
+                            nombrepdf = data.no_oficio + ".pdf";
+                            // console.log(nombrepdf);
+                            $("#oficioPDF").on('change', function() {
+                                var file = this.files[0];
+                                if (file) {
+                                    if (file.name !== nombrepdf) {
+
+                                        alert("El nombre del archivo debe ser " + nombrepdf);
+                                        this.value = ""; // Resetea el input
+                                    }
+                                }
+                            });
+
+                            $("#oficioPDF").attr("disabled", false);
+                            $("#oficioPDF").show();
+
+                            if (data.tieneOficio == "SI") {
+                                // Habiliar el boton de ver oficio
+                                $("#urloficio2").attr("href", "veroficio/" + data.no_oficio);
+                                $("#urloficio2").removeClass("disabled");
+                                $("#urloficio2").show();
+                            } else {
+                                // Deshabilitar el boton de ver oficio
+                                $("#urloficio2").attr("href", "#");
+                                $("#urloficio2").addClass("disabled");
+                            }
+
                         }
                     });
                 }
