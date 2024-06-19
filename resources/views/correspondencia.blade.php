@@ -6,15 +6,7 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        @if (session('success'))
-                            <div class="alert alert-secondary alert-dismissible fade show" role="alert">
-                                <span class="alert-icon text-white"><i class="ni ni-like-2"></i></span>
-                                <span class="alert-text text-white"><strong>{{ session('success') }}</strong></span>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @endif
+                        
                         @if (session('error'))
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 <span class="alert-icon text-white"><i class="ni ni-like-2"></i></span>
@@ -295,10 +287,28 @@
 @endsection
 @push('scripts')
     <script>
+        @if (session('success'))
+            const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+            });
+            Toast.fire({
+            icon: "success",
+            title: @json(session('success'))
+            });
+        @endif
         window.onload = function() {
             // $(".alert").fadeTo(1000, 0).slideUp(1000, function() {
             //     $(this).remove();
             // });
+            
 
             $('#areaCB').val(@json($area));
 
@@ -404,14 +414,14 @@
                     // Asignar la URL para agregar
                     $("#formUpdOfi").attr('action', 'correspondencia/add');
                     $("#titlemodal").text("Agregar Oficio");
-
+                   
                     // Deshabilitar el boton de ver oficio
                     $("#urloficio2").hide();
                     $("#oficioPDF").hide();
                     $("#urloficio2").attr("href", "#");
                     $("#urloficio2").addClass("disabled");
                     $("#oficioPDF").attr("disabled", true);
-
+                    
                 } else {
                     // Asignar la URL para actualizar
                     $("#formUpdOfi").attr('action', 'correspondencia/upd/' + id);
@@ -434,7 +444,7 @@
                             nombrepdf = data.no_oficio + ".pdf";
                             // console.log(nombrepdf);
                             
-
+                             
                             $("#oficioPDF").attr("disabled", false);
                             $("#oficioPDF").show();
 
@@ -480,6 +490,8 @@
                 var anio = partes[2];
                 return `${anio}-${mes}-${dia}`;
             }
+
+            
         }
     </script>
 @endpush

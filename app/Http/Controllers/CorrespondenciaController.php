@@ -125,6 +125,7 @@ class CorrespondenciaController extends Controller
         }
         // Redireccionar o devolver una respuesta adecuada
         return redirect()->back()->with('success', 'Oficio actualizado correctamente.');
+        
     }
 
     public function borrar(Request $request)
