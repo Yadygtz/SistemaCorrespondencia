@@ -14,7 +14,7 @@ class CorrespondenciaController extends Controller
 
     public function index()
     {
-        $correspondencia = ModelCorrepondencia::where('area', 'like', '%PROGRAMACION%')->get();
+        $correspondencia = ModelCorrepondencia::where('area', 'like', '%' . auth()->user()->area . '%')->get();
         $areas = DB::table('correspondencia')->select('area')->distinct()->orderByRaw('area ASC')->get();
         $areasCB = "";
         foreach ($areas as $area) {
@@ -125,7 +125,7 @@ class CorrespondenciaController extends Controller
         }
         // Redireccionar o devolver una respuesta adecuada
         return redirect()->back()->with('success', 'Oficio actualizado correctamente.');
-        
+
     }
 
     public function borrar(Request $request)
