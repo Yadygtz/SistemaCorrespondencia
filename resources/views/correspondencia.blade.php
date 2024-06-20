@@ -6,7 +6,7 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-                        
+
                         @if (session('error'))
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 <span class="alert-icon text-white"><i class="ni ni-like-2"></i></span>
@@ -169,7 +169,8 @@
                     {{-- <button type="button" wire:click.prevent="cancel" class="btn-close"
                         data-bs-dismiss="modal"></button> --}}
                 </div>
-                <form action="correspondencia/upd/id_correspondencia" method="POST" id="formUpdOfi" enctype="multipart/form-data">
+                <form action="correspondencia/upd/id_correspondencia" method="POST" id="formUpdOfi"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="modal-body">
@@ -257,22 +258,22 @@
                             Cerrar
                         </button>
 
-                        <input class="form-control mb-0 w-50" type="file" id="oficioPDF" name="oficioPDF" accept=".pdf">
+                        <input class="form-control mb-0 w-50" type="file" id="oficioPDF" name="oficioPDF"
+                            accept=".pdf">
 
                         <a type="button" class="btn btn-icon bg-gradient-secondary mb-0" id="urloficio2"
-                        href="veroficio/SSP-00189-2022.pdf" target="_blank">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="icon icon-tabler">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <path d="M14 3v4a1 1 0 0 0 1 1h4" />
-                            <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" />
-                            <path d="M5 18h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6" />
-                            <path d="M17 18h2" />
-                            <path d="M20 15h-3v6" />
-                            <path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z" />
-                        </svg></a>
+                            href="veroficio/SSP-00189-2022.pdf" target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="icon icon-tabler">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                <path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" />
+                                <path d="M5 18h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6" />
+                                <path d="M17 18h2" />
+                                <path d="M20 15h-3v6" />
+                                <path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z" />
+                            </svg></a>
 
                         <button type="submit" class="btn bg-gradient-primary mb-0">
                             GUARDAR
@@ -289,26 +290,26 @@
     <script>
         @if (session('success'))
             const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
             });
             Toast.fire({
-            icon: "success",
-            title: @json(session('success'))
+                icon: "success",
+                title: @json(session('success'))
             });
         @endif
         window.onload = function() {
             // $(".alert").fadeTo(1000, 0).slideUp(1000, function() {
             //     $(this).remove();
             // });
-            
+
 
             $('#areaCB').val(@json($area));
 
@@ -347,25 +348,25 @@
 
             $("#no_oficio").on('change', function() {
 
-                if (this.value  !== ""){
+                if (this.value !== "") {
                     $("#oficioPDF").attr("disabled", false);
                     nombrepdf = this.value + ".pdf";
-                }else{
+                } else {
                     $("#oficioPDF").attr("disabled", true);
                 }
             });
-            
+
             //
             $("#oficioPDF").on('change', function() {
-                                var file = this.files[0];
-                                if (file) {
-                                    if (file.name !== nombrepdf) {
+                var file = this.files[0];
+                if (file) {
+                    if (file.name !== nombrepdf) {
 
-                                        alert("El nombre del archivo debe ser " + nombrepdf);
-                                        this.value = ""; // Resetea el input
-                                    }
-                                }
-                            });
+                        alert("El nombre del archivo debe ser " + nombrepdf);
+                        this.value = ""; // Resetea el input
+                    }
+                }
+            });
 
             $('#detalleModal').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget);
@@ -403,7 +404,7 @@
                 });
             });
 
-            
+
             $('#addupdOfiModal').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget);
                 var id = button.data('id');
@@ -414,14 +415,14 @@
                     // Asignar la URL para agregar
                     $("#formUpdOfi").attr('action', 'correspondencia/add');
                     $("#titlemodal").text("Agregar Oficio");
-                   
+
                     // Deshabilitar el boton de ver oficio
                     $("#urloficio2").hide();
                     $("#oficioPDF").hide();
                     $("#urloficio2").attr("href", "#");
                     $("#urloficio2").addClass("disabled");
                     $("#oficioPDF").attr("disabled", true);
-                    
+
                 } else {
                     // Asignar la URL para actualizar
                     $("#formUpdOfi").attr('action', 'correspondencia/upd/' + id);
@@ -443,20 +444,24 @@
 
                             nombrepdf = data.no_oficio + ".pdf";
                             // console.log(nombrepdf);
-                            
-                             
-                            $("#oficioPDF").attr("disabled", false);
-                            $("#oficioPDF").show();
+
+
+
 
                             if (data.tieneOficio == "SI") {
                                 // Habiliar el boton de ver oficio
                                 $("#urloficio2").attr("href", "veroficio/" + data.no_oficio);
                                 $("#urloficio2").removeClass("disabled");
                                 $("#urloficio2").show();
+
+                                $("#oficioPDF").attr("disabled", true); //Deshabilitar el input file PDF
+                                $("#oficioPDF").hide();
                             } else {
                                 // Deshabilitar el boton de ver oficio
                                 $("#urloficio2").attr("href", "#");
                                 $("#urloficio2").addClass("disabled");
+                                $("#oficioPDF").attr("disabled", false); //Deshabilitar el input file PDF
+                                $("#oficioPDF").show();
                             }
 
                         }
@@ -491,7 +496,7 @@
                 return `${anio}-${mes}-${dia}`;
             }
 
-            
+
         }
     </script>
 @endpush
