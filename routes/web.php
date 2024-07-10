@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Response;
 //     return view('auth.login');
 // });
 
- Auth::routes();
+//  Auth::routes();
 
 
 Route::middleware('auth')->group(function () {

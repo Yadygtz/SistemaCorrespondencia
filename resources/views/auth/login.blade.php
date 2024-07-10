@@ -56,10 +56,10 @@
                             @csrf
                             <h5 class="text-center mb-4">Sistema C3 - Correspondencia</h5>
                             <div data-mdb-input-init class="form-floating form-outline mb-4">
-                                <input type="text" class="form-control form-control-lg" name="email" id="email"
-                                    placeholder="" value="" aria-label="Email"
-                                    aria-describedby="email-addon">
-                                @error('email')
+                                <input type="text" class="form-control form-control-lg" name="clave" id="clave"
+                                    placeholder="" value="" aria-label="clave"
+                                    aria-describedby="clave-addon">
+                                @error('clave')
                                     <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                 @enderror
 
