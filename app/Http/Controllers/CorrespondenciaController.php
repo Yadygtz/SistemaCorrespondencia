@@ -14,7 +14,7 @@ class CorrespondenciaController extends Controller
 
     public function index()
     {
-        $correspondencia = ModelCorrepondencia::where('area', 'like', '%' . auth()->user()->area . '%')->get();
+       
         $areas = DB::table('correspondencia')->select('area')->distinct()->orderByRaw('area ASC')->get();
         $areasCB = "";
         foreach ($areas as $area) {
@@ -26,7 +26,7 @@ class CorrespondenciaController extends Controller
 
         // $files = Storage::disk('ftp')->allFiles("Oficios/");
 
-        return view('correspondencia', compact('correspondencia', 'areasCB', 'areaCB_activo', 'area'));
+        return view('correspondencia', compact('areasCB', 'areaCB_activo', 'area'));
     }
 
     public function show($oficio)
@@ -58,8 +58,8 @@ class CorrespondenciaController extends Controller
             'enviado_por' => $request->enviado_por,
             'asunto' => $request->asunto,
             'area' => $request->areaCB,
-            'folder' => $request->folder,
-            'recibido_por' => $request->recibido_por,
+            'folder' => $request->observaciones,
+            'recibido_por' => $request->anexos,
             'fecha_recibido' =>  Carbon::createFromFormat('Y-m-d', $request->fecha_recibido)->format('d/m/Y'),
             'creado_por' => auth()->user()->id,
         ]);
@@ -76,10 +76,9 @@ class CorrespondenciaController extends Controller
             'fecha_oficio' => 'string|max:255',
             'enviado_por' =>  'string|max:255',
             'asunto' => 'string|max:255',
-            'recibido_por' => 'string|max:255',
             'fecha_recibido' => 'string|max:255',
-            'area'  => 'string|max:255',
-            'folder'  => 'string|max:255'
+            'area'  => 'string|max:255'
+            
 
 
             // Añade las reglas de validación para el resto de los campos
@@ -87,6 +86,9 @@ class CorrespondenciaController extends Controller
         ]);
 
         $validatedData["modificado_por"]  = auth()->user()->id;
+        $validatedData["folder"] = $request->observaciones;
+        $validatedData["recibido_por"] = $request->anexos;
+
 
         // Convertir las fechas de Y-m-d a d/m/Y
         if (isset($validatedData['fecha_oficio'])) {
@@ -134,5 +136,11 @@ class CorrespondenciaController extends Controller
 
     public function cargarOficioPDF()
     {
+    }
+
+    public function dataoficios(){
+        $data = ModelCorrepondencia::where('area', 'like', '%' . auth()->user()->area . '%')->get();
+        return response()->json($data);
+       
     }
 }

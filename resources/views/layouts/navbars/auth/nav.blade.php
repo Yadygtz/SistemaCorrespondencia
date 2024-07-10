@@ -8,7 +8,7 @@
                 <li class="breadcrumb-item text-sm text-dark active text-capitalize" aria-current="page">
                     {{ str_replace('-', ' ', Request::path()) }}</li>
             </ol>
-            <h6 class="font-weight-bolder mb-0 text-capitalize">{{ str_replace('-', ' ', Request::path()) . ' de ' . auth()->user()->area }}</h6>
+            <h6 class="font-weight-bolder mb-0 text-capitalize">@yield('titulo')</h6>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4 d-flex justify-content-end" id="navbar">
             <ul class="navbar-nav justify-content-end">

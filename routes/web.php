@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CorrespondenciaController;
+use App\Http\Controllers\RegistroNumerosController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\Response;
 //     return view('auth.login');
 // });
 
-Auth::routes();
+ Auth::routes();
 
 
 Route::middleware('auth')->group(function () {
@@ -33,12 +34,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/correspondencia/{id}', [CorrespondenciaController::class, 'show']);
     Route::put('/correspondencia/upd/{id}', [CorrespondenciaController::class, 'editar']);
     Route::put('/correspondencia/add', [CorrespondenciaController::class, 'agregar']);
+    Route::get('/dsdataoficios', [CorrespondenciaController::class, 'dataoficios'])->name('dsdataoficios');
 
 
     Route::get('dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 
+    Route::get('/RegistroNumeros', [RegistroNumerosController::class, 'index'])->name('RegistroNumeros');
+    Route::get('/RegistroNumeros/{id}', [RegistroNumerosController::class, 'show']);
+    Route::put('/RegistroNumeros/upd/{id}', [RegistroNumerosController::class, 'editar']);
+    Route::put('/RegistroNumeros/add', [RegistroNumerosController::class, 'agregar']);
+    Route::get('/GetId', [RegistroNumerosController::class, 'ultimoId']);
+    Route::get('/dsdatanumeros', [RegistroNumerosController::class, 'datanumeros'])->name('dsdatanumeros');
+    
     /* OBTENER EL ARCHIVO DEL SERVER FTP*/
     // Expediente digital
     Route::get('veroficio/{oficio}', function ($oficio) {

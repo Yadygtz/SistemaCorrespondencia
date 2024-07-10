@@ -1,5 +1,5 @@
 @extends('layouts.user_type.auth')
-
+@section('titulo','Correspondencia de '. auth()->user()->area)
 @section('content')
     <div class="">
         <div class="row">
@@ -31,87 +31,26 @@
                     </div> --}}
                     <div class="card-body px-0">
                         <div class="table-responsive p-0">
-                            <table class="table align items-center pb-0 mt-1" id="tabla">
+                            <table class="table align items-center pb-0 mt-1" id="DStabla">
                                 <thead>
                                     <tr>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            No.Oficio</th>
+                                            N°</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            N° Oficio</th>
                                         {{-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Asunto</th> --}}
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Fecha</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Enviado por</th>
+                                            Autoridad Remitente</th>
 
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Recibido por</th>
+                                            Área que recibe</th>
                                         <th class="text-center"></th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @isset($correspondencia)
-                                        @foreach ($correspondencia as $row)
-                                            <tr>
-                                                <td class="align-middle">
-                                                    <div class="d-flex flex-column justify-content-center">
-                                                        <h6 class="mb-0 text-sm">{{ $row->no_oficio }}</h6>
-                                                        <p class="text-xs text-secondary mb-0">Asunto: {{ $row->asunto }}</p>
-                                                    </div>
-                                                </td>
-                                                {{-- <td class="align-middle">
-                                                    <span class="text-xs font-weight-bold">{{ $row->no_oficio }}</span>
-                                                </td>
-                                                <td class="align-middle">
-                                                    <span class="text-xs font-weight-bold">{{ $row->asunto }}</span>
-                                                </td> --}}
-                                                <td class="align-middle">
-                                                    <span class="text-xs font-weight-bold">{{ $row->fecha_oficio }}</span>
-                                                </td>
-                                                <td class="align-middle">
-                                                    <span class="text-xs font-weight-bold">{{ $row->enviado_por }}</span>
-                                                </td>
-
-                                                <td class="align-middle">
-                                                    <span class="text-xs font-weight-bold">{{ $row->recibido_por }}</span>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex">
-                                                        <a href="#" class="btn btn-primary w-100 btn-icon mb-0 me-1"
-                                                            data-bs-toggle="modal" data-bs-target="#detalleModal"
-                                                            data-id="{{ $row->id_correspondencia }}">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-eye">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                                                                <path
-                                                                    d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
-                                                            </svg>
-                                                        </a>
-                                                        <a href="#" class="btn btn-outline-secondary w-100 btn-icon mb-0"
-                                                            data-bs-toggle="modal" data-bs-target="#addupdOfiModal"
-                                                            data-id="{{ $row->id_correspondencia }}">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                <path
-                                                                    d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                                <path
-                                                                    d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                                <path d="M16 5l3 3" />
-                                                            </svg>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @endisset
-                                </tbody>
+                                
                             </table>
                         </div>
                     </div>
@@ -132,11 +71,11 @@
                     <p><strong>No. Oficio:</strong> <span id="modal_no_oficio"></span></p>
                     <p><strong>Asunto:</strong> <span id="modal_asunto"></span></p>
                     <p><strong>Fecha Oficio:</strong> <span id="modal_fecha_oficio"></span></p>
-                    <p><strong>Enviado Por:</strong> <span id="modal_enviado_por"></span></p>
-                    <p><strong>Recibido Por:</strong> <span id="modal_recibido_por"></span></p>
+                    <p><strong>Autoridad Remitente:</strong> <span id="modal_enviado_por"></span></p>
                     <p><strong>Recibido Fecha:</strong> <span id="modal_recibido_fecha"></span></p>
                     <p><strong>Area:</strong> <span id="modal_area"></span></p>
-                    <p><strong>Folder:</strong> <span id="modal_folder"></span></p>
+                    <p><strong>Anexos:</strong> <span id="modal_anexos"></span></p>
+                    <p><strong>Observaciones:</strong> <span id="modal_observaciones"></span></p>
 
                 </div>
                 <div class="modal-footer">
@@ -195,7 +134,7 @@
 
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Enviado por</label>
+                                <label class="form-label">Autoridad Remitente</label>
                                 <input type="text" class="form-control @error('enviado_por') is-invalid @enderror"
                                     name="enviado_por" id="enviado_por" required>
                                 @error('enviado_por')
@@ -214,13 +153,17 @@
 
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Recibido por</label>
-                                <input type="text" class="form-control @error('recibido_por') is-invalid @enderror"
-                                    name="recibido_por" id="recibido_por" required>
-                                @error('recibido_por')
+                                <label class="form-label @error('area') is-invalid @enderror">Área que recibe</label>
+                                <select class="form-select" {{ $areaCB_activo ? '' : 'disabled' }} name="areaCB"
+                                    id="areaCB" required>
+                                    <option value=""></option>
+                                    {{!! $areasCB !!}}
+                                </select>
+                                @error('area')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
+                            
                             <div class="col-md-6">
                                 <label class="form-label">Fecha de Recibido</label>
                                 <input type="date" class="form-control @error('fecha_recibido') is-invalid @enderror"
@@ -233,21 +176,18 @@
 
                         <div class="row">
                             <div class="col-md-6">
-                                <label class="form-label @error('area') is-invalid @enderror">Área</label>
-                                <select class="form-select" {{ $areaCB_activo ? '' : 'disabled' }} name="areaCB"
-                                    id="areaCB" required>
-                                    <option value=""></option>
-                                    {{!! $areasCB !!}}
-                                </select>
-                                @error('area')
+                                <label class="form-label">Anexos</label>
+                                <input type="text" class="form-control @error('anexos') is-invalid @enderror"
+                                    name="anexos" id="anexos" required>
+                                @error('anexos')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Folder</label>
-                                <input type="text" class="form-control @error('folder') is-invalid @enderror"
-                                    name="folder" id="folder">
-                                @error('folder')
+                                <label class="form-label">Observaciones</label>
+                                <input type="text" class="form-control @error('observaciones') is-invalid @enderror"
+                                    name="observaciones" id="observaciones">
+                                @error('observaciones')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -338,13 +278,71 @@
 
             let nombrepdf = "";
             // $("#tabla").DataTable({});
-            let table = new DataTable('#tabla', {
+            let table = new DataTable('#DStabla', {
+                "ajax":{
+                    "url":@json(route('dsdataoficios')),
+                    "dataSrc":''
+                },
+                "columns":[
+                    {"data": "id_correspondencia"},
+                    {    "data": null,
+                        "render": function (data, type) {
+                        
+                                 return '<div class="d-flex flex-column justify-content-center">'
+                                    + '<h6 class="mb-0 text-sm">'+ data["no_oficio"] +'</h6>'
+                                    + '<p class="text-xs text-secondary mb-0">'+ "Asunto: "+  data["asunto"] +' </p>'
+                                    + '</div>'
+                                }
+                    },
+                    {"data": "fecha_oficio"},
+                    {"data": "enviado_por"},
+                    {"data": "area"},
+                    {
+                    "orderable": false,
+                    "data": null,
+                    "render": function (data, type) {
+                        
+                            return '<div class="d-flex"> '
+                                    + '<a href="#" class="btn btn-primary w-100 btn-icon mb-0 me-1" data-bs-toggle="modal" data-bs-target="#detalleModal" data-id="'+ data["id_correspondencia"] +'"> <svg xmlns="http://www.w3.org/2000/svg" width="24"'
+                                        + 'height="24" viewBox="0 0 24 24" fill="none"'
+                                        + 'stroke="currentColor" stroke-width="2" stroke-linecap="round" '
+                                        + 'stroke-linejoin="round"'
+                                        + 'class="icon icon-tabler icons-tabler-outline icon-tabler-eye">'
+                                        + '<path stroke="none" d="M0 0h24v24H0z" fill="none" />'
+                                        + '<path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />'
+                                        + '<path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /> </svg>' 
+                                    + '</a>'
+                                    + '<a href="#" class="btn btn-outline-secondary w-100 btn-icon mb-0"'
+                                        + 'data-bs-toggle="modal" data-bs-target="#addupdOfiModal"'
+                                        + 'data-id="'+ data["id_correspondencia"] +'">'
+                                            + '<svg xmlns="http://www.w3.org/2000/svg" width="24"'
+                                                + 'height="24" viewBox="0 0 24 24" fill="none"'
+                                                + 'stroke="currentColor" stroke-width="2" stroke-linecap="round"'
+                                                + 'stroke-linejoin="round"'
+                                                + 'class="icon icon-tabler icons-tabler-outline icon-tabler-edit">'
+                                                + '<path stroke="none" d="M0 0h24v24H0z" fill="none" />'
+                                                + '<path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /> <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /> <path d="M16 5l3 3" />'
+                                            + '</svg>' 
+                                    + '</a>'
+                                    + '</div>'
+                    }                                       
+                    },
+
+                ],
                 "language": confidioma,
-                "columnDefs": [{
-                    "targets": 4,
-                    "orderable": false
-                }]
+                "autoWidth":false,
+                "columnDefs": [ 
+                    
+                    {
+                    "targets": "_all",
+                    "className": "text-xs font-weight-bold align-middle"
+                    },
+                    
+                ],
+                
             });
+
+            
 
             $("#no_oficio").on('change', function() {
 
@@ -384,10 +382,10 @@
                         $('#modal_asunto').text(data.asunto);
                         $('#modal_fecha_oficio').text(data.fecha_oficio);
                         $('#modal_enviado_por').text(data.enviado_por);
-                        $('#modal_recibido_por').text(data.recibido_por);
+                        $('#modal_anexos').text(data.recibido_por);
                         $('#modal_recibido_fecha').text(data.fecha_recibido);
                         $('#modal_area').text(data.area);
-                        $('#modal_folder').text(data.folder);
+                        $('#modal_observaciones').text(data.folder);
 
                         // Asigan URL del oficio en el FTP
                         if (data.tieneOficio == "SI") {
@@ -437,10 +435,10 @@
                             $("#fecha_oficio").val(convertirFecha(data.fecha_oficio));
                             $("#enviado_por").val(data.enviado_por);
                             $("#asunto").val(data.asunto);
-                            $("#recibido_por").val(data.recibido_por);
+                            $("#anexos").val(data.recibido_por);
                             $("#fecha_recibido").val(convertirFecha(data.fecha_recibido));
                             $("#areaCB").val(data.area);
-                            $("#folder").val(data.folder);
+                            $("#observaciones").val(data.folder);
 
                             nombrepdf = data.no_oficio + ".pdf";
                             // console.log(nombrepdf);
@@ -475,10 +473,10 @@
                 $('#modal_asunto').text('');
                 $('#modal_fecha_oficio').text('');
                 $('#modal_enviado_por').text('');
-                $('#modal_recibido_por').text('');
+                $('#modal_anexos').text('');
                 $('#modal_recibido_fecha').text('');
                 $('#modal_area').text('');
-                $('#modal_folder').text('');
+                $('#modal_observaciones').text('');
             });
 
             function limpiarForm() {
