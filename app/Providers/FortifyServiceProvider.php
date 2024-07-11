@@ -33,6 +33,12 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::loginView(function () {
             return view('auth.login');
         });
+
+        Fortify::registerView(function () {
+            return view('auth.register');
+        });
+
+
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('clave', $request->clave)->first();
     
@@ -41,6 +47,9 @@ class FortifyServiceProvider extends ServiceProvider
                 return $user;
             }
         });
+
+        Fortify::createUsersUsing(CreateNewUser::class);
+        
 
         RateLimiter::for('login', function (Request $request) {
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
