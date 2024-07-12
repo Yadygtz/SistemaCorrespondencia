@@ -8,9 +8,11 @@
                 <div class="card-header">{{ __('Registro de Usuarios') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="{{ isset($id) ? route('usuarios.update',$id) : route('usuarios.store')}} " id="frmRegistrar">
                         @csrf
-
+                        @isset($id)
+                            @method("PUT")
+                        @endisset
                         <div class="row mb-3">
                             <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Nombre') }}</label>
 
@@ -107,7 +109,7 @@
                             <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Contraseña') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="new-password">
 
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
@@ -117,13 +119,7 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirmar Contraseña') }}</label>
 
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
@@ -139,3 +135,26 @@
     </div>
 </div>
 @endsection
+@push('scripts')
+<script>
+
+        let usuario = @json($usuario);
+        //console.log(usuario);
+        if(usuario != "usuario"){
+            //url = '{{ url("/usuarios/update")}}/' + usuario.id;
+           // $('#frmRegistrar').attr('action',url);
+            $("#name").val(usuario.name);
+            $("#paterno").val(usuario.paterno);
+            $("#materno").val(usuario.materno);
+            $("#tusuario").val(usuario.tipo_usuario);
+            $("#area").val(usuario.area);
+            $("#email").val(usuario.email);
+            $("#clave").val(usuario.clave);
+            $("#password").val(usuario.password);
+
+        }else{
+            //$('#frmRegistrar').attr('action', @json(route('usuarios.store')));
+
+        }
+</script>
+@endpush

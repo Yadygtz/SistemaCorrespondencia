@@ -17,11 +17,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.min.css">
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-    <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="{{asset('assets/css/nucleo-icons.css')}}" rel="stylesheet" />
     {{-- <link href="../assets/css/nucleo-svg.css" rel="stylesheet" /> --}}
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <!-- Styles -->
-    <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.7" rel="stylesheet" />
+    <link id="pagestyle" href="{{asset('assets/css/soft-ui-dashboard.css?v=1.0.7')}}" rel="stylesheet" />
     <link id="pagestyle" href="{{ asset('assets/css/datatables.css') }}" rel="stylesheet" />
 
     <style>
@@ -83,18 +83,18 @@
       @yield('guest')
     @endguest
     <!--   Core JS Files   -->
-    <script src="../assets/js/core/popper.min.js"></script>
-    <script src="../assets/js/core/bootstrap.min.js"></script>
-    <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
-    <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
-    <script src="../assets/js/plugins/fullcalendar.min.js"></script>
-    <script src="../assets/js/plugins/chartjs.min.js"></script>
+    <script src="{{ asset('assets/js/core/popper.min.js')}}"></script>
+    <script src="{{ asset('assets/js/core/bootstrap.min.js')}}"></script>
+    <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js')}}"></script>
+    <script src="{{ asset('assets/js/plugins/smooth-scrollbar.min.js')}}"></script>
+    <script src="{{ asset('assets/js/plugins/fullcalendar.min.js')}}"></script>
+    <script src="{{ asset('assets/js/plugins/chartjs.min.js')}}"></script>
 
     @stack('dashboard')
-   
+
 
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="../assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script>
+    <script src="{{ asset('assets/js/soft-ui-dashboard.min.js?v=1.0.3')}}"></script>
     <script src="{{ asset('assets/js/jquery.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/datatables.js') }}"></script>
     <script src="{{ asset('assets/js/dataTables.bootstrap.min.js') }}"></script>
@@ -107,7 +107,7 @@
             Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
         }
 
-        
+
     </script>
     @stack('scripts')
 </body>

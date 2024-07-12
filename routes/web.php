@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CorrespondenciaController;
 use App\Http\Controllers\RegistroNumerosController;
+use App\Http\Controllers\UsuariosController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Response;
 
 //  Auth::routes();
 
+Route::resource('usuarios', UsuariosController::class);
 
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {
@@ -47,7 +49,10 @@ Route::middleware('auth')->group(function () {
     Route::put('/RegistroNumeros/add', [RegistroNumerosController::class, 'agregar']);
     Route::get('/GetId', [RegistroNumerosController::class, 'ultimoId']);
     Route::get('/dsdatanumeros', [RegistroNumerosController::class, 'datanumeros'])->name('dsdatanumeros');
-    
+
+
+
+
     /* OBTENER EL ARCHIVO DEL SERVER FTP*/
     // Expediente digital
     Route::get('veroficio/{oficio}', function ($oficio) {
@@ -68,3 +73,5 @@ Route::middleware('auth')->group(function () {
         return $oficio;
     })->name('veroficio');
 });
+
+
