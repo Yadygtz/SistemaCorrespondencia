@@ -7,15 +7,6 @@
                 <div class="card mb-4">
                     <div class="card-header pb-0">
 
-                        @if (session('error'))
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <span class="alert-icon text-white"><i class="ni ni-like-2"></i></span>
-                                <span class="alert-text text-white"><strong>{{ session('error') }}</strong></span>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @endif
                         <div class="row">
                             <div class="col-6 d-flex align-items-center">
                                 <h6 class="mb-0">Números de Oficio</h6>
@@ -42,20 +33,20 @@
                                                 Asunto</th> --}}
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Fecha Oficio</th>
-                                        
+
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Área </th>
-                                        
+
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Quién solicita </th>
-                                        
+
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Observaciones </th>
                                         <th class="text-center"></th>
-                                        
+
                                     </tr>
                                 </thead>
-                                
+
                             </table>
                         </div>
                     </div>
@@ -64,7 +55,7 @@
         </div>
     </div>
 
-  
+
     {{-- Modal Add/Upd Oficio --}}
     <div class="modal fade" id="addupdNumModal" data-bs-keyboard=false data-bs-backdrop="static" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -110,7 +101,7 @@
                                     name="area" id="area" required>
                                         <option value=""></option>
                                         {{!! $areasCB !!}}
-                                </select>    
+                                </select>
 
                                 @error('area')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -119,7 +110,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            
+
                             <div class="col-md-6">
                                 <label class="form-label">Asunto</label>
                                 <input type="text" class="form-control @error('asunto') is-invalid @enderror"
@@ -165,6 +156,7 @@
 
 @push('scripts')
     <script>
+
         @if (session('success'))
             const Toast = Swal.mixin({
                 toast: true,
@@ -254,12 +246,12 @@
                 ],
                 "language": confidioma,
                 "autoWidth":false,
-                "columnDefs": [ 
+                "columnDefs": [
                     {
                     "targets": "_all",
                     "className": "text-xs font-weight-bold align-middle"
                     },
-                    
+
                 ],
             });
 
@@ -290,13 +282,13 @@
                             }else{
                                 $n = parseInt($lastId[1])+1;
                             }
-                            
-                            
+
+
                             //console.log($n);
                             $("#numeroId").val($n);
 
-                            
-                            
+
+
                         }
                     });
 
@@ -328,7 +320,7 @@
             function limpiarForm() {
                 $('#formUpdNum')[0].reset();
                 $('#fecha').val(@json(date('Y-m-d')));
-               
+
             }
 
             function convertirFecha(fecha) {

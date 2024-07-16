@@ -14,7 +14,7 @@ class CorrespondenciaController extends Controller
 
     public function index()
     {
-       
+
         $areas = DB::table('correspondencia')->select('area')->distinct()->orderByRaw('area ASC')->get();
         $areasCB = "";
         foreach ($areas as $area) {
@@ -78,7 +78,7 @@ class CorrespondenciaController extends Controller
             'asunto' => 'string|max:255',
             'fecha_recibido' => 'string|max:255',
             'area'  => 'string|max:255'
-            
+
 
 
             // Añade las reglas de validación para el resto de los campos
@@ -119,7 +119,7 @@ class CorrespondenciaController extends Controller
 
             } else {
                 // Mensaje de que no se subió el archivo
-                return redirect()->back()->with('error', 'Oficio actualizado pero no se subió ningún archivo.');
+                return redirect()->back()->with('success', 'Oficio actualizado pero no se subió ningún archivo.');
             }
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', $th->getMessage());
@@ -141,6 +141,6 @@ class CorrespondenciaController extends Controller
     public function dataoficios(){
         $data = ModelCorrepondencia::where('area', 'like', '%' . auth()->user()->area . '%')->get();
         return response()->json($data);
-       
+
     }
 }

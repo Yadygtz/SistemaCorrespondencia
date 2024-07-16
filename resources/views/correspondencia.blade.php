@@ -7,15 +7,7 @@
                 <div class="card mb-4">
                     <div class="card-header pb-0">
 
-                        @if (session('error'))
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <span class="alert-icon text-white"><i class="ni ni-like-2"></i></span>
-                                <span class="alert-text text-white"><strong>{{ session('error') }}</strong></span>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        @endif
+
                         <div class="row">
                             <div class="col-6 d-flex align-items-center">
                                 <h6 class="mb-0">Correspondencia</h6>
@@ -50,7 +42,7 @@
                                         <th class="text-center"></th>
                                     </tr>
                                 </thead>
-                                
+
                             </table>
                         </div>
                     </div>
@@ -163,7 +155,7 @@
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <label class="form-label">Fecha de Recibido</label>
                                 <input type="date" class="form-control @error('fecha_recibido') is-invalid @enderror"
@@ -228,6 +220,12 @@
 @endsection
 @push('scripts')
     <script>
+        @if (session('error'))
+            Swal.fire({
+            icon: "error",
+            title: @json(session('error'))
+            });
+        @endif
         @if (session('success'))
             const Toast = Swal.mixin({
                 toast: true,
@@ -287,7 +285,7 @@
                     {"data": "id_correspondencia"},
                     {    "data": null,
                         "render": function (data, type) {
-                        
+
                                  return '<div class="d-flex flex-column justify-content-center">'
                                     + '<h6 class="mb-0 text-sm">'+ data["no_oficio"] +'</h6>'
                                     + '<p class="text-xs text-secondary mb-0">'+ "Asunto: "+  data["asunto"] +' </p>'
@@ -301,7 +299,7 @@
                     "orderable": false,
                     "data": null,
                     "render": function (data, type) {
-                        
+
                             return '<div class="d-flex"> '
                                     + '<a href="#" class="btn btn-primary w-100 btn-icon mb-0 me-1" data-bs-toggle="modal" data-bs-target="#detalleModal" data-id="'+ data["id_correspondencia"] +'"> <svg xmlns="http://www.w3.org/2000/svg" width="24"'
                                         + 'height="24" viewBox="0 0 24 24" fill="none"'
@@ -310,7 +308,7 @@
                                         + 'class="icon icon-tabler icons-tabler-outline icon-tabler-eye">'
                                         + '<path stroke="none" d="M0 0h24v24H0z" fill="none" />'
                                         + '<path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />'
-                                        + '<path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /> </svg>' 
+                                        + '<path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /> </svg>'
                                     + '</a>'
                                     + '<a href="#" class="btn btn-outline-secondary w-100 btn-icon mb-0"'
                                         + 'data-bs-toggle="modal" data-bs-target="#addupdOfiModal"'
@@ -322,27 +320,27 @@
                                                 + 'class="icon icon-tabler icons-tabler-outline icon-tabler-edit">'
                                                 + '<path stroke="none" d="M0 0h24v24H0z" fill="none" />'
                                                 + '<path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /> <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /> <path d="M16 5l3 3" />'
-                                            + '</svg>' 
+                                            + '</svg>'
                                     + '</a>'
                                     + '</div>'
-                    }                                       
+                    }
                     },
 
                 ],
                 "language": confidioma,
                 "autoWidth":false,
-                "columnDefs": [ 
-                    
+                "columnDefs": [
+
                     {
                     "targets": "_all",
                     "className": "text-xs font-weight-bold align-middle"
                     },
-                    
+
                 ],
-                
+
             });
 
-            
+
 
             $("#no_oficio").on('change', function() {
 
