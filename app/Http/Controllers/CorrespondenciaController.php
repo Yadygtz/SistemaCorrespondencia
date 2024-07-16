@@ -139,7 +139,14 @@ class CorrespondenciaController extends Controller
     }
 
     public function dataoficios(){
+        $area = auth()->user()->area;
+
+        if($area == "COORDINACIÓN"){
+            $data = ModelCorrepondencia::get();
+        }else{
         $data = ModelCorrepondencia::where('area', 'like', '%' . auth()->user()->area . '%')->get();
+        }
+
         return response()->json($data);
 
     }
