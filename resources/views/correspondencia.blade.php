@@ -170,7 +170,7 @@
                             <div class="col-md-6">
                                 <label class="form-label">Anexos</label>
                                 <input type="text" class="form-control @error('anexos') is-invalid @enderror"
-                                    name="anexos" id="anexos" required>
+                                    name="anexos" id="anexos">
                                 @error('anexos')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
