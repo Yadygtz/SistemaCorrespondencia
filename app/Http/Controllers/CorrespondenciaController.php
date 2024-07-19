@@ -33,7 +33,8 @@ class CorrespondenciaController extends Controller
     {
         $correspondencia = ModelCorrepondencia::find($oficio);
         // Buscar si tiene oficio
-        $oficio = $correspondencia->no_oficio;
+        $oficio = str_replace('/','-',$correspondencia->no_oficio);
+
         $rutaCompletaFTP = "Oficios/" . $oficio . ".pdf";
         if (Storage::disk('ftp')->exists($rutaCompletaFTP)) {
             $correspondencia["tieneOficio"] = "SI";
@@ -42,6 +43,8 @@ class CorrespondenciaController extends Controller
         }
 
         return response()->json($correspondencia);
+
+
     }
 
     public function agregar(Request $request)

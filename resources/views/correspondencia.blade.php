@@ -73,7 +73,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn bg-gradient-secondary mb-0" data-bs-dismiss="modal">Cerrar</button>
                     <a type="button" class="ms-auto btn bg-gradient-primary mb-0" id="urloficio"
-                        href="veroficio/SSP-00189-2022.pdf" target="_blank">
+                        href="" target="_blank">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round">
@@ -288,7 +288,7 @@
 
                                  return '<div class="d-flex flex-column justify-content-center">'
                                     + '<h6 class="mb-0 text-sm">'+ data["no_oficio"] +'</h6>'
-                                    + '<p class="text-xs text-secondary mb-0">'+ "Asunto: "+  data["asunto"] +' </p>'
+
                                     + '</div>'
                                 }
                     },
@@ -337,6 +337,7 @@
                     },
 
                 ],
+                "order":[[0,'desc']]
 
             });
 
@@ -346,10 +347,13 @@
 
                 if (this.value !== "") {
                     $("#oficioPDF").attr("disabled", false);
+
                     nombrepdf = this.value + ".pdf";
+
                 } else {
                     $("#oficioPDF").attr("disabled", true);
                 }
+
             });
 
             //
@@ -361,6 +365,8 @@
                         alert("El nombre del archivo debe ser " + nombrepdf);
                         this.value = ""; // Resetea el input
                     }
+                    //console.log(nombrepdf);
+
                 }
             });
 
@@ -388,7 +394,7 @@
                         // Asigan URL del oficio en el FTP
                         if (data.tieneOficio == "SI") {
                             // Habiliar el boton de ver oficio
-                            $("#urloficio").attr("href", "veroficio/" + data.no_oficio);
+                            $("#urloficio").attr("href", "veroficio/" + data.no_oficio.replace(/\//g, '-'));
                             $("#urloficio").removeClass("disabled");
                             $("#urloficio").show();
                         } else {
@@ -442,16 +448,17 @@
                             // console.log(nombrepdf);
 
 
-
-
                             if (data.tieneOficio == "SI") {
                                 // Habiliar el boton de ver oficio
-                                $("#urloficio2").attr("href", "veroficio/" + data.no_oficio);
+
+                                $("#urloficio2").attr("href", "veroficio/" + data.no_oficio.replace(/\//g, '-'));
+
                                 $("#urloficio2").removeClass("disabled");
                                 $("#urloficio2").show();
 
                                 $("#oficioPDF").attr("disabled", true); //Deshabilitar el input file PDF
                                 $("#oficioPDF").hide();
+
                             } else {
                                 // Deshabilitar el boton de ver oficio
                                 $("#urloficio2").attr("href", "#");
@@ -485,11 +492,16 @@
             }
 
             function convertirFecha(fecha) {
+                if(fecha !== null){
                 var partes = fecha.split('/');
                 var dia = partes[0];
                 var mes = partes[1];
                 var anio = partes[2];
                 return `${anio}-${mes}-${dia}`;
+                }else{
+                  return "";
+                }
+
             }
 
 

@@ -87,7 +87,15 @@
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-2">
+                                <label class="form-label required">Ultimo Folio</label>
+                                <input type="text" class="form-control @error('ultfolio') is-invalid @enderror"
+                                    name="ultfolio" id="ultfolio" required>
+                                @error('ultfolio')
+                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-md-3">
                                 <label class="form-label">Fecha</label>
                                 <input type="date" class="form-control @error('fecha') is-invalid @enderror"
                                     name="fecha" id="fecha">
@@ -95,7 +103,7 @@
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label class="form-label">Area</label>
                                 <select  class="form-select"  @error('area') is-invalid @enderror"
                                     name="area" id="area" required>
@@ -156,6 +164,12 @@
 
 @push('scripts')
     <script>
+
+
+        document.getElementById("nfolios").addEventListener('input',function(e){
+            $("#ultfolio").val((parseInt($("#numeroId").val()) + parseInt(e.target.value))-1);
+        })
+
 
         @if (session('success'))
             const Toast = Swal.mixin({
@@ -253,6 +267,7 @@
                     },
 
                 ],
+                "order":[[0,'desc']]
             });
 
             $('#addupdNumModal').on('show.bs.modal', function(event) {
@@ -272,22 +287,27 @@
                         method: 'GET',
                         success: function(data) {
                             var $numId = data.numeroId;
+
                             var $lastId = $numId.split("-");
+                            console.log($lastId);
                             var $n;
+
                             if ($lastId == $numId){
                                 $n =  parseInt($numId)+1;
+
                             }else if
                             ($lastId[1]=== " "){
                                 $n =  parseInt($lastId[0])+1;
+
                             }else{
                                 $n = parseInt($lastId[1])+1;
-                            }
 
+
+                            }
 
                             //console.log($n);
                             $("#numeroId").val($n);
-
-
+                            $("#ultfolio").val($n);
 
                         }
                     });
