@@ -11,5 +11,5 @@
         </div>
     </main>
 
-    @include('components.fixed-plugin')
+
 @endsection
