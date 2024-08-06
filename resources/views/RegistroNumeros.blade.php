@@ -289,7 +289,7 @@
                             var $numId = data.numeroId;
 
                             var $lastId = $numId.split("-");
-                            console.log($lastId);
+                            //console.log($lastId);
                             var $n;
 
                             if ($lastId == $numId){
@@ -323,7 +323,18 @@
                         url: '/RegistroNumeros/' + id,
                         method: 'GET',
                         success: function(data) {
+                            var $numId = data.numeroId;
+                            var $lastId = $numId.split("-");
+                            if($lastId == $numId){
+                                var $n = $numId;
+                            }else if($lastId[1]== ''){
+                                $n = $numId;
+                            }else{
+                                $n = $lastId[1];
+                            }
+                            //console.log($lastId);
 
+                            $("#ultfolio").val($n);
                             $("#numeroId").val(data.numeroId);
                             $("#fecha").val(convertirFecha(data.fecha));
                             $("#area").val(data.area);
