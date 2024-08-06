@@ -15,10 +15,21 @@ class CorrespondenciaController extends Controller
     public function index()
     {
 
-        $areas = DB::table('correspondencia')->select('area')->distinct()->orderByRaw('area ASC')->get();
+        $areas = ['ADMINISTRATIVO','ADMON/ING. IRAK','ANT/PRG/SOCIO','ANTECEDENTES','ARCHIVO',
+                    'CERTIFICACIÓN','COORD. TÉCNICA','COORD/SOCIO/ANT','COORDINACIÓN',
+                    'ENTORNO SOCIOECONÓMICO',
+                    'INFORMÁTICA','ING. IRAK','ING. IRAK/PROGRAMACIÓN','INT,PROG,ANTEC','INT/ANT','INT/SOCIO/PRG','INTEGRACIÓN',
+                    'JURÍDICO',
+                    'MED/PSICO','MED/TOX','MÉDICO',
+                    'PROGRAMACIÓN','POL/COORDINACIÓN','POL/PSICO/MÉD/SOCIO/PRG','POLIGRAFÍA','PRG/INT/SOCIO',
+                    'PRG/ANT/INT','PRG/ANT/SOC','PRG/ANTECEDENTES','PRG/INT','PROG/ING. IRAK','PRG/ING. IRAK',
+                    'PSICO/COORDINACIÓN','PSICO/MEDICO','PSICO/SOCIO','PSICOLOGÍA',
+                    'SOCIO/INT','SOCIO/MÉDICO','SOCIO/PRG','VALIDACIÓN'];
+        //DB::table('correspondencia')->select('area')->distinct()->orderByRaw('area ASC')->get();
         $areasCB = "";
         foreach ($areas as $area) {
-            $areasCB .= "<option value='" . $area->area . "'>" . $area->area . "</option>";
+            $areasCB .= "<option value='" . $area . "'>" . $area . "</option>";
+            //$areasCB .= "<option value='" . $area->area . "'>" . $area->area . "</option>";
         }
 
         $areaCB_activo = true;
