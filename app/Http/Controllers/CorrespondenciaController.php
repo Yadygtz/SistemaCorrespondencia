@@ -78,6 +78,29 @@ class CorrespondenciaController extends Controller
             'creado_por' => auth()->user()->id,
         ]);
 
+        // if ($request->hasFile('oficioPDF')) {
+        //     try {
+        //         // Verificar si hay un archivo en la solicitud
+        //         if ($request->hasFile('oficioPDF')) {
+        //             $archivoPDF = $request->file('oficioPDF');
+        //             $nombrearchivo = $archivoPDF->getClientOriginalName(); // No es necesario añadir ".pdf" ya que ya está en el nombre
+
+        //             // Guardar el archivo en el FTP
+        //             $archivoPDF->storeAs(
+        //                 "/Oficios/",
+        //                 $nombrearchivo,
+        //                 'ftp'
+        //             );
+
+        //         } else {
+        //             // Mensaje de que no se subió el archivo
+        //             return redirect()->back()->with('success', 'Oficio creado pero no se subió ningún archivo.');
+        //         }
+        //     } catch (\Throwable $th) {
+        //         return redirect()->back()->with('error', $th->getMessage());
+        //     }
+        //     }
+
         // Redireccionar o devolver una respuesta adecuada
         return redirect()->back()->with('success', 'Oficio creado correctamente.');
     }
@@ -91,7 +114,7 @@ class CorrespondenciaController extends Controller
             'enviado_por' =>  'string|max:255',
             'asunto' => 'string|max:255',
             'fecha_recibido' => 'string|max:255',
-            'area'  => 'string|max:255'
+            'areaCB'  => 'string|max:255'
 
 
 
@@ -102,6 +125,8 @@ class CorrespondenciaController extends Controller
         $validatedData["modificado_por"]  = auth()->user()->id;
         $validatedData["folder"] = $request->observaciones;
         $validatedData["recibido_por"] = $request->anexos;
+        $validatedData["area"] = $request->areaCB;
+
 
 
         // Convertir las fechas de Y-m-d a d/m/Y
