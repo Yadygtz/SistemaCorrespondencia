@@ -45,12 +45,7 @@
             margin-left: 0 !important;
         }
 
-        .btn-icon {
-            min-width: calc(1.4285714286 * 0.875rem + 0.5625rem* 2 + 1px* 2);
-            min-height: calc(1.4285714286 * 0.875rem + 0.5625rem* 2 + 1px* 2);
-            padding-left: 0;
-            padding-right: 0;
-        }
+
 
         .btn-icon .icon {
             margin: calc(-1* 1rem);
