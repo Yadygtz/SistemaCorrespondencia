@@ -189,9 +189,9 @@
                         <button type="button" class="btn bg-gradient-secondary me-auto mb-0" data-bs-dismiss="modal">
                             Cerrar
                         </button>
-
+                        <label for="oficioPDF" id= "ofPDF" class="btn btn-outline-primary mb-0">Actualizar archivo</label>
                         <input class="form-control mb-0 w-50" type="file" id="oficioPDF" name="oficioPDF"
-                            accept=".pdf">
+                            accept=".pdf" hidden>
 
                         <a type="button" class="btn btn-icon bg-gradient-secondary mb-0" id="urloficio2"
                             href="veroficio/SSP-00189-2022.pdf" target="_blank">
@@ -301,7 +301,7 @@
                     "render": function (data, type) {
 
                             return '<div class="d-flex"> '
-                                    + '<a href="#" class="btn btn-primary w-100 btn-icon mb-0 me-1" data-bs-toggle="modal" data-bs-target="#detalleModal" data-id="'+ data["id_correspondencia"] +'"> <svg xmlns="http://www.w3.org/2000/svg" width="24"'
+                                    + '<a href="#" class="btn btn-primary w-30 btn-icon mb-0 me-1" data-bs-toggle="modal" data-bs-target="#detalleModal" data-id="'+ data["id_correspondencia"] +'"> <svg xmlns="http://www.w3.org/2000/svg" width="24"'
                                         + 'height="24" viewBox="0 0 24 24" fill="none"'
                                         + 'stroke="currentColor" stroke-width="2" stroke-linecap="round" '
                                         + 'stroke-linejoin="round"'
@@ -310,7 +310,7 @@
                                         + '<path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />'
                                         + '<path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /> </svg>'
                                     + '</a>'
-                                    + '<a href="#" class="btn btn-outline-secondary w-100 btn-icon mb-0"'
+                                    + '<a href="#" class="btn btn-outline-secondary w-30 btn-icon mb-0"'
                                         + 'data-bs-toggle="modal" data-bs-target="#addupdOfiModal"'
                                         + 'data-id="'+ data["id_correspondencia"] +'">'
                                             + '<svg xmlns="http://www.w3.org/2000/svg" width="24"'
@@ -343,21 +343,24 @@
 
 
 
-            $("#no_oficio").on('change', function() {
+            $("#no_oficio").on('input', function() {
 
                 if (this.value !== "") {
-                    $("#oficioPDF").attr("disabled", false);
+                    $('#ofPDF, [for="#oficioPDF"]').prop('disabled', false).removeClass('disabled');
+                    //$("#oficioPDF").attr("disabled", false);
 
                     nombrepdf = this.value + ".pdf";
 
                 } else {
-                    $("#oficioPDF").attr("disabled", true);
+                    $('#ofPDF, [for="#oficioPDF"]').prop('disabled', true).addClass('disabled');
+                    //$("#oficioPDF").attr("disabled", true);
                 }
 
             });
 
-            //
+            //Y098
             $("#oficioPDF").on('change', function() {
+
                 var file = this.files[0];
                 if (file) {
                     if (file.name !== nombrepdf) {
@@ -365,10 +368,11 @@
                         alert("El nombre del archivo debe ser " + nombrepdf);
                         this.value = ""; // Resetea el input
                     }
+                    $("#ofPDF").html("Archivo seleccionado");
                     //console.log(nombrepdf);
-
                 }
             });
+
 
             $('#detalleModal').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget);
@@ -420,10 +424,13 @@
 
                     // Deshabilitar el boton de ver oficio
                     $("#urloficio2").hide();
-                    $("#oficioPDF").hide();
+                    $("#oficioPDF").show();
                     $("#urloficio2").attr("href", "#");
                     $("#urloficio2").addClass("disabled");
-                    $("#oficioPDF").attr("disabled", true);
+                    //$("#oficioPDF").attr("disabled", true);
+                    $("#ofPDF").html("Subir Archivo");
+                   //deshabilitar el label
+                    $('#ofPDF, [for="#oficioPDF"]').prop('disabled', true).addClass('disabled');
 
                 } else {
                     // Asignar la URL para actualizar
@@ -444,8 +451,9 @@
                             $("#areaCB").val(data.area);
                             $("#observaciones").val(data.folder);
 
+
                             nombrepdf = data.no_oficio + ".pdf";
-                            // console.log(nombrepdf);
+                            console.log(nombrepdf);
 
 
                             if (data.tieneOficio == "SI") {
@@ -456,8 +464,9 @@
                                 $("#urloficio2").removeClass("disabled");
                                 $("#urloficio2").show();
 
-                                $("#oficioPDF").attr("disabled", true); //Deshabilitar el input file PDF
-                                $("#oficioPDF").hide();
+                                //$("#oficioPDF").attr("disabled", true); //Deshabilitar el input file PDF
+                                $("#oficioPDF").show();
+                                $("#ofPDF").html("Actualizar Archivo");
 
                             } else {
                                 // Deshabilitar el boton de ver oficio
@@ -465,6 +474,7 @@
                                 $("#urloficio2").addClass("disabled");
                                 $("#oficioPDF").attr("disabled", false); //Deshabilitar el input file PDF
                                 $("#oficioPDF").show();
+                                $("#ofPDF").html("Subir Archivo");
                             }
 
                         }

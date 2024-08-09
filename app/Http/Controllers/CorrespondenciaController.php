@@ -78,11 +78,11 @@ class CorrespondenciaController extends Controller
             'creado_por' => auth()->user()->id,
         ]);
 
-        if ($request->hasFile('oficioPDF')) {
+        //if ($request->hasFile('oficioPDF')) {
             try {
                 // Verificar si hay un archivo en la solicitud
                 if ($request->hasFile('oficioPDF')) {
-                    dd("entro try");
+
                     $archivoPDF = $request->file('oficioPDF');
                     $nombrearchivo = $archivoPDF->getClientOriginalName(); // No es necesario añadir ".pdf" ya que ya está en el nombre
 
@@ -92,7 +92,8 @@ class CorrespondenciaController extends Controller
                         $nombrearchivo,
                         'ftp'
                     );
-
+                    // Redireccionar o devolver una respuesta adecuada
+                    return redirect()->back()->with('success', 'Oficio creado correctamente.');
                 } else {
                     // Mensaje de que no se subió el archivo
                     return redirect()->back()->with('success', 'Oficio creado pero no se subió ningún archivo.');
@@ -102,9 +103,8 @@ class CorrespondenciaController extends Controller
             }
             }
 
-        // Redireccionar o devolver una respuesta adecuada
-        return redirect()->back()->with('success', 'Oficio creado correctamente.');
-    }
+
+    //}
 
     public function editar(Request $request, $id)
     {
@@ -141,28 +141,28 @@ class CorrespondenciaController extends Controller
         $correspondencia = ModelCorrepondencia::findOrFail($id);
         $correspondencia->update($validatedData);
 
-        if ($request->hasFile('oficioPDF')) {
+        //if ($request->hasFile('oficioPDF')) {
         try {
-            // Verificar si hay un archivo en la solicitud
-            if ($request->hasFile('oficioPDF')) {
-                $archivoPDF = $request->file('oficioPDF');
-                $nombrearchivo = $archivoPDF->getClientOriginalName(); // No es necesario añadir ".pdf" ya que ya está en el nombre
+                // Verificar si hay un archivo en la solicitud
+                if ($request->hasFile('oficioPDF')) {
+                    $archivoPDF = $request->file('oficioPDF');
+                    $nombrearchivo = $archivoPDF->getClientOriginalName(); // No es necesario añadir ".pdf" ya que ya está en el nombre
 
-                // Guardar el archivo en el FTP
-                $archivoPDF->storeAs(
-                    "/Oficios/",
-                    $nombrearchivo,
-                    'ftp'
-                );
+                    // Guardar el archivo en el FTP
+                    $archivoPDF->storeAs(
+                        "/Oficios/",
+                        $nombrearchivo,
+                        'ftp'
+                    );
 
-            } else {
-                // Mensaje de que no se subió el archivo
-                return redirect()->back()->with('success', 'Oficio actualizado pero no se subió ningún archivo.');
+                } else {
+                    // Mensaje de que no se subió el archivo
+                    return redirect()->back()->with('success', 'Oficio actualizado pero no se subió ningún archivo.');
+                }
+            } catch (\Throwable $th) {
+                return redirect()->back()->with('error', $th->getMessage());
             }
-        } catch (\Throwable $th) {
-            return redirect()->back()->with('error', $th->getMessage());
-        }
-        }
+        //}
         // Redireccionar o devolver una respuesta adecuada
         return redirect()->back()->with('success', 'Oficio actualizado correctamente.');
 
