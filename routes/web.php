@@ -49,7 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/RegistroNumeros/add', [RegistroNumerosController::class, 'agregar']);
     Route::get('/GetId', [RegistroNumerosController::class, 'ultimoId']);
     Route::get('/dsdatanumeros', [RegistroNumerosController::class, 'datanumeros'])->name('dsdatanumeros');
-
+    Route::get('/RegistroNumeros/lista/{numeroId}', [RegistroNumerosController::class, 'listfiles']);
 
 
 
@@ -72,6 +72,26 @@ Route::middleware('auth')->group(function () {
 
         return $oficio;
     })->name('veroficio');
+    //oficios Numeros
+    Route::get('verPDF/{carpeta}/{archivo}', function ($carpeta,$archivo) {
+        // Verificar en cuál de los dos servidores se encuentra el fichero
+        $rutaCompletaFTP = "Acuses/" . $carpeta . "/" . $archivo;
+        if (Storage::disk('ftp')->exists($rutaCompletaFTP)) {
+            if (ob_get_level()) ob_end_clean();
+            $file = Storage::disk('ftp')->get($rutaCompletaFTP);
+
+            $response = Response::make($file, 200);
+            $response->header('Content-Type', 'application/pdf');
+
+            return $response;
+        } else {
+            return "Archivo no encontrado";
+        }
+
+        return $oficio;
+    })->name('verPDF');
+
+
 });
 
 

@@ -55,7 +55,26 @@
         </div>
     </div>
 
+    <!-- Modal Detalle Oficio Numeros -->
+    <div class="modal fade" id="Adjuntos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="detalleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bolder" id="detalleModalLabel">Archivos del Oficio</h5>
+                </div>
+                <div class="modal-body">
+                    <div id="listadjuntos" class="list-group">
+                        <!-- Los archivos se llenarán aquí -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn bg-gradient-secondary mb-0" data-bs-dismiss="modal">Cerrar</button>
 
+                </div>
+            </div>
+        </div>
+    </div>
     {{-- Modal Add/Upd Oficio --}}
     <div class="modal fade" id="addupdNumModal" data-bs-keyboard=false data-bs-backdrop="static" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -147,11 +166,16 @@
                                 @enderror
                             </div>
                         </div>
+
                     </div>
-                    <div class="modal-footer align-items-center flex-nowrap">
+
+                    <div class="modal-footer align-items-center">
+
                         <button type="button" class="btn bg-gradient-secondary me-auto mb-0" data-bs-dismiss="modal">
                             Cerrar
                         </button>
+                        <label for="oficioAnexo" id= "ofAnexo"></label>
+                                <input class="form-control mb-0 w-50" type="file" id="oficioAnexo" name="oficioAnexo" accept=".pdf">
                         <button type="submit" class="btn bg-gradient-primary mb-0">
                             GUARDAR
                         </button>
@@ -239,7 +263,16 @@
                         "data":null,
                         "render": function (data,type){
                         return '<div class="d-flex">'
-                                   + '<a href="#" class="btn btn-outline-secondary w-100 btn-icon mb-0"'
+                            + '<a href="#" class="btn btn-primary w-30 btn-icon mb-0 me-1" data-bs-toggle="modal" data-bs-target="#Adjuntos" data-id="'+ data["numeroId"] +'"> <svg xmlns="http://www.w3.org/2000/svg" width="24"'
+                                        + 'height="24" viewBox="0 0 24 24" fill="none"'
+                                        + 'stroke="currentColor" stroke-width="2" stroke-linecap="round" '
+                                        + 'stroke-linejoin="round"'
+                                        + 'class="icon icon-tabler icons-tabler-outline icon-tabler-eye">'
+                                        + '<path stroke="none" d="M0 0h24v24H0z" fill="none" />'
+                                        + '<path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />'
+                                        + '<path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /> </svg>'
+                                    + '</a>'
+                                   + '<a href="#" class="btn btn-outline-secondary w-30 btn-icon mb-0"'
                                    + 'data-bs-toggle="modal" data-bs-target="#addupdNumModal"'
                                    + 'data-id="'+ data["numeroId"]+'">'
                                       + '<svg xmlns="http://www.w3.org/2000/svg" width="24"'
@@ -252,7 +285,6 @@
                                         + '</svg>'
                                     + '</a>'
                                 + '</div>'
-
                     }
 
 
@@ -268,6 +300,25 @@
 
                 ],
                 "order":[[0,'desc']]
+            });
+
+
+
+
+            $("#oficioAnexo").on('change', function() {
+            var carpeta = $("#numeroId").val();
+            var file = this.files[0];
+            var name = file.name;
+            if (file) {
+                if (!name.includes(carpeta)) {
+
+                    alert("El nombre del archivo debe contener la palabra " + carpeta);
+                    this.value = ""; // Resetea el input
+
+                }
+                $("#oficioAnexo").html("Archivo seleccionado");
+                //console.log(nombrepdf);
+            }
             });
 
             $('#addupdNumModal').on('show.bs.modal', function(event) {
@@ -286,6 +337,12 @@
                         url: '/GetId',
                         method: 'GET',
                         success: function(data) {
+                             //console.log($lastId);
+                            $("#nfolios").attr("readOnly", false); //
+                            $("#numeroId").attr("readOnly", false); //
+                            $("#ultfolio").attr("readOnly", false); //
+                            $("#oficioAnexo").attr("disabled", true); //Deshabilitar el input
+                            $("#oficioAnexo").hide();
                             var $numId = data.numeroId;
 
                             var $lastId = $numId.split("-");
@@ -301,7 +358,6 @@
 
                             }else{
                                 $n = parseInt($lastId[1])+1;
-
 
                             }
 
@@ -333,6 +389,12 @@
                                 $n = $lastId[1];
                             }
                             //console.log($lastId);
+                            $("#nfolios").attr("readOnly", true); //
+                            $("#numeroId").attr("readOnly", true); //
+                            $("#ultfolio").attr("readOnly", true); //
+                            $("#oficioAnexo").attr("disabled", false); //habilitar el input
+                            $("#oficioAnexo").show(); //mostrar el input
+                            //$("#nfolios").show();
 
                             $("#ultfolio").val($n);
                             $("#numeroId").val(data.numeroId);
@@ -346,6 +408,49 @@
                         }
                     });
                 }
+            });
+
+
+
+            $('#Adjuntos').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget); // El botón que activó el modal
+            var id = button.data('id'); // Obtén el ID del botón
+
+                $.ajax({
+                    url: '/RegistroNumeros/lista/' + id, // La URL de la solicitud AJAX
+                    method: 'GET',
+                    success: function(data) {
+                        var $listAdjuntos = $('#listadjuntos');
+                        $listAdjuntos.empty(); // Limpiar la lista existente
+
+                        console.log('Datos recibidos:', data);
+
+                        if(data.success === false){
+
+                            //mensaje para cuando no hay archivos
+                            $listAdjuntos.append('<p>No hay archivos disponibles</p>');
+
+                        }else{
+                            // Iterar sobre los archivos y agregarlos a la lista
+                            $.each(data, function(key, value) {
+                                // Crear un nuevo elemento de lista para cada archivo
+                                var listItem = $('<a></a>')
+                                    .addClass('list-group-item list-group-item-action')
+                                    .attr('href', 'verPDF/' + id + '/' + value)
+                                    .attr('target', '_blank')
+                                    .text(value); // Muestra la URL del archivo, puedes personalizar el texto si lo prefieres
+
+                                    $listAdjuntos.append(listItem);
+
+                            });
+
+                        }
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error al cargar los archivos:', error);
+                    }
+                });
             });
 
             function limpiarForm() {

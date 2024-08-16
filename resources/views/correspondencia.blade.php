@@ -453,7 +453,7 @@
 
 
                             nombrepdf = data.no_oficio + ".pdf";
-                            console.log(nombrepdf);
+                            //console.log(nombrepdf);
 
 
                             if (data.tieneOficio == "SI") {

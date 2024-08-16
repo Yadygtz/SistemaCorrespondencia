@@ -5,6 +5,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\RegistroNumeros;
+use Illuminate\Support\Facades\Storage;
 
 class RegistroNumerosController extends Controller
 {
@@ -33,6 +34,7 @@ class RegistroNumerosController extends Controller
 
     public function editar(Request $request, $id)
     {
+
         // Validación de los datos
         $validatedData = $request->validate([
             'numeroId' => 'required|string|max:255',
@@ -44,6 +46,40 @@ class RegistroNumerosController extends Controller
             // Añade las reglas de validación para el resto de los campos
             // 'oficioPDF' => 'file|mimes:pdf',
         ]);
+
+        $directorio = $request->numeroId;
+        $ruta = '/Acuses/'. $directorio;
+        try {
+            // Verificar si hay un archivo en la solicitud
+            if ($request->hasFile('oficioAnexo')) {
+                if(!Storage::disk('ftp')->exists($ruta))
+                {
+
+                    Storage::disk('ftp')->makeDirectory($ruta);
+                    $archivoPDF = $request->file('oficioAnexo');
+                    $nombrearchivo = $archivoPDF->getClientOriginalName(); // No es necesario añadir ".pdf" ya que ya está en el nombre
+                    // Ruta donde se guardará el archivo
+                    $path = "/Acuses/" .  $directorio . '/' . $nombrearchivo;
+
+                    // Guardar el archivo en la carpeta especificada
+                    Storage::disk('ftp')->put($path, file_get_contents($archivoPDF));
+                }else{
+                    $archivoPDF = $request->file('oficioAnexo');
+                    $nombrearchivo = $archivoPDF->getClientOriginalName(); // No es necesario añadir ".pdf" ya que ya está en el nombre
+                    // Ruta donde se guardará el archivo
+                    $path = "/Acuses/" .  $directorio . '/' . $nombrearchivo;
+
+                    // Guardar el archivo en la carpeta especificada
+                    Storage::disk('ftp')->put($path, file_get_contents($archivoPDF));
+
+                }
+            }
+
+            // Redireccionar o devolver una respuesta adecuada
+            return redirect()->back()->with('success', 'Oficio actualizado correctamente.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', $th->getMessage());
+        }
 
         // $validatedData["modificado_por"]  = auth()->user()->id;
 
@@ -87,7 +123,7 @@ class RegistroNumerosController extends Controller
         {
             $folconsec = intval($request->numeroId) + intval($request->nfolios - 1);
             $n = $request->numeroId.'-'.$folconsec;
-           // console.log("entro");
+
         }else{
             $n = $request->numeroId;
         }
@@ -110,6 +146,22 @@ class RegistroNumerosController extends Controller
         $data = RegistroNumeros::get();
         return response()->json($data);
 
+    }
+
+    public function listfiles($numeroId){
+
+        $rutaCarpeta = "Acuses/" . $numeroId . "/";
+            if (Storage::disk('ftp')->exists($rutaCarpeta)) {
+
+                $files = Storage::disk('ftp')->files($rutaCarpeta);
+                $fileName = [];
+                foreach($files as $file){
+                    $fileName[] = basename($file);
+                }
+                return response()->json($fileName);
+            } else {
+                return response()->json(["success"=>false]);
+            }
     }
 
 
