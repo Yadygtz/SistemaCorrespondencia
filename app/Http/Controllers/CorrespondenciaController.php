@@ -31,8 +31,13 @@ class CorrespondenciaController extends Controller
             $areasCB .= "<option value='" . $area . "'>" . $area . "</option>";
             //$areasCB .= "<option value='" . $area->area . "'>" . $area->area . "</option>";
         }
+        if(auth()->user()->area != 'COORDINACIÓN'){
+            $areaCB_activo = false;
+        }else{
+            $areaCB_activo = true;
+        }
 
-        $areaCB_activo = true;
+
         $area = auth()->user()->area; // Area del usuario autenticado.
 
         // $files = Storage::disk('ftp')->allFiles("Oficios/");
@@ -64,6 +69,13 @@ class CorrespondenciaController extends Controller
         $request->validate([
             'no_oficio' => 'required|string|max:255',
         ]);
+        $area = auth()->user()->area; // Area del usuario autenticado.
+        //validar de que area es para marcar la columna "interno" en 0 si es de CORDINACION  y en 1 si es de cualquier otra area
+        if($area <> 'COORDINACIÓN'){
+            $interno = 1;
+        }else{
+            $interno = 0;
+        }
 
         // Crear el Oficio
         ModelCorrepondencia::create([
@@ -76,6 +88,7 @@ class CorrespondenciaController extends Controller
             'recibido_por' => $request->anexos,
             'fecha_recibido' =>  Carbon::createFromFormat('Y-m-d', $request->fecha_recibido)->format('d/m/Y'),
             'creado_por' => auth()->user()->id,
+            'interno' => $interno
         ]);
 
         //if ($request->hasFile('oficioPDF')) {
@@ -116,7 +129,6 @@ class CorrespondenciaController extends Controller
             'asunto' => 'string|max:255',
             'fecha_recibido' => 'string|max:255',
             'areaCB'  => 'string|max:255'
-
             // Añade las reglas de validación para el resto de los campos
             // 'oficioPDF' => 'file|mimes:pdf',
         ]);
@@ -125,8 +137,6 @@ class CorrespondenciaController extends Controller
         $validatedData["folder"] = $request->observaciones;
         $validatedData["recibido_por"] = $request->anexos;
         $validatedData["area"] = $request->areaCB;
-
-
 
         // Convertir las fechas de Y-m-d a d/m/Y
         if (isset($validatedData['fecha_oficio'])) {
@@ -162,7 +172,7 @@ class CorrespondenciaController extends Controller
             } catch (\Throwable $th) {
                 return redirect()->back()->with('error', $th->getMessage());
             }
-        //}
+
         // Redireccionar o devolver una respuesta adecuada
         return redirect()->back()->with('success', 'Oficio actualizado correctamente.');
 
@@ -180,12 +190,11 @@ class CorrespondenciaController extends Controller
         $area = auth()->user()->area;
 
         if($area == "COORDINACIÓN"){
-            $data = ModelCorrepondencia::get();
+            $data = ModelCorrepondencia::where('interno','=','0')->get();
         }else{
-        $data = ModelCorrepondencia::where('area', 'like', '%' . auth()->user()->area . '%')->get();
+        $data = ModelCorrepondencia::where('area', 'like', '%' . auth()->user()->area . '%')->where('interno','=','1')->get();
         }
-
         return response()->json($data);
-
     }
+
 }

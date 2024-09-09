@@ -13,7 +13,7 @@
                             </div>
                             <div class="col-6 text-end">
                                 <a class="btn btn-primary btn-sm mb-0" data-bs-toggle="modal"
-                                    data-bs-target="#addupdNumModal" data-tipo="agregar">Agregar</a>
+                                    data-bs-target="#addupdNumModal2" data-tipo="agregar">Agregar</a>
                             </div>
                         </div>
                     </div>
@@ -76,7 +76,7 @@
         </div>
     </div>
     {{-- Modal Add/Upd Oficio --}}
-    <div class="modal fade" id="addupdNumModal" data-bs-keyboard=false data-bs-backdrop="static" tabindex="-1">
+    <div class="modal fade" id="addupdNumModal2" data-bs-keyboard=false data-bs-backdrop="static" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -212,6 +212,25 @@
                 title: @json(session('success'))
             });
         @endif
+
+        @if (session('error'))
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "error",
+                title: @json(session('error'))
+            });
+        @endif
+
         window.onload = function() {
             // $(".alert").fadeTo(1000, 0).slideUp(1000, function() {
             //     $(this).remove();
@@ -242,7 +261,7 @@
 
             let table = new DataTable('#DNtabla', {
                 "ajax":{
-                    "url":@json(route('dsdatanumeros')),
+                    "url":@json(route('dsdatanumeros2')),
                     "dataSrc":''
                 },
                 "columns":[
@@ -273,7 +292,7 @@
                                         + '<path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /> </svg>'
                                     + '</a>'
                                    + '<a href="#" class="btn btn-outline-secondary w-30 btn-icon mb-0"'
-                                   + 'data-bs-toggle="modal" data-bs-target="#addupdNumModal"'
+                                   + 'data-bs-toggle="modal" data-bs-target="#addupdNumModal2"'
                                    + 'data-id="'+ data["numeroId"]+'">'
                                       + '<svg xmlns="http://www.w3.org/2000/svg" width="24"'
                                         + 'height="24" viewBox="0 0 24 24" fill="none"'
@@ -321,7 +340,7 @@
             }
             });
 
-            $('#addupdNumModal').on('show.bs.modal', function(event) {
+            $('#addupdNumModal2').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget);
                 var id = button.data('id');
                 var tipo = button.data('tipo');
@@ -329,12 +348,12 @@
                     // Limpiar el formulario
                     limpiarForm();
                     // Asignar la URL para agregar
-                    $("#formUpdNum").attr('action', 'RegistroNumeros/add');
+                    $("#formUpdNum").attr('action', 'NumerosAreas/add');
                     $("#titlemodal").text("Agregar Registro de Número");
 
                     // Traer el ultimo folio
                     $.ajax({
-                        url: '/GetId',
+                        url: '/GetId2',
                         method: 'GET',
                         success: function(data) {
                              //console.log($lastId);
@@ -371,12 +390,12 @@
 
                 } else {
                     // Asignar la URL para actualizar
-                    $("#formUpdNum").attr('action', 'RegistroNumeros/upd/' + id);
+                    $("#formUpdNum").attr('action', 'NumerosAreas/upd2/' + id);
                     $("#titlemodal").text("Editar Registro de Número");
 
                     // Traer los datos del oficio
                     $.ajax({
-                                url: '/RegistroNumeros/' + id,
+                                url: '/NumerosAreas2/' + id,
                                 method: 'GET',
                                 success: function(data) {
                                     var $numId = data.numeroId;
@@ -417,22 +436,22 @@
             var id = button.data('id'); // Obtén el ID del botón
 
                 $.ajax({
-                    url: '/RegistroNumeros/lista/' + id, // La URL de la solicitud AJAX
+                    url: '/NumerosAreas/lista2/' + id, // La URL de la solicitud AJAX
                     method: 'GET',
                     success: function(data) {
                         var $listAdjuntos = $('#listadjuntos');
                         $listAdjuntos.empty(); // Limpiar la lista existente
-                        //console.log('Datos recibidos:', data);
+                        console.log('Datos recibidos:', data);
                         if(data.success === false){
                             //mensaje para cuando no hay archivos
                             $listAdjuntos.append('<p>No hay archivos disponibles</p>');
                         }else{
                             // Iterar sobre los archivos y agregarlos a la lista
-                            $.each(data, function(key, value) {
+                            $.each(data.archivos, function(key, value) {
                                 // Crear un nuevo elemento de lista para cada archivo
                                 var listItem = $('<a></a>')
                                     .addClass('list-group-item list-group-item-action')
-                                    .attr('href', 'verPDF/' + id + '/' + value)
+                                    .attr('href', 'verPDF2/' + data.area +'/' + value)
                                     .attr('target', '_blank')
                                     .text(value); // Muestra la URL del archivo
 

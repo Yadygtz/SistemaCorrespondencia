@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RegistroNumeros extends Model
+class NumerosAreas extends Model
 {
     use HasFactory;
 
+    protected $table = 'numerosareas';
 
     protected $fillable = [
         'numeroId',
@@ -16,7 +17,8 @@ class RegistroNumeros extends Model
         'area',
         'asunto',
         'solicita',
-        'observaciones'
+        'observaciones',
+        'id_area'
     ];
 
 }

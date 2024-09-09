@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CorrespondenciaController;
+use App\Http\Controllers\NumerosAreasController;
 use App\Http\Controllers\RegistroNumerosController;
 use App\Http\Controllers\UsuariosController;
 use Illuminate\Support\Facades\Route;
@@ -51,7 +52,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/dsdatanumeros', [RegistroNumerosController::class, 'datanumeros'])->name('dsdatanumeros');
     Route::get('/RegistroNumeros/lista/{numeroId}', [RegistroNumerosController::class, 'listfiles']);
 
-
+    Route::get('/NumerosAreas', [NumerosAreasController::class, 'index'])->name('NumerosAreas');
+    Route::get('/dsdatanumeros2', [NumerosAreasController::class, 'datanumeros'])->name('dsdatanumeros2');
+    Route::put('/NumerosAreas/add', [NumerosAreasController::class, 'agregar']);
+    Route::get('/GetId2', [NumerosAreasController::class, 'ultimoId']);
+    Route::put('/NumerosAreas/upd2/{id}', [NumerosAreasController::class, 'editar']);
+    Route::get('/NumerosAreas2/{id}', [NumerosAreasController::class, 'show']);
+    Route::get('/NumerosAreas/lista2/{numeroId}', [NumerosAreasController::class, 'listfiles']);
 
     /* OBTENER EL ARCHIVO DEL SERVER FTP*/
     // Expediente digital
@@ -90,6 +97,26 @@ Route::middleware('auth')->group(function () {
 
         return $oficio;
     })->name('verPDF');
+
+    //oficios Numeros todas las areas
+    Route::get('verPDF2/{carpeta}/{archivo}', function ($carpeta,$archivo) {
+        // Verificar en cuál de los dos servidores se encuentra el fichero
+        $rutaCompletaFTP = "Acuses/" . $carpeta . "/" . $archivo;
+        if (Storage::disk('ftp')->exists($rutaCompletaFTP)) {
+            if (ob_get_level()) ob_end_clean();
+            $file = Storage::disk('ftp')->get($rutaCompletaFTP);
+
+            $response = Response::make($file, 200);
+            $response->header('Content-Type', 'application/pdf');
+
+            return $response;
+        } else {
+            return "Archivo no encontrado";
+        }
+
+        return $oficio;
+    })->name('verPDF2');
+
 
 
 });

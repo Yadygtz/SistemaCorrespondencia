@@ -47,6 +47,16 @@ class RegistroNumerosController extends Controller
             // 'oficioPDF' => 'file|mimes:pdf',
         ]);
 
+         // Convertir las fechas de Y-m-d a d/m/Y
+         if (isset($validatedData['fecha'])) {
+            $validatedData['fecha'] = Carbon::createFromFormat('Y-m-d', $validatedData['fecha'])->format('d/m/Y');
+
+        }
+
+        // Encontrar el registro por ID y actualizarlo
+        $reg = RegistroNumeros::where('numeroId','=',$id)->first();
+        $reg->update($validatedData);
+
         $directorio = $request->numeroId;
         $ruta = '/Acuses/'. $directorio;
         try {
@@ -56,14 +66,7 @@ class RegistroNumerosController extends Controller
                 {
 
                     Storage::disk('ftp')->makeDirectory($ruta);
-                    $archivoPDF = $request->file('oficioAnexo');
-                    $nombrearchivo = $archivoPDF->getClientOriginalName(); // No es necesario añadir ".pdf" ya que ya está en el nombre
-                    // Ruta donde se guardará el archivo
-                    $path = "/Acuses/" .  $directorio . '/' . $nombrearchivo;
-
-                    // Guardar el archivo en la carpeta especificada
-                    Storage::disk('ftp')->put($path, file_get_contents($archivoPDF));
-                }else{
+                }
                     $archivoPDF = $request->file('oficioAnexo');
                     $nombrearchivo = $archivoPDF->getClientOriginalName(); // No es necesario añadir ".pdf" ya que ya está en el nombre
                     // Ruta donde se guardará el archivo
@@ -73,30 +76,18 @@ class RegistroNumerosController extends Controller
                     Storage::disk('ftp')->put($path, file_get_contents($archivoPDF));
 
                 }
-            }
-
-            // Redireccionar o devolver una respuesta adecuada
-            return redirect()->back()->with('success', 'Oficio actualizado correctamente.');
+                else
+                {
+                    // Mensaje de que no se subió el archivo
+                    return redirect()->back()->with('success', 'Oficio actualizado pero no se subió ningún archivo.');
+                }
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', $th->getMessage());
         }
 
         // $validatedData["modificado_por"]  = auth()->user()->id;
-
-        // Convertir las fechas de Y-m-d a d/m/Y
-        if (isset($validatedData['fecha'])) {
-            $validatedData['fecha'] = Carbon::createFromFormat('Y-m-d', $validatedData['fecha'])->format('d/m/Y');
-
-        }
-
-        // Encontrar el registro por ID y actualizarlo
-        $reg = RegistroNumeros::where('numeroId','=',$id)->first();
-
-        $reg->update($validatedData);
-
-
         // Redireccionar o devolver una respuesta adecuada
-        return redirect()->back()->with('success', 'Registro actualizado correctamente.');
+        return redirect()->back()->with('success', 'Oficio actualizado correctamente.');
 
     }
 
@@ -104,7 +95,6 @@ class RegistroNumerosController extends Controller
     {
 
         $reg = RegistroNumeros::where('numeroId','=',$id)->first();
-
         return response()->json($reg);
     }
 

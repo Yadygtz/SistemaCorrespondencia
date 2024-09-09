@@ -31,6 +31,7 @@ class ModelCorrepondencia extends Model
         'creado_por',
         'fecha_creado',
         'modificado_por',
-        'fecha_modificado'
+        'fecha_modificado',
+        'interno'
     ];
 }

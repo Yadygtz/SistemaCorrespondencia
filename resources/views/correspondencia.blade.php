@@ -6,8 +6,6 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0">
-
-
                         <div class="row">
                             <div class="col-6 d-flex align-items-center">
                                 <h6 class="mb-0">Correspondencia</h6>
@@ -415,12 +413,14 @@
                 var button = $(event.relatedTarget);
                 var id = button.data('id');
                 var tipo = button.data('tipo');
+
                 if (tipo == "agregar") {
                     // Limpiar el formulario
                     limpiarForm();
                     // Asignar la URL para agregar
                     $("#formUpdOfi").attr('action', 'correspondencia/add');
                     $("#titlemodal").text("Agregar Oficio");
+
 
                     // Deshabilitar el boton de ver oficio
                     $("#urloficio2").hide();
@@ -431,6 +431,7 @@
                     $("#ofPDF").html("Subir Archivo");
                    //deshabilitar el label
                     $('#ofPDF, [for="#oficioPDF"]').prop('disabled', true).addClass('disabled');
+
 
                 } else {
                     // Asignar la URL para actualizar
