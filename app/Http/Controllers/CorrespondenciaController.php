@@ -73,8 +73,10 @@ class CorrespondenciaController extends Controller
         //validar de que area es para marcar la columna "interno" en 0 si es de CORDINACION  y en 1 si es de cualquier otra area
         if($area <> 'COORDINACIÓN'){
             $interno = 1;
+            $areaC = $area;
         }else{
             $interno = 0;
+            $areaC = $request->areaCB;
         }
 
         // Crear el Oficio
@@ -83,7 +85,7 @@ class CorrespondenciaController extends Controller
             'fecha_oficio' => Carbon::createFromFormat('Y-m-d', $request->fecha_oficio)->format('d/m/Y'),
             'enviado_por' => $request->enviado_por,
             'asunto' => $request->asunto,
-            'area' => $request->areaCB,
+            'area' => $areaC,
             'folder' => $request->observaciones,
             'recibido_por' => $request->anexos,
             'fecha_recibido' =>  Carbon::createFromFormat('Y-m-d', $request->fecha_recibido)->format('d/m/Y'),
@@ -133,10 +135,18 @@ class CorrespondenciaController extends Controller
             // 'oficioPDF' => 'file|mimes:pdf',
         ]);
 
+        $area = auth()->user()->area; // Area del usuario autenticado.
+        if($area <> 'COORDINACIÓN'){
+
+            $areaC = $area;
+        }else{
+
+            $areaC = $request->areaCB;
+        }
         $validatedData["modificado_por"]  = auth()->user()->id;
         $validatedData["folder"] = $request->observaciones;
         $validatedData["recibido_por"] = $request->anexos;
-        $validatedData["area"] = $request->areaCB;
+        $validatedData["area"] = $areaC;
 
         // Convertir las fechas de Y-m-d a d/m/Y
         if (isset($validatedData['fecha_oficio'])) {
