@@ -361,13 +361,15 @@
 
                 var file = this.files[0];
                 if (file) {
-                    if (file.name !== nombrepdf) {
+                    var Name = file.name.substring(0,file.name.length-4);
+                    if (Name !== nombrepdf.substring(0,nombrepdf.length-4)) {
 
                         alert("El nombre del archivo debe ser " + nombrepdf);
                         this.value = ""; // Resetea el input
                     }
                     $("#ofPDF").html("Archivo seleccionado");
-                    //console.log(nombrepdf);
+                    //console.log(nombrepdf.substring(0,nombrepdf.length-4));
+
                 }
             });
 
