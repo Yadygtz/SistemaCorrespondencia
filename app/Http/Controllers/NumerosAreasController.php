@@ -14,7 +14,8 @@ class NumerosAreasController extends Controller
 
         //$RegNumeros = RegistroNumeros::take(30)->get();
         //$noficio =  DB::table('registro_numeros')->select('numeroId')->get();
-        $areas = ['INTEGRACIÓN','ADMINISTRATIVO','COORDINACIÓN','JURÍDICO','PROGRAMACIÓN','INFORMÁTICA','ANTECEDENTES','PLANEACIÓN E INNOVACIÓN','SOCIOECONÓMICO','PSICOLOGÍA','LIBRE','VALIDACIÓN'];
+        $areas = ['INTEGRACIÓN','ADMINISTRATIVO','COORDINACIÓN','JURÍDICO','PROGRAMACIÓN',
+        'INFORMÁTICA','ANTECEDENTES','PLANEACIÓN E INNOVACIÓN','SOCIOECONÓMICO','PSICOLOGÍA','LIBRE','VALIDACIÓN','MEDICO','POLIGRAFÍA'];
         $areasCB = '';
         foreach ($areas as $area) {
             $areasCB .= "<option value='" . $area . "'>" . $area . "</option>";
