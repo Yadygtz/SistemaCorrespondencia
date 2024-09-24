@@ -90,7 +90,7 @@
                     @method('PUT')
                     <div class="modal-body">
                         <div class="row mb-3">
-                            <div class="col-md-2">
+                            <div class="col-md-4">
                                 <label class="form-label required">No. Oficio</label>
                                 <input type="text" class="form-control @error('numeroId') is-invalid @enderror"
                                     name="numeroId" id="numeroId" required>
@@ -98,23 +98,8 @@
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-md-2">
-                                <label class="form-label required">No. Folios</label>
-                                <input type="number" value="1" class="form-control @error('nfolios') is-invalid @enderror"
-                                    name="nfolios" id="nfolios" required>
-                                @error('nfolios')
-                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="col-md-2">
-                                <label class="form-label required">Ultimo Folio</label>
-                                <input type="text" class="form-control @error('ultfolio') is-invalid @enderror"
-                                    name="ultfolio" id="ultfolio" required>
-                                @error('ultfolio')
-                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="col-md-3">
+
+                            <div class="col-md-4">
                                 <label class="form-label">Fecha</label>
                                 <input type="date" class="form-control @error('fecha') is-invalid @enderror"
                                     name="fecha" id="fecha">
@@ -122,7 +107,7 @@
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <label class="form-label">Area</label>
                                 <select  class="form-select"  @error('area') is-invalid @enderror"
                                     name="area" id="area" required>
@@ -147,7 +132,7 @@
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Quien lo solicita</label>
+                                <label class="form-label">Quien recibe</label>
                                 <input type="text" class="form-control @error('solicita') is-invalid @enderror"
                                     name="solicita" id="solicita" required>
                                 @error('solicita')
@@ -190,9 +175,9 @@
     <script>
 
 
-        document.getElementById("nfolios").addEventListener('input',function(e){
-            $("#ultfolio").val((parseInt($("#numeroId").val()) + parseInt(e.target.value))-1);
-        })
+        // document.getElementById("nfolios").addEventListener('input',function(e){
+        //     $("#ultfolio").val((parseInt($("#numeroId").val()) + parseInt(e.target.value))-1);
+        // })
 
 
         @if (session('success'))
@@ -282,14 +267,18 @@
                         "data":null,
                         "render": function (data,type){
                         return '<div class="d-flex">'
-                            + '<a href="#" class="btn btn-primary w-30 btn-icon mb-0 me-1" data-bs-toggle="modal" data-bs-target="#Adjuntos" data-id="'+ data["numeroId"] +'"> <svg xmlns="http://www.w3.org/2000/svg" width="24"'
-                                        + 'height="24" viewBox="0 0 24 24" fill="none"'
-                                        + 'stroke="currentColor" stroke-width="2" stroke-linecap="round" '
-                                        + 'stroke-linejoin="round"'
-                                        + 'class="icon icon-tabler icons-tabler-outline icon-tabler-eye">'
-                                        + '<path stroke="none" d="M0 0h24v24H0z" fill="none" />'
-                                        + '<path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />'
-                                        + '<path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /> </svg>'
+                            + '<a href="#" class="btn btn-primary w-30 btn-icon mb-0 me-1" data-bs-toggle="modal" data-bs-target="#Adjuntos" data-id="'+ data["numeroId"] +'"> '
+                                + '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"'
+                                    + 'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"'
+                                    + 'stroke-linejoin="round" class="icon">'
+                                    + '<path stroke="none" d="M0 0h24v24H0z" fill="none" />'
+                                    + '<path d="M14 3v4a1 1 0 0 0 1 1h4" />'
+                                    + '<path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" />'
+                                    + '<path d="M5 18h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6" />'
+                                    + '<path d="M17 18h2" />'
+                                    + '<path d="M20 15h-3v6" />'
+                                    + '<path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z" />'
+                                    + '</svg>'
                                     + '</a>'
                                    + '<a href="#" class="btn btn-outline-secondary w-30 btn-icon mb-0"'
                                    + 'data-bs-toggle="modal" data-bs-target="#addupdNumModal2"'
@@ -357,32 +346,32 @@
                         method: 'GET',
                         success: function(data) {
                              //console.log($lastId);
-                            $("#nfolios").attr("readOnly", false); //
+                            // $("#nfolios").attr("readOnly", false); //
                             $("#numeroId").attr("readOnly", false); //
-                            $("#ultfolio").attr("readOnly", false); //
+                            // $("#ultfolio").attr("readOnly", false); //
                             $("#oficioAnexo").attr("disabled", true); //Deshabilitar el input
                             $("#oficioAnexo").hide();
-                            var $numId = data.numeroId;
+                            // var $numId = data.numeroId;
 
-                            var $lastId = $numId.split("-");
-                            //console.log($lastId);
-                            var $n;
+                            // var $lastId = $numId.split("-");
+                            // //console.log($lastId);
+                            // var $n;
 
-                            if ($lastId == $numId){
-                                $n =  parseInt($numId)+1;
+                            // if ($lastId == $numId){
+                            //     $n =  parseInt($numId)+1;
 
-                            }else if
-                            ($lastId[1]=== " "){
-                                $n =  parseInt($lastId[0])+1;
+                            // }else if
+                            // ($lastId[1]=== " "){
+                            //     $n =  parseInt($lastId[0])+1;
 
-                            }else{
-                                $n = parseInt($lastId[1])+1;
+                            // }else{
+                            //     $n = parseInt($lastId[1])+1;
 
-                            }
+                            // }
 
                             //console.log($n);
-                            $("#numeroId").val($n);
-                            $("#ultfolio").val($n);
+                            // $("#numeroId").val($n);
+                            // $("#ultfolio").val($n);
 
                         }
                     });
@@ -398,24 +387,24 @@
                                 url: '/NumerosAreas2/' + id,
                                 method: 'GET',
                                 success: function(data) {
-                                    var $numId = data.numeroId;
-                                    var $lastId = $numId.split("-");
-                                    if($lastId == $numId){
-                                        var $n = $numId;
-                                    }else if($lastId[1]== ''){
-                                        $n = $numId;
-                                    }else{
-                                        $n = $lastId[1];
-                                    }
+                                    // var $numId = data.numeroId;
+                                    // var $lastId = $numId.split("-");
+                                    // if($lastId == $numId){
+                                    //     var $n = $numId;
+                                    // }else if($lastId[1]== ''){
+                                    //     $n = $numId;
+                                    // }else{
+                                    //     $n = $lastId[1];
+                                    // }
                                     //console.log($lastId);
-                                    $("#nfolios").attr("readOnly", true); //
+                                    // $("#nfolios").attr("readOnly", true); //
                                     $("#numeroId").attr("readOnly", true); //
-                                    $("#ultfolio").attr("readOnly", true); //
+                                    // $("#ultfolio").attr("readOnly", true); //
                                     $("#oficioAnexo").attr("disabled", false); //habilitar el input
                                     $("#oficioAnexo").show(); //mostrar el input
                                     //$("#nfolios").show();
 
-                                    $("#ultfolio").val($n);
+                                    // $("#ultfolio").val($n);
                                     $("#numeroId").val(data.numeroId);
                                     $("#fecha").val(convertirFecha(data.fecha));
                                     $("#area").val(data.area);
@@ -442,7 +431,7 @@
                         var $listAdjuntos = $('#listadjuntos');
                         $listAdjuntos.empty(); // Limpiar la lista existente
                         console.log('Datos recibidos:', data);
-                        if(data.success === false){
+                        if(!data.archivos || data.archivos.length === 0){
                             //mensaje para cuando no hay archivos
                             $listAdjuntos.append('<p>No hay archivos disponibles</p>');
                         }else{

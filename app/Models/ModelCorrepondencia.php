@@ -32,6 +32,9 @@ class ModelCorrepondencia extends Model
         'fecha_creado',
         'modificado_por',
         'fecha_modificado',
-        'interno'
+        'interno',
+        'atiende',
+        'estatus',
+        'fecha_finalizado'
     ];
 }

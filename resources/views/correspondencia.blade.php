@@ -64,6 +64,11 @@
                     <p><strong>Autoridad Remitente:</strong> <span id="modal_enviado_por"></span></p>
                     <p><strong>Recibido Fecha:</strong> <span id="modal_recibido_fecha"></span></p>
                     <p><strong>Area:</strong> <span id="modal_area"></span></p>
+                    @if(auth()->user()->area != 'COORDINACIÓN')
+                    <p><strong>Atiende:</strong> <span id="modal_atiende"></span></p>
+                    <p><strong>Estatus:</strong> <span id="modal_estatus"></span></p>
+                    <p><strong>Fecha Finalizado:</strong> <span id="modal_fecha_finalizado"></span></p>
+                    @endif
                     <p><strong>Anexos:</strong> <span id="modal_anexos"></span></p>
                     <p><strong>Observaciones:</strong> <span id="modal_observaciones"></span></p>
 
@@ -104,7 +109,7 @@
                     @method('PUT')
                     <div class="modal-body">
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <label class="form-label required">No. Oficio</label>
                                 <input type="text" class="form-control @error('no_oficio') is-invalid @enderror"
                                     name="no_oficio" id="no_oficio" required>
@@ -112,7 +117,7 @@
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <label class="form-label">Fecha de Oficio</label>
                                 <input type="date" class="form-control @error('fecha_oficio') is-invalid @enderror"
                                     name="fecha_oficio" id="fecha_oficio">
@@ -120,9 +125,6 @@
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
-                        </div>
-
-                        <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="form-label">Autoridad Remitente</label>
                                 <input type="text" class="form-control @error('enviado_por') is-invalid @enderror"
@@ -131,6 +133,10 @@
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
+                        </div>
+
+                        <div class="row mb-3">
+
                             <div class="col-md-6">
                                 <label class="form-label">Asunto</label>
                                 <input type="text" class="form-control @error('asunto') is-invalid @enderror"
@@ -139,10 +145,7 @@
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <label class="form-label @error('area') is-invalid @enderror">Área que recibe</label>
                                 <select class="form-select" {{ $areaCB_activo ? '' : 'disabled' }} name="areaCB"
                                     id="areaCB" required>
@@ -153,8 +156,7 @@
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
-
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <label class="form-label">Fecha de Recibido</label>
                                 <input type="date" class="form-control @error('fecha_recibido') is-invalid @enderror"
                                     name="fecha_recibido" id="fecha_recibido">
@@ -164,8 +166,36 @@
                             </div>
                         </div>
 
+
+                        @if(auth()->user()->area != 'COORDINACIÓN')
                         <div class="row">
                             <div class="col-md-6">
+                                <label class="form-label">Quien atiende</label>
+                                <input type="text" class="form-control @error('atiende') is-invalid @enderror"
+                                    name="atiende" id="atiende">
+                                @error('atiende')
+                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Finalizado</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input " type="checkbox" id="estatus" name = "estatus" value="1">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Fecha Finalizado</label>
+                                <input type="date" class="form-control @error('fecha_finalizado') is-invalid @enderror"
+                                    name="fecha_finalizado" id="fecha_finalizado">
+                                @error('fecha_finalizado')
+                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        @endif
+                        <div class="row">
+                            <div class="col-md-3">
                                 <label class="form-label">Anexos</label>
                                 <input type="text" class="form-control @error('anexos') is-invalid @enderror"
                                     name="anexos" id="anexos">
@@ -173,7 +203,7 @@
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-9">
                                 <label class="form-label">Observaciones</label>
                                 <input type="text" class="form-control @error('observaciones') is-invalid @enderror"
                                     name="observaciones" id="observaciones">
@@ -274,6 +304,7 @@
 
             let nombrepdf = "";
             // $("#tabla").DataTable({});
+
             let table = new DataTable('#DStabla', {
                 "ajax":{
                     "url":@json(route('dsdataoficios')),
@@ -373,6 +404,17 @@
                 }
             });
 
+            $("#estatus").on('change', function() {
+                //console.log( $("#estatus").is(":checked"));
+                var myDateInput = document.getElementById("fecha_finalizado");
+                //myDateInput.disabled = !$("#estatus").is(":checked");
+                if ($("#estatus").is(":checked")) {
+                myDateInput.disabled = false; // Habilita el campo de fecha
+                } else {
+                    myDateInput.disabled = true; // Deshabilita el campo de fecha
+                    myDateInput.value = ''; // Limpia el campo de fecha
+                }
+            });
 
             $('#detalleModal').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget);
@@ -394,6 +436,14 @@
                         $('#modal_recibido_fecha').text(data.fecha_recibido);
                         $('#modal_area').text(data.area);
                         $('#modal_observaciones').text(data.folder);
+                        $('#modal_atiende').text(data.atiende);
+                        if(data.estatus === "1"){
+                            $('#modal_estatus').text("Finalizado");
+                        } else{
+                            $('#modal_estatus').text("En Proceso");
+                        }
+
+                        $('#modal_fecha_finalizado').text(data.fecha_finalizado);
 
                         // Asigan URL del oficio en el FTP
                         if (data.tieneOficio == "SI") {
@@ -433,7 +483,7 @@
                     $("#ofPDF").html("Subir Archivo");
                    //deshabilitar el label
                     $('#ofPDF, [for="#oficioPDF"]').prop('disabled', true).addClass('disabled');
-
+                    $("#fecha_finalizado").prop("disabled",true);
 
                 } else {
                     // Asignar la URL para actualizar
@@ -453,11 +503,19 @@
                             $("#fecha_recibido").val(convertirFecha(data.fecha_recibido));
                             $("#areaCB").val(data.area);
                             $("#observaciones").val(data.folder);
+                            $("#atiende").val(data.atiende);
+                            if(data.estatus === "1"){
+                                $("#estatus").prop("checked",true);
 
+                            }else{
+                                $("#estatus").prop("checked",false);
+
+                            }
+
+                            $("#fecha_finalizado").val(convertirFecha(data.fecha_finalizado));
 
                             nombrepdf = data.no_oficio + ".pdf";
                             //console.log(nombrepdf);
-
 
                             if (data.tieneOficio == "SI") {
                                 // Habiliar el boton de ver oficio

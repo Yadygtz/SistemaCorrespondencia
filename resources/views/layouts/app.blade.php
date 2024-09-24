@@ -9,7 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Correspondencia') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -93,6 +93,8 @@
     <script src="{{ asset('assets/js/jquery.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/datatables.js') }}"></script>
     <script src="{{ asset('assets/js/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/moment.min.js') }}"></script>
+    <script src="{{ asset('assets/js/datetime-moment.js') }}"></script>
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -102,6 +104,7 @@
             Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
         }
 
+        $.fn.dataTable.moment('DD/MM/YYYY');
 
     </script>
     @stack('scripts')

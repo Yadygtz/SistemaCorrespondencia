@@ -59,8 +59,6 @@ class CorrespondenciaController extends Controller
         }
 
         return response()->json($correspondencia);
-
-
     }
 
     public function agregar(Request $request)
@@ -79,6 +77,7 @@ class CorrespondenciaController extends Controller
             $areaC = $request->areaCB;
         }
 
+
         // Crear el Oficio
         ModelCorrepondencia::create([
             'no_oficio' => $request->no_oficio,
@@ -90,7 +89,10 @@ class CorrespondenciaController extends Controller
             'recibido_por' => $request->anexos,
             'fecha_recibido' =>  Carbon::createFromFormat('Y-m-d', $request->fecha_recibido)->format('d/m/Y'),
             'creado_por' => auth()->user()->id,
-            'interno' => $interno
+            'interno' => $interno,
+            'atiende' => $request->atiende,
+            'estatus' => $request->estatus,
+            'fecha_finalizado' => $request->fecha_finalizado ? Carbon::createFromFormat('Y-m-d', $request->fecha_finalizado)->format('d/m/Y') : null
         ]);
 
         //if ($request->hasFile('oficioPDF')) {
@@ -126,11 +128,12 @@ class CorrespondenciaController extends Controller
         // Validación de los datos
         $validatedData = $request->validate([
             'no_oficio' => 'required|string|max:255',
-            'fecha_oficio' => 'string|max:255',
+            'fecha_oficio' => 'date',
             'enviado_por' =>  'string|max:255',
             'asunto' => 'string|max:255',
-            'fecha_recibido' => 'string|max:255',
-            'areaCB'  => 'string|max:255'
+            'fecha_recibido' => 'date',
+            'areaCB'  => 'string|max:255',
+            'fecha_finalizado' => 'date'
             // Añade las reglas de validación para el resto de los campos
             // 'oficioPDF' => 'file|mimes:pdf',
         ]);
@@ -147,6 +150,8 @@ class CorrespondenciaController extends Controller
         $validatedData["folder"] = $request->observaciones;
         $validatedData["recibido_por"] = $request->anexos;
         $validatedData["area"] = $areaC;
+        $validatedData["atiende"] = $request->atiende;
+        $validatedData["estatus"] = $request->estatus;
 
         // Convertir las fechas de Y-m-d a d/m/Y
         if (isset($validatedData['fecha_oficio'])) {
@@ -156,6 +161,18 @@ class CorrespondenciaController extends Controller
         if (isset($validatedData['fecha_recibido'])) {
             $validatedData['fecha_recibido'] = Carbon::createFromFormat('Y-m-d', $validatedData['fecha_recibido'])->format('d/m/Y');
         }
+
+
+        if($request->estatus != "1"){
+            $validatedData['fecha_finalizado'] = '';
+        }else{
+            if (isset($validatedData['fecha_finalizado'])) {
+                $validatedData['fecha_finalizado'] = Carbon::createFromFormat('Y-m-d', $validatedData['fecha_finalizado'])->format('d/m/Y');
+            }
+        }
+
+
+
 
         // Encontrar el registro por ID y actualizarlo
         $correspondencia = ModelCorrepondencia::findOrFail($id);
