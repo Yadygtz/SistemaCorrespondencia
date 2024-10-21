@@ -133,7 +133,7 @@ class CorrespondenciaController extends Controller
             'asunto' => 'string|max:255',
             'fecha_recibido' => 'date',
             'areaCB'  => 'string|max:255',
-            'fecha_finalizado' => 'date'
+
             // Añade las reglas de validación para el resto de los campos
             // 'oficioPDF' => 'file|mimes:pdf',
         ]);

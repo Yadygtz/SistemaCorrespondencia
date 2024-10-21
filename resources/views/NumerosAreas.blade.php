@@ -342,7 +342,7 @@
 
                     // Traer el ultimo folio
                     $.ajax({
-                        url: '/GetId2',
+                        url: "{{ route('RegistroNumeros.GetId2') }}",
                         method: 'GET',
                         success: function(data) {
                              //console.log($lastId);
@@ -379,12 +379,12 @@
 
                 } else {
                     // Asignar la URL para actualizar
-                    $("#formUpdNum").attr('action', 'NumerosAreas/upd2/' + id);
+                    $("#formUpdNum").attr('action', "{{ route('NumerosAreas.editar', ':id') }}".replace(':id', id));
                     $("#titlemodal").text("Editar Registro de Número");
 
                     // Traer los datos del oficio
                     $.ajax({
-                                url: '/NumerosAreas2/' + id,
+                                url: "{{ route('NumerosAreas.show', ':id') }}".replace(':id', id),
                                 method: 'GET',
                                 success: function(data) {
                                     // var $numId = data.numeroId;
@@ -425,7 +425,7 @@
             var id = button.data('id'); // Obtén el ID del botón
 
                 $.ajax({
-                    url: '/NumerosAreas/lista2/' + id, // La URL de la solicitud AJAX
+                    url: "{{ route('NumerosAreas.list2', ':id') }}".replace(':id', id), // La URL de la solicitud AJAX
                     method: 'GET',
                     success: function(data) {
                         var $listAdjuntos = $('#listadjuntos');

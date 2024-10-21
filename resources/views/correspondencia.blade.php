@@ -425,7 +425,7 @@
                 $("#urloficio").addClass("disabled");
 
                 $.ajax({
-                    url: '/correspondencia/' + id,
+                    url: "{{ route('correspondencia.show', ':id') }}".replace(':id', id),
                     method: 'GET',
                     success: function(data) {
                         $('#modal_no_oficio').text(data.no_oficio);
@@ -470,7 +470,7 @@
                     // Limpiar el formulario
                     limpiarForm();
                     // Asignar la URL para agregar
-                    $("#formUpdOfi").attr('action', 'correspondencia/add');
+                    $("#formUpdOfi").attr('action', "{{ route('correspondencia.agregar') }}");
                     $("#titlemodal").text("Agregar Oficio");
 
 
@@ -487,12 +487,12 @@
 
                 } else {
                     // Asignar la URL para actualizar
-                    $("#formUpdOfi").attr('action', 'correspondencia/upd/' + id);
+                    $("#formUpdOfi").attr('action', "{{ route('correspondencia.editar', ':id') }}".replace(':id', id));
                     $("#titlemodal").text("Editar Oficio");
 
                     // Traer los datos del oficio
                     $.ajax({
-                        url: '/correspondencia/' + id,
+                        url: "{{ route('correspondencia.show', ':id') }}".replace(':id', id),
                         method: 'GET',
                         success: function(data) {
                             $("#no_oficio").val(data.no_oficio);
@@ -512,15 +512,22 @@
 
                             }
 
-                            $("#fecha_finalizado").val(convertirFecha(data.fecha_finalizado));
+                            var fechaFinalizado = data.fecha_finalizado;
+                            console.log('Fecha finalizado:', fechaFinalizado);
+                            if (fechaFinalizado) {
+                                $("#fecha_finalizado").val(convertirFecha(fechaFinalizado));
+                            } else {
+                                $("#fecha_finalizado").val(''); //
+                            }
+                            //$("#fecha_finalizado").val(convertirFecha(data.fecha_finalizado));
 
                             nombrepdf = data.no_oficio + ".pdf";
                             //console.log(nombrepdf);
 
                             if (data.tieneOficio == "SI") {
                                 // Habiliar el boton de ver oficio
-
-                                $("#urloficio2").attr("href", "veroficio/" + data.no_oficio.replace(/\//g, '-'));
+                                var n_oficio = data.no_oficio.replace(/\//g, '-');
+                                $("#urloficio2").attr("href", "{{ route('veroficio', ':id') }}".replace(':id', n_oficio));
 
                                 $("#urloficio2").removeClass("disabled");
                                 $("#urloficio2").show();

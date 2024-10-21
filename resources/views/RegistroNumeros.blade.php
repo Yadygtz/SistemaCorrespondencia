@@ -329,12 +329,12 @@
                     // Limpiar el formulario
                     limpiarForm();
                     // Asignar la URL para agregar
-                    $("#formUpdNum").attr('action', 'RegistroNumeros/add');
+                    $("#formUpdNum").attr('action', "{{ route('RegistroNumeros.agregar') }}");
                     $("#titlemodal").text("Agregar Registro de Número");
 
                     // Traer el ultimo folio
                     $.ajax({
-                        url: '/GetId',
+                        url: "{{ route('RegistroNumeros.GetId') }}",
                         method: 'GET',
                         success: function(data) {
                              //console.log($lastId);
@@ -371,12 +371,12 @@
 
                 } else {
                     // Asignar la URL para actualizar
-                    $("#formUpdNum").attr('action', 'RegistroNumeros/upd/' + id);
+                    $("#formUpdNum").attr('action', "{{ route('RegistroNumeros.actualizar', ':id') }}".replace(':id', id));
                     $("#titlemodal").text("Editar Registro de Número");
 
                     // Traer los datos del oficio
                     $.ajax({
-                                url: '/RegistroNumeros/' + id,
+                                url: "{{ route('RegistroNumeros.show', ':id') }}".replace(':id', id),
                                 method: 'GET',
                                 success: function(data) {
                                     var $numId = data.numeroId;
@@ -417,7 +417,7 @@
             var id = button.data('id'); // Obtén el ID del botón
 
                 $.ajax({
-                    url: '/RegistroNumeros/lista/' + id, // La URL de la solicitud AJAX
+                    url: "{{ route('RegistroNumeros.listfiles', ':id') }}".replace(':id', id), // La URL de la solicitud AJAX
                     method: 'GET',
                     success: function(data) {
                         var $listAdjuntos = $('#listadjuntos');

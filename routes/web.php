@@ -34,9 +34,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/correspondencia', [CorrespondenciaController::class, 'index'])->name('correspondencia');
     // Route::resource('correspondencia', CorrespondenciaController::class);
-    Route::get('/correspondencia/{id}', [CorrespondenciaController::class, 'show']);
-    Route::put('/correspondencia/upd/{id}', [CorrespondenciaController::class, 'editar']);
-    Route::put('/correspondencia/add', [CorrespondenciaController::class, 'agregar']);
+    Route::get('/correspondencia/{id}', [CorrespondenciaController::class, 'show'])->name('correspondencia.show');
+    Route::put('/correspondencia/upd/{id}', [CorrespondenciaController::class, 'editar'])->name('correspondencia.editar');
+    Route::put('/correspondencia/add', [CorrespondenciaController::class, 'agregar'])->name('correspondencia.agregar');
     Route::get('/dsdataoficios', [CorrespondenciaController::class, 'dataoficios'])->name('dsdataoficios');
 
 
@@ -45,20 +45,20 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     Route::get('/RegistroNumeros', [RegistroNumerosController::class, 'index'])->name('RegistroNumeros');
-    Route::get('/RegistroNumeros/{id}', [RegistroNumerosController::class, 'show']);
-    Route::put('/RegistroNumeros/upd/{id}', [RegistroNumerosController::class, 'editar']);
-    Route::put('/RegistroNumeros/add', [RegistroNumerosController::class, 'agregar']);
-    Route::get('/GetId', [RegistroNumerosController::class, 'ultimoId']);
+    Route::get('/RegistroNumeros/{id}', [RegistroNumerosController::class, 'show'])->name('RegistroNumeros.show');
+    Route::put('/RegistroNumeros/upd/{id}', [RegistroNumerosController::class, 'editar'])->name('RegistroNumeros.actualizar');
+    Route::put('/RegistroNumeros/add', [RegistroNumerosController::class, 'agregar'])->name('RegistroNumeros.agregar');
+    Route::get('/GetId', [RegistroNumerosController::class, 'ultimoId'])->name('RegistroNumeros.GetId');
     Route::get('/dsdatanumeros', [RegistroNumerosController::class, 'datanumeros'])->name('dsdatanumeros');
-    Route::get('/RegistroNumeros/lista/{numeroId}', [RegistroNumerosController::class, 'listfiles']);
+    Route::get('/RegistroNumeros/lista/{numeroId}', [RegistroNumerosController::class, 'listfiles'])->name('RegistroNumeros.listfiles');
 
     Route::get('/NumerosAreas', [NumerosAreasController::class, 'index'])->name('NumerosAreas');
     Route::get('/dsdatanumeros2', [NumerosAreasController::class, 'datanumeros'])->name('dsdatanumeros2');
     Route::put('/NumerosAreas/add', [NumerosAreasController::class, 'agregar']);
-    Route::get('/GetId2', [NumerosAreasController::class, 'ultimoId']);
-    Route::put('/NumerosAreas/upd2/{id}', [NumerosAreasController::class, 'editar']);
-    Route::get('/NumerosAreas2/{id}', [NumerosAreasController::class, 'show']);
-    Route::get('/NumerosAreas/lista2/{numeroId}', [NumerosAreasController::class, 'listfiles']);
+    Route::get('/GetId2', [RegistroNumerosController::class, 'ultimoId'])->name('RegistroNumeros.GetId2');
+    Route::put('/NumerosAreas/upd2/{id}', [NumerosAreasController::class, 'editar'])->name('NumerosAreas.editar');
+    Route::get('/NumerosAreas2/{id}', [NumerosAreasController::class, 'show'])->name('NumerosAreas.show');
+    Route::get('/NumerosAreas/lista2/{numeroId}', [NumerosAreasController::class, 'listfiles'])->name('NumerosAreas.list2');
 
     /* OBTENER EL ARCHIVO DEL SERVER FTP*/
     // Expediente digital
@@ -79,6 +79,7 @@ Route::middleware('auth')->group(function () {
 
         return $oficio;
     })->name('veroficio');
+
     //oficios Numeros
     Route::get('verPDF/{carpeta}/{archivo}', function ($carpeta,$archivo) {
         // Verificar en cuál de los dos servidores se encuentra el fichero
