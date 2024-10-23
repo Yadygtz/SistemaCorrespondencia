@@ -29,10 +29,10 @@ use Illuminate\Support\Facades\Response;
 
 Route::middleware('auth')->group(function () {
     Route::resource('usuarios', UsuariosController::class);
-    // Route::get('/', function () {
-    //     return redirect('/correspondencia');
-    // });
-    Route::view('/', 'home')->name('home');
+    Route::get('/', function () {
+        return redirect('/correspondencia');
+    });
+
     Route::get('/correspondencia', [CorrespondenciaController::class, 'index'])->name('correspondencia');
     // Route::resource('correspondencia', CorrespondenciaController::class);
     Route::get('/correspondencia/{id}', [CorrespondenciaController::class, 'show'])->name('correspondencia.show');
