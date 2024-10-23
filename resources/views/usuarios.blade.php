@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.user_type.auth')
 @section('titulo','Usuarios del Sistema')
-@section('guest')
+@section('content')
     <div class="">
         <div class="row">
             <div class="col-12">
