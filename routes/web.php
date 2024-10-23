@@ -25,13 +25,14 @@ use Illuminate\Support\Facades\Response;
 
 //  Auth::routes();
 
-Route::resource('usuarios', UsuariosController::class);
+
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
-        return redirect('/correspondencia');
-    });
-
+    Route::resource('usuarios', UsuariosController::class);
+    // Route::get('/', function () {
+    //     return redirect('/correspondencia');
+    // });
+    Route::view('/', 'home')->name('home');
     Route::get('/correspondencia', [CorrespondenciaController::class, 'index'])->name('correspondencia');
     // Route::resource('correspondencia', CorrespondenciaController::class);
     Route::get('/correspondencia/{id}', [CorrespondenciaController::class, 'show'])->name('correspondencia.show');
