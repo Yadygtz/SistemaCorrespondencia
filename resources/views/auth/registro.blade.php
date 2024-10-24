@@ -1,6 +1,6 @@
-@extends('layouts.app')
-
-@section('guest')
+@extends('layouts.user_type.auth')
+@section('titulo','Usuarios del Sistema')
+@section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
