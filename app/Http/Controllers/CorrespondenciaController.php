@@ -151,7 +151,7 @@ class CorrespondenciaController extends Controller
         $validatedData["recibido_por"] = $request->anexos;
         $validatedData["area"] = $areaC;
         $validatedData["atiende"] = $request->atiende;
-        $validatedData["estatus"] = $request->estatus;
+
 
         // Convertir las fechas de Y-m-d a d/m/Y
         if (isset($validatedData['fecha_oficio'])) {
@@ -165,10 +165,13 @@ class CorrespondenciaController extends Controller
 
         if($request->estatus != "1"){
             $validatedData['fecha_finalizado'] = '';
+            $validatedData['estatus'] = '0';
+
         }else{
             if (isset($validatedData['fecha_finalizado'])) {
                 $validatedData['fecha_finalizado'] = Carbon::createFromFormat('Y-m-d', $validatedData['fecha_finalizado'])->format('d/m/Y');
             }
+            $validatedData["estatus"] = $request->estatus;
         }
 
 
