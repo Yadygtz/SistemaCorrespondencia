@@ -42,8 +42,8 @@ class reporte_pdf_Controller extends Controller
         try{
             if($area == 'COORDINACIÓN'){
                 $datos = ModelCorrepondencia::whereRaw(
-                    'interno = ? and area = ? and str_to_date(fecha_oficio, "%d/%m/%Y") BETWEEN str_to_date(?, "%d/%m/%Y") AND str_to_date(?, "%d/%m/%Y") order by fecha_oficio',
-                    ['0', $area,$fecha_inicial, $fecha_final]
+                    'interno = ? and str_to_date(fecha_oficio, "%d/%m/%Y") BETWEEN str_to_date(?, "%d/%m/%Y") AND str_to_date(?, "%d/%m/%Y") order by fecha_oficio',
+                    ['0',$fecha_inicial, $fecha_final]
                 )->get();
             }else {
                 $datos = ModelCorrepondencia::whereRaw(
