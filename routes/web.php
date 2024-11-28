@@ -3,6 +3,7 @@
 use App\Http\Controllers\CorrespondenciaController;
 use App\Http\Controllers\NumerosAreasController;
 use App\Http\Controllers\RegistroNumerosController;
+use App\Http\Controllers\reporte_pdf_Controller;
 use App\Http\Controllers\UsuariosController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -119,7 +120,7 @@ Route::middleware('auth')->group(function () {
         return $oficio;
     })->name('verPDF2');
 
-
+    Route::post('/reporte', [reporte_pdf_Controller::class, 'generarPdf'])->name('reporte');
 
 });
 

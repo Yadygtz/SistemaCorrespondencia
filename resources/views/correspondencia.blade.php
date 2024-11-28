@@ -1,3 +1,8 @@
+{{-- @php
+    $documentRoot = $_SERVER['DOCUMENT_ROOT'];
+    phpinfo();
+@endphp
+<p>{{ $documentRoot }}</p> --}}
 @extends('layouts.user_type.auth')
 @section('titulo','Correspondencia de '. auth()->user()->area)
 @section('content')
@@ -11,6 +16,9 @@
                                 <h6 class="mb-0">Correspondencia</h6>
                             </div>
                             <div class="col-6 text-end">
+                                <a class="btn btn-secondary btn-sm mb-0" data-bs-toggle="modal"
+                                    data-bs-target="#filtroModal" data-tipo="agregar">Reporte</a>
+
                                 <a class="btn btn-primary btn-sm mb-0" data-bs-toggle="modal"
                                     data-bs-target="#addupdOfiModal" data-tipo="agregar">Agregar</a>
                             </div>
@@ -63,6 +71,9 @@
                     <p><strong>Fecha Oficio:</strong> <span id="modal_fecha_oficio"></span></p>
                     <p><strong>Autoridad Remitente:</strong> <span id="modal_enviado_por"></span></p>
                     <p><strong>Recibido Fecha:</strong> <span id="modal_recibido_fecha"></span></p>
+                    @if(auth()->user()->area == 'COORDINACIÓN')
+                    <p><strong>Quien recibe:</strong> <span id="modal_recibe"></span></p>
+                    @endif
                     <p><strong>Area:</strong> <span id="modal_area"></span></p>
                     @if(auth()->user()->area != 'COORDINACIÓN')
                     <p><strong>Atiende:</strong> <span id="modal_atiende"></span></p>
@@ -108,6 +119,79 @@
                     @csrf
                     @method('PUT')
                     <div class="modal-body">
+                         {{-- Solo para COORDINACION --}}
+                         @if(auth()->user()->area == 'COORDINACIÓN')
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label class="form-label required">No. Oficio</label>
+                                    <input type="text" class="form-control @error('no_oficio') is-invalid @enderror"
+                                        name="no_oficio" id="no_oficio" required>
+                                    @error('no_oficio')
+                                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Fecha de Oficio</label>
+                                    <input type="date" class="form-control @error('fecha_oficio') is-invalid @enderror"
+                                        name="fecha_oficio" id="fecha_oficio">
+                                    @error('fecha_oficio')
+                                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Autoridad Remitente</label>
+                                    <input type="text" class="form-control @error('enviado_por') is-invalid @enderror"
+                                        name="enviado_por" id="enviado_por" required>
+                                    @error('enviado_por')
+                                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label class="form-label @error('area') is-invalid @enderror">Área que recibe</label>
+                                    <select class="form-select" {{ $areaCB_activo ? '' : 'disabled' }} name="areaCB"
+                                        id="areaCB" required>
+                                        <option value=""></option>
+                                        {{!! $areasCB !!}}
+                                    </select>
+                                    @error('area')
+                                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Fecha de Recibido</label>
+                                    <input type="date" class="form-control @error('fecha_recibido') is-invalid @enderror"
+                                        name="fecha_recibido" id="fecha_recibido">
+                                    @error('fecha_recibido')
+                                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Quien recibe</label>
+                                    <input type="text" class="form-control @error('recibe') is-invalid @enderror"
+                                        name="recibe" id="recibe" required>
+                                    @error('recibe')
+                                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label class="form-label">Asunto</label>
+                                    <input type="text" class="form-control @error('asunto') is-invalid @enderror"
+                                        name="asunto" id="asunto" required>
+                                    @error('asunto')
+                                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+
+                         @endif
+
+                        @if(auth()->user()->area != 'COORDINACIÓN')
                         <div class="row mb-3">
                             <div class="col-md-3">
                                 <label class="form-label required">No. Oficio</label>
@@ -165,9 +249,6 @@
                                 @enderror
                             </div>
                         </div>
-
-
-                        @if(auth()->user()->area != 'COORDINACIÓN')
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="form-label">Quien atiende</label>
@@ -240,6 +321,37 @@
                         </button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+    {{-- Modal Reporte--}}
+    <div class="modal fade" id="filtroModal" tabindex="-1" role="dialog" aria-labelledby="filtroModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="filtroModalLabel">Rangos de Fecha</h5>
+
+                </div>
+                <div class="modal-body">
+                    <form action = "{{ route('reporte') }}" method="POST">
+                        @csrf
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha Inicio</label>
+                                <input type="date" class="form-control" id="fecha_ini" name="fecha_ini" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha Fin</label>
+                                <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CERRAR</button>
+                            <button type="submit" class="btn btn-primary">Reporte PDF</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -435,6 +547,7 @@
                         $('#modal_anexos').text(data.recibido_por);
                         $('#modal_recibido_fecha').text(data.fecha_recibido);
                         $('#modal_area').text(data.area);
+                        $('#modal_recibe').text(data.recibe);
                         $('#modal_observaciones').text(data.folder);
                         $('#modal_atiende').text(data.atiende);
                         if(data.estatus === "1"){
@@ -504,6 +617,7 @@
                             $("#areaCB").val(data.area);
                             $("#observaciones").val(data.folder);
                             $("#atiende").val(data.atiende);
+                            $("#recibe").val(data.recibe);
                             if(data.estatus === "1"){
                                 $("#estatus").prop("checked",true);
 

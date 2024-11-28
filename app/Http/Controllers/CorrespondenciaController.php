@@ -91,6 +91,7 @@ class CorrespondenciaController extends Controller
             'creado_por' => auth()->user()->id,
             'interno' => $interno,
             'atiende' => $request->atiende,
+            'recibe' => $request->recibe,
             'estatus' => $request->estatus,
             'fecha_finalizado' => $request->fecha_finalizado ? Carbon::createFromFormat('Y-m-d', $request->fecha_finalizado)->format('d/m/Y') : null
         ]);
@@ -151,6 +152,8 @@ class CorrespondenciaController extends Controller
         $validatedData["recibido_por"] = $request->anexos;
         $validatedData["area"] = $areaC;
         $validatedData["atiende"] = $request->atiende;
+        $validatedData["recibe"] = $request->recibe;
+
 
 
         // Convertir las fechas de Y-m-d a d/m/Y

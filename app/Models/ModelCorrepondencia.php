@@ -35,6 +35,7 @@ class ModelCorrepondencia extends Model
         'interno',
         'atiende',
         'estatus',
-        'fecha_finalizado'
+        'fecha_finalizado',
+        'recibe'
     ];
 }
