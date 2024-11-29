@@ -39,10 +39,10 @@
             text-align: center;
 
         }
-        th {
+        /* th {
 
         width: auto-size;
-        }
+        } */
 
         tr:nth-child(even) {
             background-color: #f9f9f9e0; /* Alternar filas para mejor legibilidad */
@@ -68,12 +68,12 @@
     <table>
         <thead>
             <tr>
-                <th>N°</th>
-                <th>Oficio</th>
-                <th>Fecha Oficio</th>
-                <th>Area</th>
-                <th>Recibe</th>
-                <th>Anexos</th>
+                <th width=2%>N°</th>
+                <th width=40%>Oficio</th>
+                <th width =5%>Fecha Oficio</th>
+                <th width =10%>Area</th>
+                <th width =20%>Recibe</th>
+                <th width =23%>Anexos</th>
 
             </tr>
         </thead>
