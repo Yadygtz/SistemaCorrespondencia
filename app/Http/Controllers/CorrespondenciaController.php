@@ -92,7 +92,7 @@ class CorrespondenciaController extends Controller
             'interno' => $interno,
             'atiende' => $request->atiende,
             'recibe' => $request->recibe,
-            'estatus' => $request->estatus,
+            'estatus' => $request->estatus != '1' ? '0':'1',
             'fecha_finalizado' => $request->fecha_finalizado ? Carbon::createFromFormat('Y-m-d', $request->fecha_finalizado)->format('d/m/Y') : null
         ]);
 
