@@ -3,6 +3,7 @@
 use App\Http\Controllers\CorrespondenciaController;
 use App\Http\Controllers\NumerosAreasController;
 use App\Http\Controllers\RegistroNumerosController;
+use App\Http\Controllers\RegistroNumerosControllerAnt;
 use App\Http\Controllers\reporte_pdf_Controller;
 use App\Http\Controllers\UsuariosController;
 use Illuminate\Support\Facades\Route;
@@ -53,6 +54,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/GetId', [RegistroNumerosController::class, 'ultimoId'])->name('RegistroNumeros.GetId');
     Route::get('/dsdatanumeros', [RegistroNumerosController::class, 'datanumeros'])->name('dsdatanumeros');
     Route::get('/RegistroNumeros/lista/{numeroId}', [RegistroNumerosController::class, 'listfiles'])->name('RegistroNumeros.listfiles');
+
+    Route::get('/RegistroNumerosAnt', [RegistroNumerosControllerAnt::class, 'index'])->name('RegistroNumerosAnt');
+    Route::get('/dsdatanumerosAnt', [RegistroNumerosControllerAnt::class, 'datanumerosAnt'])->name('dsdatanumerosAnt');
+
 
     Route::get('/NumerosAreas', [NumerosAreasController::class, 'index'])->name('NumerosAreas');
     Route::get('/dsdatanumeros2', [NumerosAreasController::class, 'datanumeros'])->name('dsdatanumeros2');

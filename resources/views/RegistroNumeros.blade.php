@@ -1,4 +1,5 @@
 @extends('layouts.user_type.auth')
+@section('titulo2','Números')
 @section('titulo','Registro de Números')
 @section('content')
     <div class="">
@@ -92,7 +93,7 @@
                         <div class="row mb-3">
                             <div class="col-md-2">
                                 <label class="form-label required">No. Oficio</label>
-                                <input type="text" class="form-control @error('numeroId') is-invalid @enderror"
+                                <input type="text" max=4 class="form-control @error('numeroId') is-invalid @enderror"
                                     name="numeroId" id="numeroId" required>
                                 @error('numeroId')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -108,7 +109,7 @@
                             </div>
                             <div class="col-md-2">
                                 <label class="form-label required">Ultimo Folio</label>
-                                <input type="text" class="form-control @error('ultfolio') is-invalid @enderror"
+                                <input type="text" max=4 class="form-control @error('ultfolio') is-invalid @enderror"
                                     name="ultfolio" id="ultfolio" required>
                                 @error('ultfolio')
                                     <span class="invalid-feedback" role="alert">{{ $message }}</span>
@@ -191,7 +192,8 @@
 
 
         document.getElementById("nfolios").addEventListener('input',function(e){
-            $("#ultfolio").val((parseInt($("#numeroId").val()) + parseInt(e.target.value))-1);
+                $("#ultfolio").val((parseInt($("#numeroId").val()) + parseInt(e.target.value))-1);
+
         })
 
 
@@ -321,6 +323,8 @@
             }
             });
 
+
+
             $('#addupdNumModal').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget);
                 var id = button.data('id');
@@ -343,27 +347,41 @@
                             $("#ultfolio").attr("readOnly", false); //
                             $("#oficioAnexo").attr("disabled", true); //Deshabilitar el input
                             $("#oficioAnexo").hide();
-                            var $numId = data.numeroId;
+                            var numId = data.numeroId;
 
-                            var $lastId = $numId.split("-");
+                            //console.log(numId);
+
+                            var lastId = numId.split("-");
+                            // var numId2 = numId.split("-");
                             //console.log($lastId);
-                            var $n;
+                            var n;
+                            var first = true;
 
-                            if ($lastId == $numId){
-                                $n =  parseInt($numId)+1;
+                            if (lastId[0] == numId){
+                                n =  parseInt(lastId[0])+1;
 
                             }else if
-                            ($lastId[1]=== " "){
-                                $n =  parseInt($lastId[0])+1;
+                            (lastId[1]=== " "){
+                                n =  parseInt(lastId[0])+1;
 
                             }else{
-                                $n = parseInt($lastId[1])+1;
+                                n = parseInt(lastId[1])+1;
 
                             }
 
+                            //console.log($("#nfolios").val());
+                            // if(numId == 1 && $("#nfolios").val() == 1 && first == true){
+                            //     first = false;
+                            //     $("#numeroId").val('1');
+                            //     $("#ultfolio").val('1');
+
+                            // }else{
+                                $("#ultfolio").val(n);
+                                $("#numeroId").val(n);
+
+                            // }
                             //console.log($n);
-                            $("#numeroId").val($n);
-                            $("#ultfolio").val($n);
+
 
                         }
                     });
@@ -379,14 +397,14 @@
                                 url: "{{ route('RegistroNumeros.show', ':id') }}".replace(':id', id),
                                 method: 'GET',
                                 success: function(data) {
-                                    var $numId = data.numeroId;
-                                    var $lastId = $numId.split("-");
-                                    if($lastId == $numId){
-                                        var $n = $numId;
-                                    }else if($lastId[1]== ''){
-                                        $n = $numId;
+                                    var numId = data.numeroId;
+                                    var lastId = numId.split("-");
+                                    if(lastId == numId){
+                                        var n = numId;
+                                    }else if(lastId[1]== ''){
+                                        n = numId;
                                     }else{
-                                        $n = $lastId[1];
+                                        n = lastId[1];
                                     }
                                     //console.log($lastId);
                                     $("#nfolios").attr("readOnly", true); //
@@ -396,7 +414,7 @@
                                     $("#oficioAnexo").show(); //mostrar el input
                                     //$("#nfolios").show();
 
-                                    $("#ultfolio").val($n);
+                                    $("#ultfolio").val(n);
                                     $("#numeroId").val(data.numeroId);
                                     $("#fecha").val(convertirFecha(data.fecha));
                                     $("#area").val(data.area);
@@ -420,12 +438,12 @@
                     url: "{{ route('RegistroNumeros.listfiles', ':id') }}".replace(':id', id), // La URL de la solicitud AJAX
                     method: 'GET',
                     success: function(data) {
-                        var $listAdjuntos = $('#listadjuntos');
-                        $listAdjuntos.empty(); // Limpiar la lista existente
+                        var listAdjuntos = $('#listadjuntos');
+                        listAdjuntos.empty(); // Limpiar la lista existente
                         //console.log('Datos recibidos:', data);
                         if(data.success === false){
                             //mensaje para cuando no hay archivos
-                            $listAdjuntos.append('<p>No hay archivos disponibles</p>');
+                            listAdjuntos.append('<p>No hay archivos disponibles</p>');
                         }else{
                             // Iterar sobre los archivos y agregarlos a la lista
                             $.each(data, function(key, value) {
@@ -436,7 +454,7 @@
                                     .attr('target', '_blank')
                                     .text(value); // Muestra la URL del archivo
 
-                                    $listAdjuntos.append(listItem);
+                                    listAdjuntos.append(listItem);
 
                             });
 

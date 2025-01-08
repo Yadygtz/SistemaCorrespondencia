@@ -29,7 +29,12 @@ class RegistroNumerosController extends Controller
 
         $last = RegistroNumeros::latest('id')->first();
 
+        if ($last == null) {
+            $last = ['numeroId'=>'0'];
+        }
+
         return response()->json($last);
+
     }
 
     public function editar(Request $request, $id)
@@ -108,14 +113,36 @@ class RegistroNumerosController extends Controller
 
         $folconsec = '';
         $n = '';
+        $id = '';
+
+        if(intval($request->numeroId) <= 9)
+        {
+            $id = '000'. intval($request->numeroId);
+            //dd($id);
+        }else if(intval($request->numeroId) > 9 && intval($request->numeroId) <= 99){
+            $id = '00'. intval($request->numeroId);
+        }else if(intval($request->numeroId) > 99 && intval($request->numeroId) < 1000){
+            $id = '0'. intval($request->numeroId);
+        }else{
+            $id = intval($request->numeroId);
+        }
 
         if($request->nfolios >1)
         {
             $folconsec = intval($request->numeroId) + intval($request->nfolios - 1);
-            $n = $request->numeroId.'-'.$folconsec;
+            if(intval($folconsec) <= 9)
+            {
+                $folconsec = '000'.intval($folconsec);
+            }else if(intval($folconsec) > 9 && intval($folconsec) <= 99){
+                $folconsec = '00'.intval($folconsec);
+            }else if(intval($folconsec) > 99 && intval($folconsec) < 1000){
+                $folconsec = '0'.($folconsec);
+            }
+            $n = $id.'-'.$folconsec;
 
-        }else{
-            $n = $request->numeroId;
+        }else
+        {
+            $n = $id;
         }
 
         // Crear el Oficio

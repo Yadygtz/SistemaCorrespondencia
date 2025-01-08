@@ -1,4 +1,5 @@
 @extends('layouts.user_type.auth')
+@section('titulo2','Números')
 @section('titulo','Registro de Números')
 @section('content')
     <div class="">

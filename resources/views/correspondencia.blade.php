@@ -4,6 +4,7 @@
 @endphp
 <p>{{ $documentRoot }}</p> --}}
 @extends('layouts.user_type.auth')
+@section('titulo2','Oficios')
 @section('titulo','Correspondencia de '. auth()->user()->area)
 @section('content')
     <div class="">
