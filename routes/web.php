@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CorrespondenciaController;
+use App\Http\Controllers\NumerosAreasAntController;
 use App\Http\Controllers\NumerosAreasController;
 use App\Http\Controllers\RegistroNumerosController;
 use App\Http\Controllers\RegistroNumerosControllerAnt;
@@ -66,6 +67,9 @@ Route::middleware('auth')->group(function () {
     Route::put('/NumerosAreas/upd2/{id}', [NumerosAreasController::class, 'editar'])->name('NumerosAreas.editar');
     Route::get('/NumerosAreas2/{id}', [NumerosAreasController::class, 'show'])->name('NumerosAreas.show');
     Route::get('/NumerosAreas/lista2/{numeroId}', [NumerosAreasController::class, 'listfiles'])->name('NumerosAreas.list2');
+
+    Route::get('/NumerosAreasAnt', [NumerosAreasAntController::class, 'index'])->name('NumerosAreasAnt');
+    Route::get('/dsdatanumeros2Ant', [NumerosAreasAntController::class, 'datanumerosAnt'])->name('dsdatanumeros2Ant');
 
     /* OBTENER EL ARCHIVO DEL SERVER FTP*/
     // Expediente digital
