@@ -66,8 +66,14 @@ class CorrespondenciaController extends Controller
         // Validacion de los datos
         $request->validate([
             'no_oficio' => 'required|string|max:255',
-            'hora_recibido' => 'required|date_format:H:i',
+
         ]);
+
+        $horaRecibido = !empty($request->hora_recibido) ? $request->hora_recibido : '00:00';
+
+        // Asegúrate de que 'hora_recibido' está en el formato correcto (HH:MM) y lo convertimos a (HH:MM:SS)
+        $horaRecibidoFormateada = Carbon::createFromFormat('H:i', substr($horaRecibido, 0, 5))->format('H:i:s');
+
 
         $area = auth()->user()->area; // Area del usuario autenticado.
         //validar de que area es para marcar la columna "interno" en 0 si es de CORDINACION  y en 1 si es de cualquier otra area
@@ -90,7 +96,7 @@ class CorrespondenciaController extends Controller
             'folder' => $request->observaciones,
             'recibido_por' => $request->anexos,
             'fecha_recibido' =>  Carbon::createFromFormat('Y-m-d', $request->fecha_recibido)->format('d/m/Y'),
-            'hora_recibido' => Carbon::createFromFormat('H:i', $request->hora_recibido ?: '00:00:00')->format('H:i:s'),
+            'hora_recibido' => $horaRecibidoFormateada, // Asignamos la hora con el formato correcto
             'creado_por' => auth()->user()->id,
             'interno' => $interno,
             'atiende' => $request->atiende,
