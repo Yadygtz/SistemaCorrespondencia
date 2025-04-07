@@ -66,7 +66,9 @@ class CorrespondenciaController extends Controller
         // Validacion de los datos
         $request->validate([
             'no_oficio' => 'required|string|max:255',
+            'hora_recibido' => 'required|date_format:H:i',
         ]);
+
         $area = auth()->user()->area; // Area del usuario autenticado.
         //validar de que area es para marcar la columna "interno" en 0 si es de CORDINACION  y en 1 si es de cualquier otra area
         if($area <> 'COORDINACIÓN'){
@@ -88,13 +90,16 @@ class CorrespondenciaController extends Controller
             'folder' => $request->observaciones,
             'recibido_por' => $request->anexos,
             'fecha_recibido' =>  Carbon::createFromFormat('Y-m-d', $request->fecha_recibido)->format('d/m/Y'),
+            'hora_recibido' => Carbon::createFromFormat('H:i', $request->hora_recibido ?: '00:00:00')->format('H:i:s'),
             'creado_por' => auth()->user()->id,
             'interno' => $interno,
             'atiende' => $request->atiende,
             'recibe' => $request->recibe,
             'estatus' => $request->estatus != '1' ? '0':'1',
             'fecha_finalizado' => $request->fecha_finalizado ? Carbon::createFromFormat('Y-m-d', $request->fecha_finalizado)->format('d/m/Y') : null
+
         ]);
+
 
         //if ($request->hasFile('oficioPDF')) {
             try {
@@ -134,6 +139,7 @@ class CorrespondenciaController extends Controller
             'asunto' => 'string|max:255',
             'fecha_recibido' => 'date',
             'areaCB'  => 'string|max:255',
+            'hora_recibido' => 'required|date_format:H:i',
 
             // Añade las reglas de validación para el resto de los campos
             // 'oficioPDF' => 'file|mimes:pdf',
@@ -153,6 +159,7 @@ class CorrespondenciaController extends Controller
         $validatedData["area"] = $areaC;
         $validatedData["atiende"] = $request->atiende;
         $validatedData["recibe"] = $request->recibe;
+
 
 
 
@@ -177,8 +184,9 @@ class CorrespondenciaController extends Controller
             $validatedData["estatus"] = $request->estatus;
         }
 
-
-
+        if (isset($validatedData['hora_recibido'])) {
+            $validatedData['hora_recibido'] = Carbon::createFromFormat('H:i', $request->hora_recibido ?: '00:00:00')->format('H:i:s');
+        }
 
         // Encontrar el registro por ID y actualizarlo
         $correspondencia = ModelCorrepondencia::findOrFail($id);

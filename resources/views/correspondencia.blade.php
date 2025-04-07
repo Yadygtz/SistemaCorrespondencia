@@ -72,6 +72,7 @@
                     <p><strong>Fecha Oficio:</strong> <span id="modal_fecha_oficio"></span></p>
                     <p><strong>Autoridad Remitente:</strong> <span id="modal_enviado_por"></span></p>
                     <p><strong>Recibido Fecha:</strong> <span id="modal_recibido_fecha"></span></p>
+                    <p><strong>Recibido Hora:</strong> <span id="modal_recibido_hora"></span></p>
                     @if(auth()->user()->area == 'COORDINACIÓN')
                     <p><strong>Quien recibe:</strong> <span id="modal_recibe"></span></p>
                     @endif
@@ -169,7 +170,16 @@
                                         <span class="invalid-feedback" role="alert">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-2">
+                                    <label class="form-label">Hora</label>
+                                    <input type="time" class="form-control @error('hora_recibido') is-invalid @enderror"
+                                        name="hora_recibido" id="hora_recibido">
+                                    @error('hora_recibido')
+                                        <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-4">
                                     <label class="form-label">Quien recibe</label>
                                     <input type="text" class="form-control @error('recibe') is-invalid @enderror"
                                         name="recibe" id="recibe" required>
@@ -547,6 +557,7 @@
                         $('#modal_enviado_por').text(data.enviado_por);
                         $('#modal_anexos').text(data.recibido_por);
                         $('#modal_recibido_fecha').text(data.fecha_recibido);
+                        $('#modal_recibido_hora').text(data.hora_recibido);
                         $('#modal_area').text(data.area);
                         $('#modal_recibe').text(data.recibe);
                         $('#modal_observaciones').text(data.folder);
@@ -615,6 +626,7 @@
                             $("#asunto").val(data.asunto);
                             $("#anexos").val(data.recibido_por);
                             $("#fecha_recibido").val(convertirFecha(data.fecha_recibido));
+                            $("#hora_recibido").val(data.hora_recibido);
                             $("#areaCB").val(data.area);
                             $("#observaciones").val(data.folder);
                             $("#atiende").val(data.atiende);
