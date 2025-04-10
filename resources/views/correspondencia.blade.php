@@ -626,7 +626,7 @@
                             $("#asunto").val(data.asunto);
                             $("#anexos").val(data.recibido_por);
                             $("#fecha_recibido").val(convertirFecha(data.fecha_recibido));
-                            $("#hora_recibido").val(data.hora_recibido);
+                            $("#hora_recibido").val(data.hora_recibido?.substring(0, 5));  // Esto toma solo las primeras 5 caracteres, como "HH:mm"
                             $("#areaCB").val(data.area);
                             $("#observaciones").val(data.folder);
                             $("#atiende").val(data.atiende);
