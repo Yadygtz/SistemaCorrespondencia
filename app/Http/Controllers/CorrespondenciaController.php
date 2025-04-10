@@ -190,8 +190,8 @@ class CorrespondenciaController extends Controller
             $validatedData["estatus"] = $request->estatus;
         }
 
-        if (isset($validatedData['hora_recibido'])) {
-            $validatedData['hora_recibido'] = Carbon::createFromFormat('H:i', $request->hora_recibido ?: '00:00:00')->format('H:i:s');
+        if (!empty($validatedData['hora_recibido'])) {
+            $validatedData['hora_recibido'] = Carbon::parse($validatedData['hora_recibido'])->format('H:i:s');
         }
 
         // Encontrar el registro por ID y actualizarlo
