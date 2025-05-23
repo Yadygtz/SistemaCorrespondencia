@@ -54,6 +54,10 @@
         .dataTables_wrapper{
             margin-top: 0.25rem !important;
         }
+        /*para que se ajuste el texto y no se deborde*/
+        .table td{
+            white-space: normal;
+        }
 
         /* .icon {
             --tblr-icon-size: 1.25rem;

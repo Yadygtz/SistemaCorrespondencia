@@ -43,7 +43,8 @@
                                             Fecha</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Autoridad Remitente</th>
-
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Asunto</th>
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Área que recibe</th>
                                         <th class="text-center"></th>
@@ -446,6 +447,7 @@
                     },
                     {"data": "fecha_oficio"},
                     {"data": "enviado_por"},
+                    {"data": "asunto"},
                     {"data": "area"},
                     {
                     "orderable": false,
