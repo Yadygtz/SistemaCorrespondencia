@@ -89,7 +89,7 @@
                             </g>
                         </svg>
                     </div>
-                    <span class="nav-link-text ms-1">Números 2024</span>
+                    <span class="nav-link-text ms-1">Números 2025</span>
                 </a>
             </li>
             @else
@@ -143,7 +143,7 @@
                             </g>
                         </svg>
                     </div>
-                    <span class="nav-link-text ms-1">Números 2024</span>
+                    <span class="nav-link-text ms-1">Números 2025</span>
                 </a>
             </li>
             @endif

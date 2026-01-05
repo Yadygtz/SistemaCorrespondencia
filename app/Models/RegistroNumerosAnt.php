@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class RegistroNumerosAnt extends Model
 {
     use HasFactory;
-    protected $table = 'registro_numeros_2024';
+    protected $table = 'registro_numeros_2025';
 
     protected $fillable = [
         'numeroId',

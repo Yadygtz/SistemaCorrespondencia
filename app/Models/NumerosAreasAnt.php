@@ -9,7 +9,7 @@ class NumerosAreasAnt extends Model
 {
     use HasFactory;
 
-    protected $table = 'numerosareas_2024';
+    protected $table = 'numerosareas_2025';
 
     protected $fillable = [
         'numeroId',
