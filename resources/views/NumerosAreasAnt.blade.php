@@ -1,6 +1,6 @@
 @extends('layouts.user_type.auth')
 @section('titulo2','Números')
-@section('titulo','Registro de Números 2024')
+@section('titulo','Registro de Números 2025')
 @section('content')
     <div class="">
         <div class="row">

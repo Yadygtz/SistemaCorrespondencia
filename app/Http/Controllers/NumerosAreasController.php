@@ -146,16 +146,20 @@ class NumerosAreasController extends Controller
     }
 
     public function listfiles($numeroId){
+
         $area = $this->quitarAcentos(auth()->user()->area);
         $rutaCarpeta = "Acuses/" . $area ."/";
+        try {
             if (Storage::disk('ftp')->exists($rutaCarpeta)) {
+
+
                 $data['area'] =  $area;
                 $files = Storage::disk('ftp')->files($rutaCarpeta);
 
                 $fileName = [];
                 foreach($files as $file){
 
-                    if(strpos(basename($file),$numeroId) !== false){
+                    if(strtolower(basename($file)) === strtolower($numeroId . '.pdf')){
                          $fileName[] = basename($file);
                     }
                 }
@@ -164,8 +168,13 @@ class NumerosAreasController extends Controller
 
                 return response()->json($data);
             } else {
+
                 return response()->json(["success"=>false]);
             }
+        } catch (\Throwable $th) {
+          return response()->json(["error"=>$th->getMessage()]);
+        }
+
     }
 
 }

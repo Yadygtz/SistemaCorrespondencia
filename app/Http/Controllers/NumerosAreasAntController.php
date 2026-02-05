@@ -113,8 +113,7 @@ class NumerosAreasAntController extends Controller
 
                 $fileName = [];
                 foreach($files as $file){
-
-                    if(strpos(basename($file),$numeroId) !== false){
+                    if(strtolower(basename($file)) === strtolower($numeroId . '.pdf')){
                          $fileName[] = basename($file);
                     }
                 }
