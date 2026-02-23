@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\RegistroNumerosAnt;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class RegistroNumerosControllerAnt extends Controller
 {
@@ -94,5 +95,22 @@ class RegistroNumerosControllerAnt extends Controller
         $data = RegistroNumerosAnt::get();
         return response()->json($data);
 
+    }
+
+    public function listfiles($numeroId){
+
+
+        $rutaCarpeta = "Acuses/" . $numeroId . "/";
+            if (Storage::disk('ftp')->exists($rutaCarpeta)) {
+
+                $files = Storage::disk('ftp')->files($rutaCarpeta);
+                $fileName = [];
+                foreach($files as $file){
+                    $fileName[] = basename($file);
+                }
+                return response()->json($fileName);
+            } else {
+                return response()->json(["success"=>false]);
+            }
     }
 }

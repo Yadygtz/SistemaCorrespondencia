@@ -79,10 +79,6 @@
 @push('scripts')
     <script>
 
-
-
-
-
         @if (session('success'))
             const Toast = Swal.mixin({
                 toast: true,
@@ -186,7 +182,8 @@
             var id = button.data('id'); // Obtén el ID del botón
 
                 $.ajax({
-                    url: "{{ route('RegistroNumeros.listfiles', ':id') }}".replace(':id', id), // La URL de la solicitud AJAX
+                    url: "{{ route('RegistroNumeros.listfiles2', ':id') }}".replace(':id', id), // La URL de la solicitud AJAX
+
                     method: 'GET',
                     success: function(data) {
                         var listAdjuntos = $('#listadjuntos');

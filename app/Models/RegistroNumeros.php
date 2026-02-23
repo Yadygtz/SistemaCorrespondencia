@@ -16,7 +16,8 @@ class RegistroNumeros extends Model
         'area',
         'asunto',
         'solicita',
-        'observaciones'
+        'observaciones',
+        'anio'
     ];
 
 }

@@ -265,7 +265,10 @@
                         "data":null,
                         "render": function (data,type){
                         return '<div class="d-flex">'
-                            + '<a href="#" class="btn btn-primary w-30 btn-icon mb-0 me-1" data-bs-toggle="modal" data-bs-target="#Adjuntos" data-id="'+ data["numeroId"] +'"> <svg xmlns="http://www.w3.org/2000/svg" width="24"'
+                            + '<a href="#" class="btn btn-primary w-30 btn-icon mb-0 me-1" data-bs-toggle="modal" data-bs-target="#Adjuntos" data-id="'
+                                        + data["numeroId"] +'"'
+                                        + 'data-anio="'+ data["anio"]+ '">'
+                                        + '<svg xmlns="http://www.w3.org/2000/svg" width="24"'
                                         + 'height="24" viewBox="0 0 24 24" fill="none"'
                                         + 'stroke="currentColor" stroke-width="2" stroke-linecap="round" '
                                         + 'stroke-linejoin="round"'
@@ -276,7 +279,8 @@
                                     + '</a>'
                                    + '<a href="#" class="btn btn-outline-secondary w-30 btn-icon mb-0"'
                                    + 'data-bs-toggle="modal" data-bs-target="#addupdNumModal"'
-                                   + 'data-id="'+ data["numeroId"]+'">'
+                                   + 'data-id="'+ data["numeroId"] + '" '
+                                   + 'data-anio="'+ data["anio"]+ '">'
                                       + '<svg xmlns="http://www.w3.org/2000/svg" width="24"'
                                         + 'height="24" viewBox="0 0 24 24" fill="none"'
                                         + 'stroke="currentColor" stroke-width="2" stroke-linecap="round"'
@@ -328,6 +332,8 @@
             $('#addupdNumModal').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget);
                 var id = button.data('id');
+                var anio = button.data('anio');
+                //console.log(anio);
                 var tipo = button.data('tipo');
                 if (tipo == "agregar") {
                     // Limpiar el formulario
@@ -391,12 +397,19 @@
                     // Asignar la URL para actualizar
                     $("#formUpdNum").attr('action', "{{ route('RegistroNumeros.actualizar', ':id') }}".replace(':id', id));
                     $("#titlemodal").text("Editar Registro de Número");
+                    var url = "{{ route('RegistroNumeros.show') }}";
+
 
                     // Traer los datos del oficio
                     $.ajax({
-                                url: "{{ route('RegistroNumeros.show', ':id') }}".replace(':id', id),
+                                url: url,
                                 method: 'GET',
+                                data: {
+                                id: id,
+                                anio: anio
+                                },
                                 success: function(data) {
+                                    console.log(data);
                                     var numId = data.numeroId;
                                     var lastId = numId.split("-");
                                     if(lastId == numId){
@@ -433,10 +446,17 @@
             $('#Adjuntos').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget); // El botón que activó el modal
             var id = button.data('id'); // Obtén el ID del botón
+            var anio = button.data('anio');
+
+                var url = "{{ route('RegistroNumeros.listfiles') }}";
 
                 $.ajax({
-                    url: "{{ route('RegistroNumeros.listfiles', ':id') }}".replace(':id', id), // La URL de la solicitud AJAX
+                    url: url, // La URL de la solicitud AJAX
                     method: 'GET',
+                     data: {
+                            id: id,
+                            anio: anio
+                        },
                     success: function(data) {
                         var listAdjuntos = $('#listadjuntos');
                         listAdjuntos.empty(); // Limpiar la lista existente

@@ -16,6 +16,7 @@
                             <div class="col-6 d-flex align-items-center">
                                 <h6 class="mb-0">Correspondencia</h6>
                             </div>
+                            @if(auth()->user()->area != 'PROGRAMACIÓN')
                             <div class="col-6 text-end">
                                 <a class="btn btn-secondary btn-sm mb-0" data-bs-toggle="modal"
                                     data-bs-target="#filtroModal" data-tipo="agregar">Reporte</a>
@@ -23,6 +24,7 @@
                                 <a class="btn btn-primary btn-sm mb-0" data-bs-toggle="modal"
                                     data-bs-target="#addupdOfiModal" data-tipo="agregar">Agregar</a>
                             </div>
+                            @endif
                         </div>
                     </div>
                     {{-- <div class="card-header pb-0">
@@ -74,11 +76,11 @@
                     <p><strong>Autoridad Remitente:</strong> <span id="modal_enviado_por"></span></p>
                     <p><strong>Recibido Fecha:</strong> <span id="modal_recibido_fecha"></span></p>
                     <p><strong>Recibido Hora:</strong> <span id="modal_recibido_hora"></span></p>
-                    @if(auth()->user()->area == 'COORDINACIÓN')
+                    @if(auth()->user()->area == 'COORDINACIÓN' || auth()->user()->area == 'PROGRAMACIÓN')
                     <p><strong>Quien recibe:</strong> <span id="modal_recibe"></span></p>
                     @endif
                     <p><strong>Area:</strong> <span id="modal_area"></span></p>
-                    @if(auth()->user()->area != 'COORDINACIÓN')
+                    @if(auth()->user()->area != 'COORDINACIÓN' || auth()->user()->area == 'PROGRAMACIÓN')
                     <p><strong>Atiende:</strong> <span id="modal_atiende"></span></p>
                     <p><strong>Estatus:</strong> <span id="modal_estatus"></span></p>
                     <p><strong>Fecha Finalizado:</strong> <span id="modal_fecha_finalizado"></span></p>
@@ -112,11 +114,13 @@
     <div class="modal fade" id="addupdOfiModal" data-bs-keyboard=false data-bs-backdrop="static" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
+                
                 <div class="modal-header">
                     <h5 class="modal-title fw-bolder" id="titlemodal">Agregar Oficio</h5>
                     {{-- <button type="button" wire:click.prevent="cancel" class="btn-close"
                         data-bs-dismiss="modal"></button> --}}
                 </div>
+              
                 <form action="correspondencia/upd/id_correspondencia" method="POST" id="formUpdOfi"
                     enctype="multipart/form-data">
                     @csrf
@@ -358,10 +362,12 @@
                                 <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" required>
                             </div>
                         </div>
+                        
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CERRAR</button>
                             <button type="submit" class="btn btn-primary">Reporte PDF</button>
                         </div>
+                        
                     </form>
                 </div>
             </div>
@@ -378,6 +384,7 @@
             title: @json(session('error'))
             });
         @endif
+
         @if (session('success'))
             const Toast = Swal.mixin({
                 toast: true,
@@ -395,6 +402,7 @@
                 title: @json(session('success'))
             });
         @endif
+        
         window.onload = function() {
             // $(".alert").fadeTo(1000, 0).slideUp(1000, function() {
             //     $(this).remove();
@@ -402,7 +410,8 @@
 
 
             $('#areaCB').val(@json($area));
-
+            const userArea = "{{ auth()->user()->area }}";
+        
             var confidioma = {
                 "info": "<span class='text-sm text-secondary opacity-9'>Mostrando _START_ a _END_ de _TOTAL_ registros</span>",
                 "infoEmpty": "Mostrando 0 a 0 de 0 registros",
@@ -453,7 +462,7 @@
                     "orderable": false,
                     "data": null,
                     "render": function (data, type) {
-
+                        if(userArea != 'PROGRAMACIÓN'){
                             return '<div class="d-flex"> '
                                     + '<a href="#" class="btn btn-primary w-30 btn-icon mb-0 me-1" data-bs-toggle="modal" data-bs-target="#detalleModal" data-id="'+ data["id_correspondencia"] +'"> <svg xmlns="http://www.w3.org/2000/svg" width="24"'
                                         + 'height="24" viewBox="0 0 24 24" fill="none"'
@@ -477,6 +486,20 @@
                                             + '</svg>'
                                     + '</a>'
                                     + '</div>'
+                        } else {
+                            return '<div class="d-flex"> '
+                                    + '<a href="#" class="btn btn-primary w-30 btn-icon mb-0 me-1" data-bs-toggle="modal" data-bs-target="#detalleModal" data-id="'+ data["id_correspondencia"] +'"> <svg xmlns="http://www.w3.org/2000/svg" width="24"'
+                                        + 'height="24" viewBox="0 0 24 24" fill="none"'
+                                        + 'stroke="currentColor" stroke-width="2" stroke-linecap="round" '
+                                        + 'stroke-linejoin="round"'
+                                        + 'class="icon icon-tabler icons-tabler-outline icon-tabler-eye">'
+                                        + '<path stroke="none" d="M0 0h24v24H0z" fill="none" />'
+                                        + '<path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />'
+                                        + '<path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /> </svg>'
+                                    + '</a>'
+                                    + '</div>'
+                        }
+                            
                     }
                     },
 

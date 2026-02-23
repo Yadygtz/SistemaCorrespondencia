@@ -92,7 +92,7 @@
                     <span class="nav-link-text ms-1">Números 2025</span>
                 </a>
             </li>
-            @else
+            @elseif(auth()->user()->area === 'INFORMATICA')
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('NumerosAreas') ? 'active' : '' }}" href="{{ url('NumerosAreas') }}">
                     <div

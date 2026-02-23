@@ -236,7 +236,7 @@ class CorrespondenciaController extends Controller
     public function dataoficios(){
         $area = auth()->user()->area;
 
-        if($area == "COORDINACIÓN"){
+        if($area == "COORDINACIÓN" || $area == "PROGRAMACIÓN"){
             $data = ModelCorrepondencia::where('interno','=','0')->get();
         }else{
         $data = ModelCorrepondencia::where('area', 'like', '%' . auth()->user()->area . '%')->where('interno','=','1')->get();

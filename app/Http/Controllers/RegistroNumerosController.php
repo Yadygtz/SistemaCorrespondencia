@@ -58,8 +58,12 @@ class RegistroNumerosController extends Controller
 
         }
 
+        $anio = Carbon::parse($validatedData['fecha'])->year;
+
+
         // Encontrar el registro por ID y actualizarlo
-        $reg = RegistroNumeros::where('numeroId','=',$id)->first();
+        $reg = RegistroNumeros::where('numeroId','=',$id)->where('anio','=',$anio)->first();
+
         $reg->update($validatedData);
 
         $directorio = $request->numeroId;
@@ -96,10 +100,13 @@ class RegistroNumerosController extends Controller
 
     }
 
-    public function show($id)
+    public function show(Request $request)
     {
+        $id = $request->id;
+        $anio = $request->anio;
 
-        $reg = RegistroNumeros::where('numeroId','=',$id)->first();
+        $reg = RegistroNumeros::where('numeroId','=',$id)->where('anio','=',$anio)->first();
+
         return response()->json($reg);
     }
 
@@ -152,7 +159,8 @@ class RegistroNumerosController extends Controller
             'area' => $request->area,
             'asunto' => $request->asunto,
             'solicita' => $request->solicita,
-            'observaciones' => $request->observaciones
+            'observaciones' => $request->observaciones,
+            'anio' => Carbon::createFromFormat('Y-m-d', $request->fecha)->format('Y')
         ]);
 
         // Redireccionar o devolver una respuesta adecuada
@@ -160,24 +168,40 @@ class RegistroNumerosController extends Controller
     }
 
     public function datanumeros(){
-        $data = RegistroNumeros::get();
+       $anio = Carbon::now()->year;
+        //$data = RegistroNumeros::get();
+        $data = RegistroNumeros::where('anio','=',$anio)->get();
         return response()->json($data);
 
     }
 
-    public function listfiles($numeroId){
+    public function listfiles(Request $request){
+
+    $numeroId = $request->id;
+    $anio = $request->anio;
 
         $rutaCarpeta = "Acuses/" . $numeroId . "/";
-            if (Storage::disk('ftp')->exists($rutaCarpeta)) {
+        $nombreArchivo = $numeroId . "_" . $anio . ".pdf";
+        $rutaCompleta = $rutaCarpeta . $nombreArchivo;
 
-                $files = Storage::disk('ftp')->files($rutaCarpeta);
+
+
+            if (Storage::disk('ftp')->exists($rutaCompleta)) {
+                    return response()->json([
+
+                  "file" => $nombreArchivo
+        ]);
+                /*$files = Storage::disk('ftp')->files($rutaCompleta);
                 $fileName = [];
                 foreach($files as $file){
                     $fileName[] = basename($file);
                 }
-                return response()->json($fileName);
+                return response()->json($fileName);*/
             } else {
-                return response()->json(["success"=>false]);
+                return response()->json([
+            "success" => false,
+            "message" => "El archivo no existe"
+        ]);
             }
     }
 

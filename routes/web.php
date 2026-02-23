@@ -49,12 +49,17 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     Route::get('/RegistroNumeros', [RegistroNumerosController::class, 'index'])->name('RegistroNumeros');
-    Route::get('/RegistroNumeros/{id}', [RegistroNumerosController::class, 'show'])->name('RegistroNumeros.show');
+    //Route::get('/RegistroNumeros/{id}/{anio}', [RegistroNumerosController::class, 'show'])->name('RegistroNumeros.show');
+    Route::get('/RegistroNumeros/show', [RegistroNumerosController::class, 'show'])->name('RegistroNumeros.show');
+
     Route::put('/RegistroNumeros/upd/{id}', [RegistroNumerosController::class, 'editar'])->name('RegistroNumeros.actualizar');
     Route::put('/RegistroNumeros/add', [RegistroNumerosController::class, 'agregar'])->name('RegistroNumeros.agregar');
     Route::get('/GetId', [RegistroNumerosController::class, 'ultimoId'])->name('RegistroNumeros.GetId');
     Route::get('/dsdatanumeros', [RegistroNumerosController::class, 'datanumeros'])->name('dsdatanumeros');
-    Route::get('/RegistroNumeros/lista/{numeroId}', [RegistroNumerosController::class, 'listfiles'])->name('RegistroNumeros.listfiles');
+    Route::get('/RegistroNumeros/lista', [RegistroNumerosController::class, 'listfiles'])->name('RegistroNumeros.listfiles');
+    //ruta para registro numeros anterior
+    Route::get('/RegistroNumeros/lista2/{id}', [RegistroNumerosControllerAnt::class, 'listfiles'])->name('RegistroNumeros.listfiles2');
+
 
     Route::get('/RegistroNumerosAnt', [RegistroNumerosControllerAnt::class, 'index'])->name('RegistroNumerosAnt');
     Route::get('/dsdatanumerosAnt', [RegistroNumerosControllerAnt::class, 'datanumerosAnt'])->name('dsdatanumerosAnt');
