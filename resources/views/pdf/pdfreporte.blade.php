@@ -73,7 +73,10 @@
                 <th width =5%>Fecha Oficio</th>
                 <th width =10%>Area</th>
                 <th width =20%>Recibe</th>
+                {{-- @if(auth()->user()->area === 'INFORMÁTICA')
                 <th width =23%>Anexos</th>
+                @endif --}}
+
 
             </tr>
         </thead>
@@ -81,17 +84,18 @@
             @foreach($datos as $dato)
 
                 <tr>
-                    <td rowspan="2">{{ $loop->iteration }}</td>
+                    <td rowspan="1">{{ $loop->iteration }}</td>
                     <td ><b>N° Oficio :</b> {{ $dato->no_oficio }} <br> <b>Remitente:</b> {{ $dato->enviado_por }} <br> <b>Asunto:</b> {{ $dato->asunto }}</td>
                     <td>{{ $dato->fecha_oficio }}</td>
                     <td>{{ $dato->area }}</td>
                     <td>{{ $dato->recibe }}</td>
-                    <td>{{ $dato->recibido_por }}</td>
+                    {{-- <td>{{ $dato->recibido_por }}</td> --}}
                 </tr>
+                {{-- @if(auth()->user()->area === 'INFORMÁTICA')
                 <tr>
                     <td colspan="5"><b>Observaciones:</b> {{ $dato->folder }}</td>
                 </tr>
-
+                @endif --}}
             @endforeach
         </tbody>
     </table>
