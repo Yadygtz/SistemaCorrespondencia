@@ -61,7 +61,7 @@ class reporte_pdf_Controller extends Controller
 
         // Cargar la vista y pasarle los datos
         $pdf = FacadePdf::loadView('pdf.pdfreporte', compact('datos','fecha_inicial','fecha_final'));
-        $pdf->setPaper('A4', 'landscape');  // Para orientación horizontal
+        $pdf->setPaper('letter', 'landscape');  // Para orientación horizontal
         // Devolver el PDF como respuesta
         return $pdf->download('Reporte de oficios recibidos.pdf');
 
