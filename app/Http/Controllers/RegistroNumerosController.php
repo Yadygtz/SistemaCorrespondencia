@@ -58,7 +58,11 @@ class RegistroNumerosController extends Controller
 
         }
 
-        $anio = Carbon::parse($validatedData['fecha'])->year;
+        //dd($validatedData['fecha']);
+        if (isset($validatedData['fecha'])) {
+        $fechaCarbon = Carbon::createFromFormat('d/m/Y', $validatedData['fecha']);
+        $anio = $fechaCarbon->year;
+        }
 
 
         // Encontrar el registro por ID y actualizarlo
@@ -125,7 +129,7 @@ class RegistroNumerosController extends Controller
         if(intval($request->numeroId) <= 9)
         {
             $id = '000'. intval($request->numeroId);
-            //dd($id);
+
         }else if(intval($request->numeroId) > 9 && intval($request->numeroId) <= 99){
             $id = '00'. intval($request->numeroId);
         }else if(intval($request->numeroId) > 99 && intval($request->numeroId) < 1000){
