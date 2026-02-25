@@ -13,6 +13,8 @@
                                 <h6 class="mb-0">Números de Oficio</h6>
                             </div>
                             <div class="col-6 text-end">
+                            <a class="btn btn-secondary btn-sm mb-0" data-bs-toggle="modal"
+                                    data-bs-target="#filtroModal" data-tipo="agregar">Reporte</a>
                                 <a class="btn btn-primary btn-sm mb-0" data-bs-toggle="modal"
                                     data-bs-target="#addupdNumModal" data-tipo="agregar">Agregar</a>
                             </div>
@@ -182,6 +184,40 @@
                         </button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Reporte--}}
+    <div class="modal fade" id="filtroModal" tabindex="-1" role="dialog" aria-labelledby="filtroModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="filtroModalLabel">Rangos de Fecha</h5>
+
+                </div>
+                <div class="modal-body">
+                    <form action = "{{ route('reporte_numeros') }}" method="POST">
+                        @csrf
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha Inicio</label>
+                                <input type="date" class="form-control" id="fecha_ini" name="fecha_ini" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha Fin</label>
+                                <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" required>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CERRAR</button>
+                            <button type="submit" class="btn btn-primary">Reporte PDF</button>
+                        </div>
+
+                    </form>
+                </div>
             </div>
         </div>
     </div>

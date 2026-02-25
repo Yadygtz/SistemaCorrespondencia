@@ -6,6 +6,7 @@ use App\Http\Controllers\NumerosAreasController;
 use App\Http\Controllers\RegistroNumerosController;
 use App\Http\Controllers\RegistroNumerosControllerAnt;
 use App\Http\Controllers\reporte_pdf_Controller;
+use App\Http\Controllers\reporte_pdf_numeros;
 use App\Http\Controllers\UsuariosController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -135,6 +136,7 @@ Route::middleware('auth')->group(function () {
     })->name('verPDF2');
 
     Route::post('/reporte', [reporte_pdf_Controller::class, 'generarPdf'])->name('reporte');
+    Route::post('/reporte_numeros', [reporte_pdf_numeros::class, 'generarPdf'])->name('reporte_numeros');
 
 });
 
