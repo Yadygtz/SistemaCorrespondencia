@@ -27,7 +27,10 @@ class RegistroNumerosController extends Controller
     public function ultimoId()
     {
 
-        $last = RegistroNumeros::latest('id')->first();
+        $anio = date("Y");
+        //dd($anio);
+        $last = RegistroNumeros::latest('numeroId')->where('anio','=',$anio)->first();
+        //$last = RegistroNumeros::latest('numeroId')->first();
 
         if ($last == null) {
             $last = ['numeroId'=>'0'];

@@ -1,6 +1,6 @@
 @extends('layouts.user_type.auth')
-@section('titulo2','Números')
-@section('titulo','Registro de Números 2025')
+@section('titulo2', 'Números')
+@section('titulo', 'Registro de Números 2025')
 @section('content')
     <div class="">
         <div class="row">
@@ -23,8 +23,7 @@
                             <table class="table align items-center pb-0 mt-1" id="DNtabla">
                                 <thead>
                                     <tr>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Id</th>
+
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             N° Oficio</th>
                                         {{-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -78,7 +77,6 @@
 
 @push('scripts')
     <script>
-
         @if (session('success'))
             const Toast = Swal.mixin({
                 toast: true,
@@ -125,74 +123,94 @@
             };
 
             let table = new DataTable('#DNtabla', {
-                "ajax":{
-                    "url":@json(route('dsdatanumerosAnt')),
-                    "dataSrc":''
+                "ajax": {
+                    "url": @json(route('dsdatanumerosAnt')),
+                    "dataSrc": ''
                 },
-                "columns":[
-                    {"data": "id"},
-                    {"data": null,
-                    "render": function (data, type) {
-                            return '<div class="d-flex flex-column justify-content-center">'
-                                        + '<h6 class="mb-0 text-sm">'+ data["numeroId"] +'</h6>'
-                                        + '<p class="text-xs text-secondary mb-0">Asunto: ' + data["asunto"] + '</p>'
-                                 + '</div>'
+                "columns": [
+                    /* {"data": "id"},*/
+                    {
+                        "data": null,
+                        "render": function(data, type) {
+                            return '<div class="d-flex flex-column justify-content-center">' +
+                                '<h6 class="mb-0 text-sm">' + data["numeroId"] + '</h6>' +
+                                '<p class="text-xs text-secondary mb-0">Asunto: ' + data["asunto"] +
+                                '</p>' +
+                                '</div>'
                         }
                     },
-                    {"data":"fecha"},
-                    {"data":"area"},
-                    {"data":"solicita"},
-                    {"data":"observaciones"},
-                    {"orderable": false,
-                        "data":null,
-                        "render": function (data,type){
-                        return '<div class="d-flex">'
-                            + '<a href="#" class="btn btn-primary w-30 btn-icon mb-0 me-1" data-bs-toggle="modal" data-bs-target="#Adjuntos" data-id="'+ data["numeroId"] +'"> <svg xmlns="http://www.w3.org/2000/svg" width="24"'
-                                        + 'height="24" viewBox="0 0 24 24" fill="none"'
-                                        + 'stroke="currentColor" stroke-width="2" stroke-linecap="round" '
-                                        + 'stroke-linejoin="round"'
-                                        + 'class="icon icon-tabler icons-tabler-outline icon-tabler-eye">'
-                                        + '<path stroke="none" d="M0 0h24v24H0z" fill="none" />'
-                                        + '<path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />'
-                                        + '<path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /> </svg>'
-                                    + '</a>'
+                    {
+                        "data": "fecha"
+                    },
+                    {
+                        "data": "area"
+                    },
+                    {
+                        "data": "solicita"
+                    },
+                    {
+                        "data": "observaciones"
+                    },
+                    {
+                        "orderable": false,
+                        "data": null,
+                        "render": function(data, type) {
+                            return '<div class="d-flex">' +
+                                '<a href="#" class="btn btn-primary w-30 btn-icon mb-0 me-1" data-bs-toggle="modal" data-bs-target="#Adjuntos" data-id="' +
+                                data["numeroId"] +
+                                '"> <svg xmlns="http://www.w3.org/2000/svg" width="24"' +
+                                'height="24" viewBox="0 0 24 24" fill="none"' +
+                                'stroke="currentColor" stroke-width="2" stroke-linecap="round" ' +
+                                'stroke-linejoin="round"' +
+                                'class="icon icon-tabler icons-tabler-outline icon-tabler-eye">' +
+                                '<path stroke="none" d="M0 0h24v24H0z" fill="none" />' +
+                                '<path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />' +
+                                '<path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /> </svg>' +
+                                '</a>'
 
-                                + '</div>'
-                    }
+                                +
+                                '</div>'
+                        }
 
 
                     }
                 ],
                 "language": confidioma,
-                "autoWidth":false,
-                "columnDefs": [
+                "autoWidth": false,
+                "columnDefs": [{
+                        "width": "30%",
+                        "targets": 0
+                    },
                     {
-                    "targets": "_all",
-                    "className": "text-xs font-weight-bold align-middle"
+                        "targets": "_all",
+                        "className": "text-xs font-weight-bold align-middle"
                     },
 
                 ],
-                "order":[[0,'desc']]
+                "order": [
+                    [0, 'desc']
+                ]
             });
 
 
 
-          $('#Adjuntos').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget); // El botón que activó el modal
-            var id = button.data('id'); // Obtén el ID del botón
+            $('#Adjuntos').on('show.bs.modal', function(event) {
+                var button = $(event.relatedTarget); // El botón que activó el modal
+                var id = button.data('id'); // Obtén el ID del botón
 
                 $.ajax({
-                    url: "{{ route('RegistroNumeros.listfiles2', ':id') }}".replace(':id', id), // La URL de la solicitud AJAX
+                    url: "{{ route('RegistroNumeros.listfiles2', ':id') }}".replace(':id',
+                    id), // La URL de la solicitud AJAX
 
                     method: 'GET',
                     success: function(data) {
                         var listAdjuntos = $('#listadjuntos');
                         listAdjuntos.empty(); // Limpiar la lista existente
                         //console.log('Datos recibidos:', data);
-                        if(data.success === false){
+                        if (data.success === false) {
                             //mensaje para cuando no hay archivos
                             listAdjuntos.append('<p>No hay archivos disponibles</p>');
-                        }else{
+                        } else {
                             // Iterar sobre los archivos y agregarlos a la lista
                             $.each(data, function(key, value) {
                                 // Crear un nuevo elemento de lista para cada archivo
@@ -202,7 +220,7 @@
                                     .attr('target', '_blank')
                                     .text(value); // Muestra la URL del archivo
 
-                                    listAdjuntos.append(listItem);
+                                listAdjuntos.append(listItem);
 
                             });
 

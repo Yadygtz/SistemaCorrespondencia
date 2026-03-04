@@ -28,8 +28,7 @@
                             <table class="table align items-center pb-0 mt-1" id="DNtabla">
                                 <thead>
                                     <tr>
-                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                            Id</th>
+
                                         <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             N° Oficio</th>
                                         {{-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -284,7 +283,7 @@
                     "dataSrc":''
                 },
                 "columns":[
-                    {"data": "id"},
+                    /*{"data": "id"},*/
                     {"data": null,
                     "render": function (data, type) {
                             return '<div class="d-flex flex-column justify-content-center">'
